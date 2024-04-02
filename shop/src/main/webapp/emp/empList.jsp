@@ -20,19 +20,43 @@
 	
 	int rowPerPage =10;
 	int startRow = (currentPage-1) * rowPerPage;
+	
+	//직원들 페이징 모듈
+	Class.forName("org.mariadb.jdbc.Driver");
+	PreparedStatement empStmt = null;
+	Connection conn = null;
+	conn = DriverManager.getConnection("jdbc:mariadb://127.0.0.1:3306/shop", "root", "java1234");
+	
+	String sqlEmp = "SELECT count(*) cnt From emp";
+	ResultSet empRs = null;
+	empStmt = conn.prepareStatement(sqlEmp);
+	empRs =empStmt.executeQuery();
+	
+	int totalRow = 0;
+	int pageList = totalRow;
+	System.out.println(pageList+"=pageList");
+	
+	
+	if(empRs.next()) {
+		totalRow = empRs.getInt("cnt");
+	}
+	int lastPage = totalRow / rowPerPage;
+	if(totalRow % rowPerPage != 0) {
+		lastPage = lastPage + 1;
+	   }
 %>
 <!-- Model Layer -->
 <%	
 	
 	Class.forName("org.mariadb.jdbc.Driver");
-	Connection conn = null;
+	Connection conn2 = null;
 	PreparedStatement stmt = null;
 	ResultSet rs = null;
-	conn = DriverManager.getConnection("jdbc:mariadb://127.0.0.1:3306/shop", "root", "java1234");
+	conn2 = DriverManager.getConnection("jdbc:mariadb://127.0.0.1:3306/shop", "root", "java1234");
 	
 	String sql = "SELECT  emp_id empId, emp_name empName, emp_job empJob, hire_date hireDate, active from emp order by hire_date desc limit ?, ?";
 	
-	stmt = conn.prepareStatement(sql);
+	stmt = conn2.prepareStatement(sql);
 	stmt.setInt(1, startRow);
 	stmt.setInt(2, rowPerPage);
 	rs = stmt.executeQuery();	// JDBC API 종속된 자료구조 모델 ResultSet ==>> 기본 API 자료구조(ArrayList)로 변경
@@ -48,7 +72,11 @@
 		m.put("active", rs.getString("active"));
 		list.add(m);
 	}
-	// JDBC API 사용이 끝났다면 DB자원들을 반납
+	// JDBC API 사용이 끝났다면 DB자원들을 반납해라
+	conn.close();
+	conn2.close();
+	stmt.close();
+	rs.close();
 %>
 
 <!-- View Layer -->
@@ -56,38 +84,87 @@
 <html>
 <head>
 	<meta charset="UTF-8">
-	<title></title>
+	<title>empList</title>
+	 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+	 <style>
+   			*{
+   			font-family: "CookieRun"
+   			}
+			body{
+			text-align: center;
+			}
+			.container {
+			border: 1px
+			}
+			.box{
+			 	display: flex;
+			 	text-align: center;
+			 	justify-content: center;
+			}
+		</style>
 </head>
 <body>
-<div><a href="/shop/emp/empLogout.jsp">로그아웃</a></div>
-	<h1>사원목록</h1>
-		<form method="post" action="/shop/emp/modifyEmpActive.jsp">	
-			<table border ="1">
-				<tr>
-					<th>empId</th>
-					<th>empName</th>
-					<th>empJob</th>
-					<th>hireDate</th>
-					<th>active</th>
-				</tr>
-				<%
-					for(HashMap<String, Object> m : list) {
-				%>
-				<tr>
-					<td><%=(String)m.get("empId")%></td>
-					<td><%=(String)m.get("empName")%></td>
-					<td><%=(String)m.get("empJob")%></td>
-					<td><%=(String)m.get("hireDate")%></td>
-					<td>
-							<a href='modifyEmpActive.jsp?active=<%=(String)m.get("active")%>&empId=<%=(String)m.get("empId")%>'>
-									<%=(String)m.get("active")%>
-							</a>
-					</td>
-				</tr>
-				<%		
-						}
-				%>
-	</table>
-</form>
+<div class="container">
+		<div class="row">
+			<div class="col-2"></div>
+			<div class="mt-5 col-8 bg-black border shadow p-3 mb-5 bg-body-tertiary rounded" >
+			<div><a href="/shop/emp/empLogout.jsp">로그아웃</a></div>
+				<h1>사원목록</h1>
+					<form method="post" action="/shop/emp/modifyEmpActive.jsp">	
+						<div class="box">
+							<table border ="1">
+								<tr>
+									<th>empId</th>
+									<th>empName</th>
+									<th>empJob</th>
+									<th>hireDate</th>
+									<th>active</th>
+								</tr>
+								<%
+									for(HashMap<String, Object> m : list) {
+								%>
+								<tr>
+									<td><%=(String)m.get("empId")%></td>
+									<td><%=(String)m.get("empName")%></td>
+									<td><%=(String)m.get("empJob")%></td>
+									<td><%=(String)m.get("hireDate")%></td>
+									<td>
+											<a href='modifyEmpActive.jsp?active=<%=(String)m.get("active")%>&empId=<%=(String)m.get("empId")%>'>
+													<%=(String)m.get("active")%>
+											</a>
+									</td>
+								</tr>
+								<%		
+										}
+								%>
+							</table>
+						</div>
+							<div><%=currentPage%></div><!-- 현재 페이지를 나타냄 -->
+							<div><!-- 이전,다음 버튼 만들기 -->
+								<%
+									if(currentPage >1)
+									{	
+								%>
+									<button><a href="./empList.jsp?currentPage=1">처음</a></button>
+									<button><a href="./empList.jsp?currentPage=<%=currentPage-1%>">이전</a></button>
+								<%
+									}
+								%>
+								<%
+								if(currentPage<lastPage || currentPage ==1 )
+									{
+								%>
+									<button><a href="./empList.jsp?currentPage=<%=currentPage+1%>">다음</a></button>
+									<button><a href="./empList.jsp?currentPage=<%=lastPage%>">마지막</a></button>
+								<%
+									}
+								%>
+							</div>
+				</form>
+			</div><!-- col-8마지막 -->
+		<div class="col-2"></div>
+	</div><!-- row -->
+</div><!-- container -->
 </body>
 </html>

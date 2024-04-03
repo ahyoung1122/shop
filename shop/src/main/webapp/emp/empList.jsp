@@ -4,8 +4,8 @@
 <%@ page import="java.util.*" %>
 <%
 	// 인증분기	 : 세션변수 이름 - loginEmp
-	String loginMember = (String)(session.getAttribute("loginMember"));
-	if(session.getAttribute("loginMember") == null) {
+	/* String loginEmp = (String)(session.getAttribute("loginEmp")); */
+	if(session.getAttribute("loginEmp") == null) {
 		String errMsg = URLEncoder.encode("잘못된 접근입니다. 로그인 먼저해주세요","utf-8");
 		response.sendRedirect("/shop/emp/empLoginForm.jsp");
 		return;
@@ -105,6 +105,9 @@
 		</style>
 </head>
 <body>
+<!-- empMenu.jsp include : 주체는 서버! vs redirect(주체는 클라이언트!) -->
+<jsp:include page="/emp/inc/empMenu.jsp"></jsp:include> <!-- include서버 적을때 조심!! shop부터 시작하지말자! -->
+<!-- 매번 페이지 만들때마다 이 코드 작성해줘서 메뉴창을 위에 띄워두자!^_^-->
 <div class="container">
 		<div class="row">
 			<div class="col-2"></div>
@@ -130,9 +133,16 @@
 									<td><%=(String)m.get("empJob")%></td>
 									<td><%=(String)m.get("hireDate")%></td>
 									<td>
-											<a href='modifyEmpActive.jsp?active=<%=(String)m.get("active")%>&empId=<%=(String)m.get("empId")%>'>
-													<%=(String)m.get("active")%>
-											</a>
+										<%
+										    HashMap<String, Object> sm = (HashMap<String, Object>)(session.getAttribute("loginEmp"));
+										    if((Integer)(sm.get("grade")) > 0) {
+										%>	
+													<a href='modifyEmpActive.jsp?active=<%=(String)(m.get("active"))%>'>
+														<%=(String)(m.get("active"))%>
+													</a>
+										<%
+											  }
+										%>
 									</td>
 								</tr>
 								<%		

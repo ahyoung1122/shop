@@ -2,18 +2,19 @@
 <%@ page import = "java.sql.*" %>
 <%@ page import="java.net.URLEncoder"%>
 <%@ page import="java.util.*" %>
+<%@ page import = "java.net.*" %>
 <%
    // 인증분기    : 세션변수 이름 - loginEmp
    
    // 로그인성공시 세션에 loginMember라는 변수를 만들고 값으로 로그인아이디를 저장
    
-   String loginMember = (String)(session.getAttribute("loginMember"));
+ /*   String loginEmp = (String)(session.getAttribute("loginEmp"));
    // session.getAttribute()는 찾는변수가없으면 null값을 반환한다
    // null이면 로그아웃상태이고, null이아니면 로그인상태
-   System.out.println(loginMember + "<<==loginMember");
+   System.out.println(loginEmp + "<<==loginEmp"); */
    
    //loginForm페이지는 로그아웃상태에서만 출력되는 페이지
-   if(session.getAttribute("loginMember") != null) {
+   if(session.getAttribute("loginEmp") != null) {
       response.sendRedirect("/shop/emp/empLoginAction.jsp");
       return;
    }
@@ -60,11 +61,11 @@
 								<table>
 									<tr>
 										<th>ID</th>
-										<td><input type="text" name="empId"></td>
+										<td><input type="text" name="empId" value="admin"></td>
 									</tr>
 									<tr>
 										<th>PW</th>
-										<td><input type="password" name="empPw" ></td>
+										<td><input type="password" name="empPw" value="1234" ></td>
 									</tr>
 								</table>	
 							</div>

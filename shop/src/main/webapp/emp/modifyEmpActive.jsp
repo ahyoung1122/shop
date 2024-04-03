@@ -19,7 +19,7 @@
 	//active가 on인 경우랑 off인 경우 나눠서 분기
 	
 	if(active.equals("ON")){//on인 경우 off로
-		String sql = "UPDATE emp SET active  = 'OFF' WHERE emp_id = ?";
+		String sql = "UPDATE emp SET active='OFF' WHERE emp_id = ?";
 		stmt = conn.prepareStatement(sql);
 		stmt.setString(1, empId);
 		System.out.println(stmt+"=stmt");
@@ -35,7 +35,7 @@
 			}
 	}
 		if(active.equals("OFF")){//off인 경우는 on으로
-				String sql2 = "UPDATE emp SET active  = 'ON' WHERE emp_id = ?";
+				String sql2 = "UPDATE emp SET active ='ON'WHERE emp_id = ?";
 				stmt2 = conn.prepareStatement(sql2);
 				stmt2.setString(1, empId);
 				System.out.println(stmt2+"=stmt2");

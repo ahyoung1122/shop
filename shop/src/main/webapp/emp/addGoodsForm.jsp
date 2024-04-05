@@ -92,47 +92,44 @@
 			<div class="mt-5 col-8 bg-black border shadow p-3 mb-5 bg-body-tertiary rounded" >
 			<h1>상품등록</h1>
 				<form method="post" action="/shop/emp/addGoodsAction.jsp"
-					enctype = "multipart/form-data">
-					<div>
-						category :
-						<select name="category">
-							<option value="">선택</option>
-							<%
-								for(String c : categoryList) {
-							%>
-									<option value="<%=c%>"><%=c%></option>
-							<%		
-								}
-							%>
-						</select>
-					</div>
-					<!-- emp_id값은 action쪽에서 세션변수에서 바인딩 -->
-					<div>  
-						goodsTitle :
-						<input type="text" name="goodsTitle">
-					</div>
-					<div>
-						<input type="hidden" name ="empId">
-					</div>
-					<div>
-						goodsImage : 
-						<input type = "file" name = "goodsImg">
-					</div>
-					<div>
-						goodsPrice :
-						<input type="number" name="goodsPrice">
-					</div>
-					<div>
-						goodsAmount :
-						<input type="number" name="goodsAmount">
-					</div>
-					<div>
-						goodsContent :
-						<textarea rows="5" cols="50" name="goodsContent"></textarea>
-					</div>
-					<div>
-						<button type="submit">상품등록</button>
-					</div>
+						enctype = "multipart/form-data">
+						<div>
+							category :
+							<select name="category">
+								<option value="">선택</option>
+								<%
+									for(String c : categoryList) {
+								%>
+										<option value="<%=c%>"><%=c%></option>
+								<%		
+									}
+								%>
+							</select>
+						</div>
+						<!-- emp_id값은 action쪽에서 세션변수에서 바인딩 -->
+						<div>  
+							goodsTitle :
+							<input type="text" name="goodsTitle">
+						</div>
+						<div>
+							goodsImage : 
+							<input type = "file" name = "goodsImg">
+						</div>
+						<div>
+							goodsPrice :
+							<input type="number" name="goodsPrice">
+						</div>
+						<div>
+							goodsAmount :
+							<input type="number" name="goodsAmount">
+						</div>
+						<div>
+							goodsContent :
+							<textarea rows="5" cols="50" name="goodsContent"></textarea>
+						</div>
+						<div>
+							<button type="submit">상품등록</button>
+						</div>
 				</form>
 
 			</div><!-- col-8마지막 -->

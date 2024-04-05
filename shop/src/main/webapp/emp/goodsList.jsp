@@ -38,6 +38,9 @@
 	    lastPage = lastPage + 1;
 	}
 	
+	
+	System.out.println(totalRow);
+	//연결해주기
 	//
 	/* 
 	null 이면
@@ -67,7 +70,7 @@
 			categoryList.add(m);
 		}
 		// 디버깅
-		System.out.println(categoryList);
+		System.out.println(categoryList+"=categoryList");
 %>
 <%	
 //선택 상품 나열 하려면
@@ -76,9 +79,11 @@
 		PreparedStatement stmt2 = null;
 		ResultSet rs2 = null;
 		
-		String sql2 = "SELECT category, goods_title goodsTitle, goods_price goodsPrice FROM goods WHERE category=? order by goods_no asc;";
+		String sql2 = "SELECT category, goods_title goodsTitle, filename, goods_price goodsPrice FROM goods WHERE category=? order by goods_Price asc LIMIT ?,?;";
 		stmt2 = conn.prepareStatement(sql2);
 		stmt2.setString(1, category);
+		stmt2.setInt(2, startRow);
+		stmt2.setInt(3, rowPerPage);
 		rs2 = stmt2.executeQuery();
 		
 		ArrayList<HashMap<String, Object>> goodsList = new ArrayList<HashMap<String, Object>>();
@@ -88,11 +93,22 @@
 			m2.put("category", rs2.getString("category"));
 			m2.put("goodsTitle", rs2.getString("goodsTitle"));
 			m2.put("goodsPrice", rs2.getInt("goodsPrice"));
+			m2.put("filename", rs2.getString("filename"));
 			goodsList.add(m2);
 		}
 		
 		//확인하기
 		System.out.println(goodsList);
+		
+	/* 	PreparedStatement stmt3 = null;
+		ResultSet rs3 = null;
+		
+		String pageSql = "SELECT category FROM category ORDER BY desc; LIMIT 0,10";
+		stmt3 = conn.prepareStatement(pageSql);
+		stmt3.setString(1, category);
+		stmt3.setInt(2,currentPage);
+		stmt3.setInt(3,rowPerPage);
+		stmt3.setInt(4,lastPage); */
 %>
 <!DOCTYPE html>
 <html>
@@ -112,12 +128,14 @@
 			    justify-content: center; /* 수평으로 가운데 */
 			    height: 70px; 
 			    background-color: #FF3636;
+			    
 			}
    			.header a {
 			    text-decoration: none;
 			    color : white;
 			    font-size: 20px;
 			  margin-right: 50px;
+			  font-family:"Super Mario 256";
 			}
 			.header .hello{
 			
@@ -128,23 +146,28 @@
 			    display: block; margin-right: auto; margin-left: 0;
 			}
 			.box {
-				width: 1300px;
+				width: 1350px;
 				margin : 0 auto;
 				overflow : hidden;
 				padding-top: 10px;
+				background-color: ivory;
 			
 			}
 			.box .goodsimage1 {
 				float : left;
-				margin-left : 10px;
+				margin-left : 100px;
 				margin-bottom : 30px;
 				padding-bottom : 20px;
-				margin-right: 30px; /* 적절한 오른쪽 여백 추가 */
-        		width: 200px; /* 적절한 너비 설정 */
-        		
+				margin-right: ; /* 적절한 오른쪽 여백 추가 */
+        		width: 300px; /* 적절한 너비 설정 */
+        		text-align : center;
         		background-color: #59DA50;
 			}
+			.container{
+			text-align: center;
+			 }
 			
+			 
 		
 			
 			
@@ -161,15 +184,15 @@
 </div><!-- header의마지막 -->
 	<!-- 페이지 -->
 	<div class="main">
-				<span>상품리스트</span>
-				<a href="/shop/emp/addGoodsForm.jsp">상품등록</a>
+		<div class="container">
+				<span>상품리스트</span><br>
 			<div>
 			<!-- 서브메뉴 카테고리별 상품리스트 -->
-				<a href="/shop/emp/goodsList.jsp?">전체</a>
+				<a href="/shop/emp/goodsList.jsp?category=<%=category%>">전체</a>
 				<%
 					for(HashMap<String, Object> m : categoryList){
 				%>
-					<a href="/shop/emp/goodsList.jsp?category=<%=(String)(m.get("category"))%>">
+					<a href="/shop/emp/goodsList.jsp?category=<%=(String)(m.get("category"))%>&totalRow=<%=(Integer)(m.get("cnt"))%>">
 						<%=(String)(m.get("category")) %>
 						<%=(Integer)(m.get("cnt")) %>
 					</a>
@@ -177,6 +200,25 @@
 					}
 				%>
 			</div>
+			<a href="/shop/emp/addGoodsForm.jsp">상품등록</a>
+		</div>
+						
+						
+						<div class="box">
+								<%
+									for(HashMap<String, Object> m2 : goodsList){
+								%>
+									<div class="goodsimage1" style ="border: 1px;">
+										<div><img src="/shop/upload/<%=m2.get("filename")%>"></div>
+										<div><%=(String)(m2.get("category")) %></div>
+										<div><%=(String)(m2.get("goodsTitle"))%></div>
+										<div><%=(Integer)(m2.get("goodsPrice")) %></div>
+									</div>
+								<%		
+										}
+								%>
+						</div>
+						
 					<div>
 						<%=currentPage %><!-- 현재페이지 표시 -->
 					</div>
@@ -186,8 +228,8 @@
 									if(currentPage >1)
 									{	
 								%>
-									<button><a href="./goodsList.jsp?currentPage=1">처음</a></button>
-									<button><a href="./goodsList.jsp?currentPage=<%=currentPage-1%>">이전</a></button>
+									<button><a href="./goodsList.jsp?currentPage=1&category=<%=category%>&totalRow=<%=totalRow%>">처음</a></button>
+									<button><a href="./goodsList.jsp?currentPage=<%=currentPage-1%>&category=<%=category%>&totalRow=<%=totalRow%>">이전</a></button>
 								<%
 									}
 								%>
@@ -195,30 +237,14 @@
 								if(currentPage<lastPage || currentPage ==1 )
 									{
 								%>
-									<button><a href="./goodsList.jsp?currentPage=<%=currentPage+1%>">다음</a></button>
-									<button><a href="./goodsList.jsp?currentPage=<%=lastPage%>">마지막</a></button>
+									<button><a href="./goodsList.jsp?currentPage=<%=currentPage+1%>&category=<%=category%>&totalRow=<%=totalRow%>">다음</a></button>
+									<button><a href="./goodsList.jsp?currentPage=<%=lastPage%>&category=<%=category%>&totalRow=<%=totalRow%>">마지막</a></button>
 								<%
 									}
 								%>
 						</div>
 						
 						
-						
-						
-						<div class="box">
-								<%
-									for(HashMap<String, Object> m2 : goodsList){
-								%>
-									<div class="goodsimage1" style ="border: 1px;">
-										<div><img src="./img/marioJump2.png"></div>
-										<div><%=(String)(m2.get("category")) %></div>
-										<div><%=(String)(m2.get("goodsTitle"))%></div>
-										<div><%=(Integer)(m2.get("goodsPrice")) %></div>
-									</div>
-								<%		
-										}
-								%>
-						</div>
 					
 					
 					

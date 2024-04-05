@@ -35,7 +35,8 @@
    <title></title>
    <style>
    			*{
-   			font-family: "CookieRun"
+   			font-family: "CookieRun" 
+   			
    			}
 			body{
 			text-align: center;
@@ -48,32 +49,45 @@
 			 	text-align: center;
 			 	justify-content: center;
 			}
+			.welcome {
+			font-size :	60px;
+			color:red;
+			font-family:"Super Mario 256";
+			}
+			.loginImg{
+			 	height: 380px; width: 770px;
+		      	background-image: url(./img/marioAll3.png);
+		      	background-position: center; /* 이미지를 수평 및 수직으로 가운데로 정렬합니다. */
+			    background-size: cover; /* 이미지를 화면에 꽉 차도록 조정합니다. */
+			    text-align: center; 
+			}
 		</style>
 </head>
-<body>
+<body style="background-color: #FF3636;">
 <div class="container">
-		<div class="row">
+	<div class="row">
 			<div class="col-2"></div>
-			<div class="mt-10 col-8 bg-black border shadow p-3 mb-5 bg-body-tertiary rounded" >
-				<h1>WELCOME!</h1>
-					<form method="post" action="./empLoginAction.jsp">
-							<div class="box">
-								<table>
-									<tr>
-										<th>ID</th>
-										<td><input type="text" name="empId" value="admin"></td>
-									</tr>
-									<tr>
-										<th>PW</th>
-										<td><input type="password" name="empPw" value="1234" ></td>
-									</tr>
-								</table>	
-							</div>
-						<button type="submit">로그인</button>
-					</form>
+			<div class="mt-5 col-8 bg-black border shadow p-3 mb-5 bg-body-tertiary rounded" >	
+				<div class="loginImg"></div>			
+						<form method="post" action="./empLoginAction.jsp">
+								<h1 class = "welcome">WELCOME!</h1>
+								<div class="box">
+									<table>
+										<tr>
+											<th>ID</th>
+											<td><input type="text" name="empId" value="admin"></td>
+										</tr>
+										<tr>
+											<th>PW</th>
+											<td><input type="password" name="empPw" value="1234" ></td>
+										</tr>
+									</table>	
+								</div>
+							<button type="submit">로그인</button>
+						</form>
 			</div><!-- col-8마지막 -->
 		<div class="col-2"></div>
-	</div><!-- row -->
+	</div>
 </div><!-- container -->
 </body>
 </html>

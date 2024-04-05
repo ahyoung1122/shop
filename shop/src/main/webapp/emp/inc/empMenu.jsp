@@ -12,10 +12,10 @@
 	<!-- category CRUD -->
 	<a href="/shop/emp/empList.jsp">카테고리관리</a>
 	<a href="/shop/emp/goodsList.jsp">상품관리</a><!-- empList에 갖다 붙일거임 include기술! -->
-	<span>
+	<span class = "hello">
 		<!-- 개인정보 수정을 할 수 있다. -->
-		<a href="/shop/emp/empOne.jsp"><!-- 세션에 있는 id를 통해서 개인정보를 입력,수정 -->
-			<%=(String)(loginMember.get("empName"))%>님
-		</a> 반갑습니다
+		<a href="/shop/emp/empOne.jsp" style="color : white;"><!-- 세션에 있는 id를 통해서 개인정보를 입력,수정 -->
+			<%=(String)(loginMember.get("empName"))%>님 welcome
+		</a> 
 	</span>
 </div>

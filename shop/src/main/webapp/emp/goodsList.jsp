@@ -3,7 +3,7 @@
 <%@ page import="java.util.*" %>
 <%@ page import = "java.net.*" %>
     <!-- Controller Layer -->
-    <%
+ <%
    //0. 로그인 인증 분기 : 세션변수 이름 - loginEmp
 /*    String loginEmp = (String)(session.getAttribute("loginEmp"));
    System.out.println(loginEmp + "<<==loginEmp"); */
@@ -14,21 +14,37 @@
    }
 %>
 <%
-//요청분기
+//페이징하기
+	String category = request.getParameter("category");
 
-	int currentPage = 1;
+	int currentPage = 1;//현재 페이지는 1페이지부터
 	if(request.getParameter("currentPage") != null){
 		currentPage = Integer.parseInt(request.getParameter("currentPage"));
 	}
+	int rowPerPage =10;//한페이지에 10개씩 보이게 하기
 	
-	String category = request.getParameter("category");
+	int startRow = (currentPage -1)*rowPerPage; 
+	//첫 화면에 몇번째 게시글이 보이게 할건지 설정하는 값(외우지말고이해하자)
+	//만약에 currnetPage가 2라면 2-1 = 1 곱하기 10을 해서 10번째 게시글이 2번페이지의 1번이 된다
+	int totalRow = 0;//총게시글
+	if(request.getParameter("totalRow") != null){
+	    totalRow = Integer.parseInt(request.getParameter("totalRow"));
+	}
+	
+	//lastPage를 구하려면... 맨 마지막 페이지니까 총 게시글totalRow에서 rowPerPage를 나눠줘야함
+	int lastPage = totalRow % rowPerPage; 
+	//근데 만약에 딱 안떨어지고 몇개가 남는 경우가 있을 수도 있어
+	if(totalRow % rowPerPage != 0 ){
+	    lastPage = lastPage + 1;
+	}
+	
+	//
 	/* 
 	null 이면
 	SELECT * FROM goods
 	null이 아니면 
 	SELECT * FROM goods where category=?
 	*/
-
 %>
 <!-- Model Layer -->
 <%
@@ -60,7 +76,7 @@
 		PreparedStatement stmt2 = null;
 		ResultSet rs2 = null;
 		
-		String sql2 = "SELECT category, goods_title goodsTitle, goods_price goodsPrice FROM goods WHERE category=? order by goods_price asc;";
+		String sql2 = "SELECT category, goods_title goodsTitle, goods_price goodsPrice FROM goods WHERE category=? order by goods_no asc;";
 		stmt2 = conn.prepareStatement(sql2);
 		stmt2.setString(1, category);
 		rs2 = stmt2.executeQuery();
@@ -83,44 +99,75 @@
 <head>
 <meta charset="UTF-8">
 <title>goodsList</title>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+ <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 	 <style>
    			*{
-   			font-family: "CookieRun"
+   			font-family: "CookieRun";
+   			margin: 0px; padding :0px;
    			}
-			body{
-			text-align: center;
+   			.header {
+			    display: flex; 
+			    align-items: center; /* 수직으로 가운데 */
+			    justify-content: center; /* 수평으로 가운데 */
+			    height: 70px; 
+			    background-color: #FF3636;
 			}
-			.container {
-			border: 1px
+   			.header a {
+			    text-decoration: none;
+			    color : white;
+			    font-size: 20px;
+			  margin-right: 50px;
 			}
-			.box{
-			 	display: flex;
-			 	text-align: center;
-			 	justify-content: center;
+			.header .hello{
+			
 			}
+			.header img {
+			    margin-right: 50px; /* 이미지 오른쪽 여백을 설정하여 링크와 간격을 설정했음. */
+			    width: 145px; height: auto;
+			    display: block; margin-right: auto; margin-left: 0;
+			}
+			.box {
+				width: 1300px;
+				margin : 0 auto;
+				overflow : hidden;
+				padding-top: 10px;
+			
+			}
+			.box .goodsimage1 {
+				float : left;
+				margin-left : 10px;
+				margin-bottom : 30px;
+				padding-bottom : 20px;
+				margin-right: 30px; /* 적절한 오른쪽 여백 추가 */
+        		width: 200px; /* 적절한 너비 설정 */
+        		
+        		background-color: #59DA50;
+			}
+			
+		
+			
+			
 		</style>
 </head>
 <body>
 <!-- 맨위 메인메뉴 -->
-<div>
-	<jsp:include page="/emp/inc/empMenu.jsp"></jsp:include>
-</div>
-
-<div>
-	<a href="/shop/emp/addGoodsForm.jsp">상품등록</a>
-</div>
+<div class="header">
+	<img src="./img/marioUnder.png">
+	<!-- empMenu.jsp include : 주체는 서버! vs redirect(주체는 클라이언트!) -->
+	<jsp:include page="/emp/inc/empMenu.jsp"></jsp:include> <!-- include서버 적을때 조심!! shop부터 시작하지말자! -->
+	<!-- 매번 페이지 만들때마다 이 코드 작성해줘서 메뉴창을 위에 띄워두자!^_^-->
+	<div><a href="/shop/emp/empLogout.jsp">로그아웃</a></div>
+</div><!-- header의마지막 -->
 	<!-- 페이지 -->
-	<div class="container">
-		<div class="row">
-			<div class="col-2"></div>
-			<div class="mt-5 col-8 bg-black border shadow p-3 mb-5 bg-body-tertiary rounded" >
+	<div class="main">
+				<span>상품리스트</span>
+				<a href="/shop/emp/addGoodsForm.jsp">상품등록</a>
 			<div>
 			<!-- 서브메뉴 카테고리별 상품리스트 -->
-				<a href="/shop/emp/goodsList.jsp">전체</a>
+				<a href="/shop/emp/goodsList.jsp?">전체</a>
 				<%
-					for(HashMap m : categoryList){
+					for(HashMap<String, Object> m : categoryList){
 				%>
 					<a href="/shop/emp/goodsList.jsp?category=<%=(String)(m.get("category"))%>">
 						<%=(String)(m.get("category")) %>
@@ -130,38 +177,53 @@
 					}
 				%>
 			</div>
-			<div>상품리스트</div><!-- 상품 나열하는 부분 -->
-				<div class ="box">
-					<table border ="1">
-						 <tr>
-							<th>Category</th>
-							<th>goodsTitle</th>
-							<th>goodsPrice</th>
-						</tr>
-						<%
-							for(HashMap m2 : goodsList){
-						%>
-						<tr>
-							<td>
-								<div></div>
-								<%=(String)(m2.get("category")) %>
-							</td>
-							<td>
-								<%=(String)(m2.get("goodsTitle"))%>
-							</td>
-							<td>
-								<%=(Integer)(m2.get("goodsPrice")) %>
-							</td>
-							
-						</tr>
-						<%		
-								}
-						%>
+					<div>
+						<%=currentPage %><!-- 현재페이지 표시 -->
 					</div>
-				</table>
-			</div><!-- col-8마지막 -->
-		<div class="col-2"></div>
-	</div><!-- row -->
-</div><!-- container -->
+						
+					<div><!-- 이전,다음 버튼 만들기 -->
+								<%
+									if(currentPage >1)
+									{	
+								%>
+									<button><a href="./goodsList.jsp?currentPage=1">처음</a></button>
+									<button><a href="./goodsList.jsp?currentPage=<%=currentPage-1%>">이전</a></button>
+								<%
+									}
+								%>
+								<%
+								if(currentPage<lastPage || currentPage ==1 )
+									{
+								%>
+									<button><a href="./goodsList.jsp?currentPage=<%=currentPage+1%>">다음</a></button>
+									<button><a href="./goodsList.jsp?currentPage=<%=lastPage%>">마지막</a></button>
+								<%
+									}
+								%>
+						</div>
+						
+						
+						
+						
+						<div class="box">
+								<%
+									for(HashMap<String, Object> m2 : goodsList){
+								%>
+									<div class="goodsimage1" style ="border: 1px;">
+										<div><img src="./img/marioJump2.png"></div>
+										<div><%=(String)(m2.get("category")) %></div>
+										<div><%=(String)(m2.get("goodsTitle"))%></div>
+										<div><%=(Integer)(m2.get("goodsPrice")) %></div>
+									</div>
+								<%		
+										}
+								%>
+						</div>
+					
+					
+					
+					
+					
+</div><!-- main -->
 </body>
 </html>

@@ -91,6 +91,27 @@
    			*{
    			font-family: "CookieRun"
    			}
+   			.header {
+			    display: flex; 
+			    align-items: center; /* 수직으로 가운데 */
+			    justify-content: center; /* 수평으로 가운데 */
+			    height: 70px; 
+			    background-color: #FF3636;
+			}
+   			.header a {
+			    text-decoration: none;
+			    color : white;
+			    font-size: 20px;
+			  margin-right: 50px;
+			}
+			.header .hello{
+			
+			}
+			.header img {
+			    margin-right: 50px; /* 이미지 오른쪽 여백을 설정하여 링크와 간격을 설정했음. */
+			    width: 145px; height: auto;
+			    display: block; margin-right: auto; margin-left: 0;
+			}
 			body{
 			text-align: center;
 			}
@@ -105,14 +126,17 @@
 		</style>
 </head>
 <body>
+<div class="header">
+<img src="./img/marioUnder.png">
 <!-- empMenu.jsp include : 주체는 서버! vs redirect(주체는 클라이언트!) -->
 <jsp:include page="/emp/inc/empMenu.jsp"></jsp:include> <!-- include서버 적을때 조심!! shop부터 시작하지말자! -->
 <!-- 매번 페이지 만들때마다 이 코드 작성해줘서 메뉴창을 위에 띄워두자!^_^-->
+<div><a href="/shop/emp/empLogout.jsp">로그아웃</a></div>
+</div><!-- header의마지막 -->
 <div class="container">
 		<div class="row">
 			<div class="col-2"></div>
 			<div class="mt-5 col-8 bg-black border shadow p-3 mb-5 bg-body-tertiary rounded" >
-			<div><a href="/shop/emp/empLogout.jsp">로그아웃</a></div>
 				<h1>사원목록</h1>
 					<form method="post" action="/shop/emp/modifyEmpActive.jsp">	
 						<div class="box">
@@ -175,6 +199,7 @@
 			</div><!-- col-8마지막 -->
 		<div class="col-2"></div>
 	</div><!-- row -->
-</div><!-- container -->
+</div><!-- container --> 
+
 </body>
 </html>

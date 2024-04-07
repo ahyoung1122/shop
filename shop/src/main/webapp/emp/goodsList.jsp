@@ -21,7 +21,7 @@
 	if(request.getParameter("currentPage") != null){
 		currentPage = Integer.parseInt(request.getParameter("currentPage"));
 	}
-	int rowPerPage =10;//한페이지에 10개씩 보이게 하기
+	int rowPerPage =9;//한페이지에 9개씩 보이게 하기
 	
 	int startRow = (currentPage -1)*rowPerPage; 
 	//첫 화면에 몇번째 게시글이 보이게 할건지 설정하는 값(외우지말고이해하자)
@@ -62,7 +62,7 @@
 		stmt1 = conn.prepareStatement(sql1);
 		rs1 = stmt1.executeQuery();
 		ArrayList<HashMap<String, Object>> categoryList =
-				new ArrayList<HashMap<String, Object>>();
+		new ArrayList<HashMap<String, Object>>();
 		while(rs1.next()) {
 			HashMap<String, Object> m = new HashMap<String, Object>();
 			m.put("category", rs1.getString("category"));
@@ -79,12 +79,12 @@
 		PreparedStatement stmt2 = null;
 		ResultSet rs2 = null;
 		
-		String sql2 = "SELECT category, goods_title goodsTitle, filename, goods_price goodsPrice FROM goods WHERE category=? order by goods_Price asc LIMIT ?,?;";
+		String sql2 = "SELECT category, goods_title goodsTitle, filename, goods_price goodsPrice, create_date createDate FROM goods WHERE category=? order by create_date desc LIMIT ?,?;";
 		stmt2 = conn.prepareStatement(sql2);
 		stmt2.setString(1, category);
 		stmt2.setInt(2, startRow);
 		stmt2.setInt(3, rowPerPage);
-		rs2 = stmt2.executeQuery();
+		rs2 = stmt2.executeQuery(); 
 		
 		ArrayList<HashMap<String, Object>> goodsList = new ArrayList<HashMap<String, Object>>();
 		//카테고리랑, 굿즈 타이틀,가격(쇼핑몰처럼 나열)
@@ -92,23 +92,14 @@
 			HashMap<String, Object> m2 = new HashMap<String, Object>();
 			m2.put("category", rs2.getString("category"));
 			m2.put("goodsTitle", rs2.getString("goodsTitle"));
-			m2.put("goodsPrice", rs2.getInt("goodsPrice"));
 			m2.put("filename", rs2.getString("filename"));
+			m2.put("goodsPrice", rs2.getInt("goodsPrice"));
+			m2.put("createDate", rs2.getString("createDate"));
 			goodsList.add(m2);
 		}
 		
 		//확인하기
 		System.out.println(goodsList);
-		
-	/* 	PreparedStatement stmt3 = null;
-		ResultSet rs3 = null;
-		
-		String pageSql = "SELECT category FROM category ORDER BY desc; LIMIT 0,10";
-		stmt3 = conn.prepareStatement(pageSql);
-		stmt3.setString(1, category);
-		stmt3.setInt(2,currentPage);
-		stmt3.setInt(3,rowPerPage);
-		stmt3.setInt(4,lastPage); */
 %>
 <!DOCTYPE html>
 <html>
@@ -135,7 +126,6 @@
 			    color : white;
 			    font-size: 20px;
 			  margin-right: 50px;
-			  font-family:"Super Mario 256";
 			}
 			.header .hello{
 			
@@ -150,7 +140,7 @@
 				margin : 0 auto;
 				overflow : hidden;
 				padding-top: 10px;
-				background-color: ivory;
+				background-color: white;
 			
 			}
 			.box .goodsimage1 {
@@ -161,12 +151,23 @@
 				margin-right: ; /* 적절한 오른쪽 여백 추가 */
         		width: 300px; /* 적절한 너비 설정 */
         		text-align : center;
-        		background-color: #59DA50;
+        		background-color: white;
+			}
+			.box .goodsimage1 img{
+				width : 200px;
+				height : 200px;
 			}
 			.container{
 			text-align: center;
 			 }
-			
+			.btn{
+			 display : flex;
+			 justify-content: center;
+			}
+			a{
+			text-decoration: none;
+			color : black;
+			}
 			 
 		
 			
@@ -194,7 +195,7 @@
 				%>
 					<a href="/shop/emp/goodsList.jsp?category=<%=(String)(m.get("category"))%>&totalRow=<%=(Integer)(m.get("cnt"))%>">
 						<%=(String)(m.get("category")) %>
-						<%=(Integer)(m.get("cnt")) %>
+					<%-- 	<%=(Integer)(m.get("cnt")) %> --%>
 					</a>
 				<%
 					}
@@ -202,54 +203,49 @@
 			</div>
 			<a href="/shop/emp/addGoodsForm.jsp">상품등록</a>
 		</div>
-						
-						
-						<div class="box">
-								<%
-									for(HashMap<String, Object> m2 : goodsList){
-								%>
-									<div class="goodsimage1" style ="border: 1px;">
-										<div><img src="/shop/upload/<%=m2.get("filename")%>"></div>
-										<div><%=(String)(m2.get("category")) %></div>
-										<div><%=(String)(m2.get("goodsTitle"))%></div>
-										<div><%=(Integer)(m2.get("goodsPrice")) %></div>
-									</div>
-								<%		
-										}
-								%>
-						</div>
-						
+			
+		<div class="btn"><!-- 이전,다음 버튼 만들기 -->
+			<%=currentPage %><!-- 현재페이지 표시 -->
+			<%
+				if(currentPage >1)
+				{	
+			%>
+				<a href="./goodsList.jsp?currentPage=1&category=<%=category%>&totalRow=<%=totalRow%>">first</a>
+				<a href="./goodsList.jsp?currentPage=<%=currentPage-1%>&category=<%=category%>&totalRow=<%=totalRow%>">pre</a>
+			<%
+				}
+			%>
+			<%
+			if(currentPage<lastPage || currentPage ==1 )
+				{
+			%>
+				<a href="./goodsList.jsp?currentPage=<%=currentPage+1%>&category=<%=category%>&totalRow=<%=totalRow%>">next</a>
+				<a href="./goodsList.jsp?currentPage=<%=lastPage%>&category=<%=category%>&totalRow=<%=totalRow%>">last</a>
+			<%
+				}
+			%>
+	</div>
+	<div class="box">
+			<%
+				for(HashMap<String, Object> m2 : goodsList){
+			%>
+				<div class="goodsimage1" style ="border: 1px;">
 					<div>
-						<%=currentPage %><!-- 현재페이지 표시 -->
+						<img src="/shop/upload/<%=(String)m2.get("filename")%>">
 					</div>
-						
-					<div><!-- 이전,다음 버튼 만들기 -->
-								<%
-									if(currentPage >1)
-									{	
-								%>
-									<button><a href="./goodsList.jsp?currentPage=1&category=<%=category%>&totalRow=<%=totalRow%>">처음</a></button>
-									<button><a href="./goodsList.jsp?currentPage=<%=currentPage-1%>&category=<%=category%>&totalRow=<%=totalRow%>">이전</a></button>
-								<%
-									}
-								%>
-								<%
-								if(currentPage<lastPage || currentPage ==1 )
-									{
-								%>
-									<button><a href="./goodsList.jsp?currentPage=<%=currentPage+1%>&category=<%=category%>&totalRow=<%=totalRow%>">다음</a></button>
-									<button><a href="./goodsList.jsp?currentPage=<%=lastPage%>&category=<%=category%>&totalRow=<%=totalRow%>">마지막</a></button>
-								<%
-									}
-								%>
-						</div>
-						
-						
-					
-					
-					
-					
-					
+				<%-- 	<div>카테고리 : <%=(String)(m2.get("category")) %></div><hr> --%>
+					<div>이름 : <%=(String)(m2.get("goodsTitle"))%></div>
+					<div>가격 : <%=(Integer)(m2.get("goodsPrice")) %></div>
+					<div><!-- 삭제버튼 만들기 -->	
+						<button>
+                        	<a href="./deleteCategoryAction.jsp?category=<%=(String)(m2.get("category"))%>">삭제</a>
+                        </button>
+               		</div>
+				</div>
+			<%		
+					}
+			%>
+	</div>
 </div><!-- main -->
 </body>
 </html>

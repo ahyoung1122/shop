@@ -9,25 +9,25 @@
 		ResultSet rs1 = null;
 		conn = DriverManager.getConnection("jdbc:mariadb://127.0.0.1:3306/diary", "root", "java1234");
 		
-		String mail = request.getParameter("mail"); //mail값 가져오기
-		if(mail == null){//갔다가 돌아오면 null값이 아니겠지? 
-			mail = " ";
+		String id = request.getParameter("id"); //mail값 가져오기
+		if(id == null){//갔다가 돌아오면 null값이 아니겠지? 
+			id = " ";
 			
 		}
 		
-		String mailCheck = request.getParameter("mailCheck");
+		String idCheck = request.getParameter("idCheck");
 		
 		//System.out.println(ck);
 		
-		if(mailCheck == null){
-			mailCheck= "";
+		if(idCheck == null){
+			idCheck= "";
 		}
 		
 		String msg =" ";
-		if(mailCheck.equals("T")){
-			msg = "사용가능한 mail입니다";
-		}else if(mailCheck.equals("F")){
-			msg = "이미 존재합니다 다른mail을 입력하세요";
+		if(idCheck.equals("T")){
+			msg = "사용가능한 ID입니다";
+		}else if(idCheck.equals("F")){
+			msg = "이미 존재합니다 다른ID를 입력하세요";
 		}
 
 %>
@@ -39,27 +39,28 @@
 </head>
 <body>
 	<h1>회원가입</h1>
+	<!-- id확인 form -->
 	<form method="post" action="./checkIdAction.jsp">
 		<div>
-			mail확인
-			<input type="address" name="mail" value=<%=mail%>>
+			ID확인
+			<input type="text" name="id" value=<%=id%>>
 		</div>
 		<button type="submit">중복확인</button>
 	</form>
-	<div><%=msg %></div>
+	<!-- 확인form종료 -->
 	<form method="post" action="/shop/customer/addCustomerAction.jsp">
 		<table>
 				<tr>
-					<td><label for="mail">mail</label></td>
+					<td><label for="id">ID</label></td>
 					<td>
 					<%
-						if(mailCheck.equals("T")){
+						if(idCheck.equals("T")){
 							%>
-								<input value="<%=mail%>" type="address" name="mail" readonly="readonly">
+								<input value="<%=id%>" type="text" name="id" readonly="readonly">
 							<%			
 									}else{
 								%>
-										<input value=" " type="address" name ="mail" readonly="readonly">
+										<input value=" " type="text" name ="id" readonly="readonly">
 								<%		
 									}
 								%>
@@ -69,6 +70,10 @@
 				<tr>
 					<td><label for="password">pw</label></td>
 					<td><input type="password" name="pw" id="password"></td>
+				</tr>
+				<tr>
+					<td><label for="mail">mail</label></td>
+					<td><input type="text" name="mail" id="mail"></td>
 				</tr>
 				<tr>
 					<td><label for="name">이름</label></td>

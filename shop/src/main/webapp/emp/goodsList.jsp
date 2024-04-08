@@ -300,7 +300,7 @@
 			%>
 	</div>
 		<%
-		if(category == null){
+		if(category == null){//전체 페이지를 위한 button
 		%>
 				<%
 					if(currentPage >1)
@@ -322,7 +322,7 @@
 			%>
 		<%
 		//맨 처음if구문 끝나는 지점
-		}else{
+		}else{//category=?일때의 button을 생성
 		%>
 			<%
 				if(currentPage >1)

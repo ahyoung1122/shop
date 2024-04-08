@@ -8,20 +8,20 @@ PreparedStatement stmt = null;
 ResultSet rs = null;
 conn = DriverManager.getConnection("jdbc:mariadb://127.0.0.1:3306/shop", "root", "java1234");
 
-String mail = request.getParameter("mail");
+String id = request.getParameter("id");
 
-String sql = "select mail from customer where mail=?";
+String sql = "select id from customer where id=?";
 // 결과가 있으면 이미 이 날짜에 일기가 있다=>이 날짜로는 입력불가!!
 stmt = conn.prepareStatement(sql);
-stmt.setString(1, mail);
+stmt.setString(1, id);
 
 rs = stmt.executeQuery();
 if(rs.next()){
 	//이 메일 사용 불가능(현재 존재함)
-	response.sendRedirect("./addCustomerForm.jsp?mail="+mail+"&mailCheck=F");
+	response.sendRedirect("./addCustomerForm.jsp?id="+id+"&idCheck=F");
 }else { 
 	//이 메일 사용가능
-	response.sendRedirect("./addCustomerForm.jsp?mail="+mail+"&mailCheck=T");
+	response.sendRedirect("./addCustomerForm.jsp?id="+id+"&idCheck=T");
 	
 }
 

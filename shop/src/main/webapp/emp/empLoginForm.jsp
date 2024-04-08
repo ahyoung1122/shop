@@ -83,8 +83,10 @@
 										</tr>
 									</table>	
 								</div>
-							<button type="submit">로그인</button>
+							<input type="submit" value="로그인" style="background-color: red; color: white; border: none; ">
 						</form>
+					<a href="../customer/addCustomerForm.jsp" style="text-decoration: none; color : white;
+					background-color: #2F9D27;">회원가입</a>
 			</div><!-- col-8마지막 -->
 		<div class="col-2"></div>
 	</div>

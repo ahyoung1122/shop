@@ -1,0 +1,61 @@
+@charset "UTF-8";
+
+*{
+   			font-family: "CookieRun";
+   			margin: 0px; padding :0px;
+   			}
+   			.header {
+			    display: flex; 
+			    align-items: center; /* 수직으로 가운데 */
+			    justify-content: center; /* 수평으로 가운데 */
+			    height: 70px; 
+			    background-color: #FF3636;
+			    
+			}
+   			.header a {
+			    text-decoration: none;
+			    color : white;
+			    font-size: 20px;
+			  margin-right: 50px;
+			}
+			.header .hello{
+			
+			}
+			.header img {
+			    margin-right: 50px; /* 이미지 오른쪽 여백을 설정하여 링크와 간격을 설정했음. */
+			    width: 145px; height: auto;
+			    display: block; margin-right: auto; margin-left: 0;
+			}
+			.box {
+				width: 1350px;
+				margin : 0 auto;
+				overflow : hidden;
+				padding-top: 10px;
+				background-color: white;
+			
+			}
+			.box .goodsimage1 {
+				float : left;
+				margin-left : 100px;
+				margin-bottom : 30px;
+				padding-bottom : 20px;
+				margin-right: ; /* 적절한 오른쪽 여백 추가 */
+        		width: 300px; /* 적절한 너비 설정 */
+        		text-align : center;
+        		background-color: white;
+			}
+			.box .goodsimage1 img{
+				width : 200px;
+				height : 200px;
+			}
+			.container{
+			text-align: center;
+			 }
+			.btn{
+			 display : flex;
+			 justify-content: center;
+			}
+			a{
+			text-decoration: none;
+			color : black;
+			}

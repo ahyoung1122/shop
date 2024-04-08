@@ -10,7 +10,7 @@
 <div>
 	<a href="/shop/emp/empList.jsp">사원관리</a>
 	<!-- category CRUD -->
-	<a href="/shop/emp/empList.jsp">카테고리관리</a>
+	<a href="/shop/emp/categoryList.jsp">카테고리관리</a>
 	<a href="/shop/emp/goodsList.jsp">상품관리</a><!-- empList에 갖다 붙일거임 include기술! -->
 	<span class = "hello">
 		<!-- 개인정보 수정을 할 수 있다. -->

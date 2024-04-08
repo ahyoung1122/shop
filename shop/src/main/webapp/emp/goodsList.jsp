@@ -58,13 +58,14 @@
 		conn = DriverManager.getConnection(
 				"jdbc:mariadb://127.0.0.1:3306/shop", "root", "java1234");
 		
-		String sql1 = "select category, count(*) cnt from goods group by category order by category asc";
+		String sql1 = "select goods_no goodsNo, category, count(*) cnt from goods group by category order by category asc";
 		stmt1 = conn.prepareStatement(sql1);
 		rs1 = stmt1.executeQuery();
 		ArrayList<HashMap<String, Object>> categoryList =
 		new ArrayList<HashMap<String, Object>>();
 		while(rs1.next()) {
 			HashMap<String, Object> m = new HashMap<String, Object>();
+			m.put("goodsNo", rs1.getInt("goodsNo"));
 			m.put("category", rs1.getString("category"));
 			m.put("cnt", rs1.getInt("cnt"));
 			categoryList.add(m);
@@ -79,7 +80,7 @@
 		PreparedStatement stmt2 = null;
 		ResultSet rs2 = null;
 		
-		String sql2 = "SELECT category, goods_title goodsTitle, filename, goods_price goodsPrice, create_date createDate FROM goods WHERE category=? order by create_date desc LIMIT ?,?;";
+		String sql2 = "SELECT category,goods_no goodsNo, goods_title goodsTitle, filename, goods_price goodsPrice, create_date createDate FROM goods WHERE category=? order by create_date desc LIMIT ?,?;";
 		stmt2 = conn.prepareStatement(sql2);
 		stmt2.setString(1, category);
 		stmt2.setInt(2, startRow);
@@ -91,6 +92,7 @@
 		while(rs2.next()) {
 			HashMap<String, Object> m2 = new HashMap<String, Object>();
 			m2.put("category", rs2.getString("category"));
+			m2.put("goodsNo", rs2.getInt("goodsNo"));
 			m2.put("goodsTitle", rs2.getString("goodsTitle"));
 			m2.put("filename", rs2.getString("filename"));
 			m2.put("goodsPrice", rs2.getInt("goodsPrice"));
@@ -101,13 +103,39 @@
 		//확인하기
 		System.out.println(goodsList);
 %>
+<%
+//'전체'버튼을 누르면 모든 카테고리들의 데이터가 보일 수 있게끔 해주는 쿼리 작성해야함
+	PreparedStatement stmt3 = null;
+	ResultSet rs3 = null;
+	String sqlAll ="SELECT category, goods_no goodsNo, goods_title goodsTitle, filename, goods_price goodsPrice, create_date createDate FROM goods ORDER BY goods_no desc LIMIT ?,?;";
+	stmt3 = conn.prepareStatement(sqlAll);	
+	stmt3.setInt(1, startRow);
+	stmt3.setInt(2, rowPerPage);
+	rs3 = stmt3.executeQuery(); 
+	
+	System.out.println(stmt3+" = stmt3");
+	
+	ArrayList<HashMap<String, Object>> allGoodsList = new ArrayList<HashMap<String, Object>>();
+	while(rs3.next()) {
+		HashMap<String, Object> m3 = new HashMap<String, Object>();
+		m3.put("category", rs3.getString("category"));
+		m3.put("goodsNo", rs3.getInt("goodsNo"));
+		m3.put("goodsTitle", rs3.getString("goodsTitle"));
+		m3.put("filename", rs3.getString("filename"));
+		m3.put("goodsPrice", rs3.getInt("goodsPrice"));
+		m3.put("createDate", rs3.getString("createDate"));
+		allGoodsList.add(m3);
+		}
+	
+		System.out.println(allGoodsList);
+%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>goodsList</title>
  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 	 <style>
    			*{
    			font-family: "CookieRun";
@@ -167,9 +195,34 @@
 			a{
 			text-decoration: none;
 			color : black;
+			
 			}
-			 
-		
+			.allAtag{
+				border: 1px solid black;
+				padding: 2px;
+				margin-right: 10px;
+			}
+			.headList {
+			font-family:"Super Mario 256";
+			font-size: 30px;
+			text-shadow: -2px 0 #000, 0 2px #000, 2px 0 #000, 0 -2px #000;
+			color : #FFE400;
+			}
+			.headList2 {
+			font-family:"Super Mario 256";
+			font-size: 30px;
+			text-shadow: -2px 0 #000, 0 2px #000, 2px 0 #000, 0 -2px #000;
+			color : red;
+			}
+			
+			button{
+			border: none;
+			padding : 5px;
+			margin-rigth : 6px;
+			display : plex;
+			text-align: center;
+			}
+			
 			
 			
 		</style>
@@ -186,14 +239,14 @@
 	<!-- 페이지 -->
 	<div class="main">
 		<div class="container">
-				<span>상품리스트</span><br>
-			<div>
-			<!-- 서브메뉴 카테고리별 상품리스트 -->
-				<a href="/shop/emp/goodsList.jsp?category=<%=category%>">전체</a>
+			<div class="subList">
+				<br><span class="headList">GOODS </span><span class="headList2"> LIST</span><br>
+			<!-- 서브메뉴 카테고리별 상품리스트 --><!-- 전체 카테고리를 더한 값을 가져와야함 -->
+				<a href="/shop/emp/goodsList.jsp?totalRow=<%=totalRow%>" class="allAtag">전체</a>
 				<%
 					for(HashMap<String, Object> m : categoryList){
 				%>
-					<a href="/shop/emp/goodsList.jsp?category=<%=(String)(m.get("category"))%>&totalRow=<%=(Integer)(m.get("cnt"))%>">
+					<a href="/shop/emp/goodsList.jsp?goodsNo=<%=(Integer)(m.get("goodsNo"))%>&category=<%=(String)(m.get("category"))%>&totalRow=<%=(Integer)(m.get("cnt"))%> " class="allAtag">
 						<%=(String)(m.get("category")) %>
 					<%-- 	<%=(Integer)(m.get("cnt")) %> --%>
 					</a>
@@ -201,17 +254,82 @@
 					}
 				%>
 			</div>
-			<a href="/shop/emp/addGoodsForm.jsp">상품등록</a>
+			<a href="/shop/emp/addGoodsForm.jsp">추가</a>
 		</div>
-			
-		<div class="btn"><!-- 이전,다음 버튼 만들기 -->
-			<%=currentPage %><!-- 현재페이지 표시 -->
+	<div class="box">
+			<%
+				if(category == null){ //카테고리값이 null이면 메인페이지로 전체 목록이 다 보이게끔!
+					for(HashMap<String, Object> m3 : allGoodsList){
+			%>
+				<div class="goodsimage1" style ="border: 1px;">
+					<div>
+						<img src="/shop/upload/<%=(String)m3.get("filename")%>">
+					</div>
+						<div>카테고리 : <%=(String)(m3.get("category")) %></div>
+						<div>no : <%=(Integer)(m3.get("goodsNo")) %></div><hr>
+						<div>이름 : <%=(String)(m3.get("goodsTitle"))%></div>
+						<div>가격 : <%=(Integer)(m3.get("goodsPrice")) %></div>
+						<div><!-- 삭제버튼 만들기 -->	
+							<button style="background-color: green;">
+	                        	<a style="color : white;" href="./deleteCategoryAction.jsp?goodsNo=<%=(Integer)(m3.get("goodsNo"))%>&category=<%=(String)(m3.get("category"))%>&totalRow=<%=totalRow%>">삭제</a>
+	                        </button>
+               		</div>
+				</div>
+			<%
+					}
+				}else{
+					for(HashMap<String, Object> m2 : goodsList){
+			 %>
+				<div class="goodsimage1" style ="border: 1px;">
+					<div>
+						<img src="/shop/upload/<%=(String)m2.get("filename")%>">
+					</div>
+					<div>카테고리 : <%=(String)(m2.get("category")) %></div>
+					<div>no : <%=(Integer)(m2.get("goodsNo")) %></div><hr>
+					<div>이름 : <%=(String)(m2.get("goodsTitle"))%></div>
+					<div>가격 : <%=(Integer)(m2.get("goodsPrice")) %></div>
+					<div><!-- 삭제버튼 만들기 -->	
+						<button style="background-color: green;">
+                        	<a style="color : white;" href="./deleteCategoryAction.jsp?goodsNo=<%=(Integer)(m2.get("goodsNo"))%>&category=<%=(String)(m2.get("category"))%>&totalRow=<%=totalRow%>">삭제</a>
+                        </button>
+               		</div>
+				</div>
+			<%
+					}
+				}
+			%>
+	</div>
+		<%
+		if(category == null){
+		%>
+				<%
+					if(currentPage >1)
+					{	
+				%>
+					<button><a href="./goodsList.jsp?currentPage=1&totalRow=<%=totalRow%>">first</a></button>
+					<button><a href="./goodsList.jsp?currentPage=<%=currentPage-1%>&totalRow=<%=totalRow%>">pre</a></button>
+				<%
+					}
+				%>
+				<%
+				if(currentPage<lastPage || currentPage ==1 )
+					{
+				%>
+					<button><a href="./goodsList.jsp?currentPage=<%=currentPage+1%>&totalRow=<%=totalRow%>">next</a></button>
+					<button><a href="./goodsList.jsp?currentPage=<%=lastPage%>&totalRow=<%=totalRow%>">last</a></button>
+				<%
+					}
+			%>
+		<%
+		//맨 처음if구문 끝나는 지점
+		}else{
+		%>
 			<%
 				if(currentPage >1)
 				{	
 			%>
-				<a href="./goodsList.jsp?currentPage=1&category=<%=category%>&totalRow=<%=totalRow%>">first</a>
-				<a href="./goodsList.jsp?currentPage=<%=currentPage-1%>&category=<%=category%>&totalRow=<%=totalRow%>">pre</a>
+				<button><a href="./goodsList.jsp?currentPage=1&category=<%=category%>&totalRow=<%=totalRow%>">first</a></button>
+				<button><a href="./goodsList.jsp?currentPage=<%=currentPage-1%>&category=<%=category%>&totalRow=<%=totalRow%>">pre</a></button>
 			<%
 				}
 			%>
@@ -219,33 +337,14 @@
 			if(currentPage<lastPage || currentPage ==1 )
 				{
 			%>
-				<a href="./goodsList.jsp?currentPage=<%=currentPage+1%>&category=<%=category%>&totalRow=<%=totalRow%>">next</a>
-				<a href="./goodsList.jsp?currentPage=<%=lastPage%>&category=<%=category%>&totalRow=<%=totalRow%>">last</a>
+				<button><a href="./goodsList.jsp?currentPage=<%=currentPage+1%>&category=<%=category%>&totalRow=<%=totalRow%>">next</a></button>
+				<button><a href="./goodsList.jsp?currentPage=<%=lastPage%>&category=<%=category%>&totalRow=<%=totalRow%>">last</a></button>
 			<%
 				}
+		}
 			%>
-	</div>
-	<div class="box">
-			<%
-				for(HashMap<String, Object> m2 : goodsList){
-			%>
-				<div class="goodsimage1" style ="border: 1px;">
-					<div>
-						<img src="/shop/upload/<%=(String)m2.get("filename")%>">
-					</div>
-				<%-- 	<div>카테고리 : <%=(String)(m2.get("category")) %></div><hr> --%>
-					<div>이름 : <%=(String)(m2.get("goodsTitle"))%></div>
-					<div>가격 : <%=(Integer)(m2.get("goodsPrice")) %></div>
-					<div><!-- 삭제버튼 만들기 -->	
-						<button>
-                        	<a href="./deleteCategoryAction.jsp?category=<%=(String)(m2.get("category"))%>">삭제</a>
-                        </button>
-               		</div>
-				</div>
-			<%		
-					}
-			%>
-	</div>
+	<br><br>
 </div><!-- main -->
+
 </body>
 </html>

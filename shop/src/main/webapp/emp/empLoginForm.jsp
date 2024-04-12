@@ -60,6 +60,7 @@
 		      	background-position: center; /* 이미지를 수평 및 수직으로 가운데로 정렬합니다. */
 			    background-size: cover; /* 이미지를 화면에 꽉 차도록 조정합니다. */
 			    text-align: center; 
+			    margin: auto;
 			}
 		</style>
 </head>

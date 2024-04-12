@@ -123,6 +123,10 @@
 			 	text-align: center;
 			 	justify-content: center;
 			}
+			a{
+			text-decoration: none;
+			color : black;
+			}
 		</style>
 </head>
 <body>

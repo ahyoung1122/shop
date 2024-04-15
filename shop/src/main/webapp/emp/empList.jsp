@@ -34,7 +34,7 @@
 	
 	int totalRow = 0;
 	int pageList = totalRow;
-	System.out.println(pageList+"=pageList");
+	//System.out.println(pageList+"=pageList");
 	
 	
 	if(empRs.next()) {
@@ -165,7 +165,7 @@
 										    HashMap<String, Object> sm = (HashMap<String, Object>)(session.getAttribute("loginEmp"));
 										    if((Integer)(sm.get("grade")) > 0) {
 										%>	
-													<a href='modifyEmpActive.jsp?active=<%=(String)(m.get("active"))%>'>
+													<a href='modifyEmpActive.jsp?active=<%=(String)(m.get("active"))%>&empId=<%=(String)(m.get("empId"))%>'>
 														<%=(String)(m.get("active"))%>
 													</a>
 										<%

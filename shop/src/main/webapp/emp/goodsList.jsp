@@ -2,6 +2,8 @@
 <%@ page import = "java.sql.*" %>
 <%@ page import="java.util.*" %>
 <%@ page import = "java.net.*" %>
+<%@ page import="shop.dao.*" %>
+
     <!-- Controller Layer -->
  <%
    //0. 로그인 인증 분기 : 세션변수 이름 - loginEmp
@@ -39,7 +41,7 @@
 	}
 	
 	
-	System.out.println(totalRow);
+	System.out.println(totalRow+"");
 	//연결해주기
 	//
 	/* 
@@ -50,83 +52,23 @@
 	*/
 %>
 <!-- Model Layer -->
-<%
-		Class.forName("org.mariadb.jdbc.Driver");
-		Connection conn = null;
-		PreparedStatement stmt1 = null;
-		ResultSet rs1 = null;
-		conn = DriverManager.getConnection(
-				"jdbc:mariadb://127.0.0.1:3306/shop", "root", "java1234");
-		
-		String sql1 = "select goods_no goodsNo, category, count(*) cnt from goods group by category order by category asc";
-		stmt1 = conn.prepareStatement(sql1);
-		rs1 = stmt1.executeQuery();
-		ArrayList<HashMap<String, Object>> categoryList =
-		new ArrayList<HashMap<String, Object>>();
-		while(rs1.next()) {
-			HashMap<String, Object> m = new HashMap<String, Object>();
-			m.put("goodsNo", rs1.getInt("goodsNo"));
-			m.put("category", rs1.getString("category"));
-			m.put("cnt", rs1.getInt("cnt"));
-			categoryList.add(m);
-		}
-		// 디버깅
+<%		//카테고리 메서드 호출하기
+		ArrayList<HashMap<String, Object>> categoryList = GoodsDAO.category();
 		System.out.println(categoryList+"=categoryList");
+
 %>
 <%	
 //선택 상품 나열 하려면
 /* SELECT category, goods_title goodsTitle 
 	From goods WHERE category=? */
-		PreparedStatement stmt2 = null;
-		ResultSet rs2 = null;
-		
-		String sql2 = "SELECT category,goods_no goodsNo, goods_title goodsTitle, filename, goods_price goodsPrice, create_date createDate FROM goods WHERE category=? order by create_date desc LIMIT ?,?;";
-		stmt2 = conn.prepareStatement(sql2);
-		stmt2.setString(1, category);
-		stmt2.setInt(2, startRow);
-		stmt2.setInt(3, rowPerPage);
-		rs2 = stmt2.executeQuery(); 
-		
-		ArrayList<HashMap<String, Object>> goodsList = new ArrayList<HashMap<String, Object>>();
-		//카테고리랑, 굿즈 타이틀,가격(쇼핑몰처럼 나열)
-		while(rs2.next()) {
-			HashMap<String, Object> m2 = new HashMap<String, Object>();
-			m2.put("category", rs2.getString("category"));
-			m2.put("goodsNo", rs2.getInt("goodsNo"));
-			m2.put("goodsTitle", rs2.getString("goodsTitle"));
-			m2.put("filename", rs2.getString("filename"));
-			m2.put("goodsPrice", rs2.getInt("goodsPrice"));
-			m2.put("createDate", rs2.getString("createDate"));
-			goodsList.add(m2);
-		}
-		
-		//확인하기
-		System.out.println(goodsList);
+			
+		ArrayList<HashMap<String, Object>>goodsList = GoodsDAO.checkGoodsList(category, startRow, rowPerPage);
+	System.out.println(categoryList+"=goodsList");
+
 %>
 <%
 //'전체'버튼을 누르면 모든 카테고리들의 데이터가 보일 수 있게끔 해주는 쿼리 작성해야함
-	PreparedStatement stmt3 = null;
-	ResultSet rs3 = null;
-	String sqlAll ="SELECT category, goods_no goodsNo, goods_title goodsTitle, filename, goods_price goodsPrice, create_date createDate FROM goods ORDER BY goods_no desc LIMIT ?,?;";
-	stmt3 = conn.prepareStatement(sqlAll);	
-	stmt3.setInt(1, startRow);
-	stmt3.setInt(2, rowPerPage);
-	rs3 = stmt3.executeQuery(); 
-	
-	System.out.println(stmt3+" = stmt3");
-	
-	ArrayList<HashMap<String, Object>> allGoodsList = new ArrayList<HashMap<String, Object>>();
-	while(rs3.next()) {
-		HashMap<String, Object> m3 = new HashMap<String, Object>();
-		m3.put("category", rs3.getString("category"));
-		m3.put("goodsNo", rs3.getInt("goodsNo"));
-		m3.put("goodsTitle", rs3.getString("goodsTitle"));
-		m3.put("filename", rs3.getString("filename"));
-		m3.put("goodsPrice", rs3.getInt("goodsPrice"));
-		m3.put("createDate", rs3.getString("createDate"));
-		allGoodsList.add(m3);
-		}
-	
+		ArrayList<HashMap<String, Object>>allGoodsList = GoodsDAO.allGoodsList2(startRow, rowPerPage);
 		System.out.println(allGoodsList);
 %>
 <!DOCTYPE html>

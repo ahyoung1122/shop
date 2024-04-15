@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import = "java.sql.*" %>
 <%@ page import="java.util.*" %>
+<%@ page import = "shop.dao.*" %>
 
  <%
  
@@ -12,8 +13,7 @@
  %>
  <%
  //db랑 연결
- 	
-	Class.forName("org.mariadb.jdbc.Driver");
+ 	Class.forName("org.mariadb.jdbc.Driver");
 	Connection conn = null;
 	PreparedStatement stmt = null;
 	ResultSet rs = null;
@@ -32,7 +32,7 @@
 	
 	int row = stmt.executeUpdate();
 	//row = 0이면 삭제성공, 0이아니면 실패
-	//성공,실패 둘다 goodsList로 response
+	//성공,실패 둘다 goodsList로 response */
 	if(row == 0){
 		System.out.println("goods삭제성공");
 		response.sendRedirect("./goodsList.jsp?goodsNo=?&category=?&totalRow=?");

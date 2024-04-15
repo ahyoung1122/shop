@@ -61,7 +61,7 @@
 			}
 			.header img {
 			    margin-right: 50px; /* 이미지 오른쪽 여백을 설정하여 링크와 간격을 설정했음. */
-			    width: 145px; height: auto;
+			    width: 145px; height: 70px;
 			    display: block; margin-right: auto; margin-left: 0;
 			}
 			body{
@@ -79,7 +79,7 @@
 </head>
 <body>
 <div class="header">
-<img src="./img/marioUnder.png">
+<img src="./img/mario&luigi.png">
 <!-- empMenu.jsp include : 주체는 서버! vs redirect(주체는 클라이언트!) -->
 <jsp:include page="/emp/inc/empMenu.jsp"></jsp:include> <!-- include서버 적을때 조심!! shop부터 시작하지말자! -->
 <!-- 매번 페이지 만들때마다 이 코드 작성해줘서 메뉴창을 위에 띄워두자!^_^-->

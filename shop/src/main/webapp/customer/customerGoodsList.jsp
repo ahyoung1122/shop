@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import = "java.sql.*" %>
 <%@ page import="java.util.*" %>
+<%@ page import="shop.dao.*" %>
 <%	//로그인 인증 분기
     if(session.getAttribute("loginCustomer") != null) {
     	   response.sendRedirect("/shop/customer/customerLoginAction.jsp");
@@ -30,26 +31,10 @@ System.out.println(totalRow + "==>totalRow");
 %>
 <%
 //카테고리 목록sql만들기
-	Class.forName("org.mariadb.jdbc.Driver");
-	Connection conn = null;
-	PreparedStatement stmt = null;
-	ResultSet rs = null;
-	conn = DriverManager.getConnection(
-	"jdbc:mariadb://127.0.0.1:3306/shop", "root", "java1234");
-	
-	String categorySql = "select goods_no goodsNo, category, count(*) cnt from goods group by category order by category desc";
-	stmt = conn.prepareStatement(categorySql);
-	rs = stmt.executeQuery();
-	ArrayList<HashMap<String, Object>> categoryList = 
-	new ArrayList<HashMap<String, Object>>();
-	while(rs.next()){//우선 goodsNo, category만 나열
-		HashMap<String, Object> m = new HashMap<String, Object>();
-		m.put("goodsNo", rs.getInt("goodsNo"));
-		m.put("category", rs.getString("category"));
-		m.put("cnt", rs.getInt("cnt"));
-		categoryList.add(m);	
-	}
-	System.out.println(categoryList+"=categoryList");
+	 ArrayList<HashMap<String, Object>>categoryList = 
+	 	CustomerGoodsDAO.allCategory();
+	//디버깅
+	System.out.println(categoryList+"<==categoryList");//확인완료
 
 %>
 <%
@@ -58,38 +43,21 @@ System.out.println(totalRow + "==>totalRow");
 /* SELECT category, goods_no, goods_title, filename, 
 goods_price, create_date from goods 
 WHERE category=? ORDER BY create_date desc*/
-
-		String category = request.getParameter("category");
-		
-		PreparedStatement stmt2 = null;
-		ResultSet rs2 = null;
-		
-		String categorySql2 = "SELECT category,goods_no goodsNo, goods_title goodsTitle, filename, goods_price goodsPrice, create_date createDate FROM goods WHERE category=? order by create_date desc LIMIT ?,?; ";
-		stmt2 = conn.prepareStatement(categorySql2);
-		stmt2.setString(1, category);
-		stmt2.setInt(2, startRow);
-		stmt2.setInt(3, rowPerPage);
-		rs2 = stmt2.executeQuery();
-		
-		ArrayList<HashMap<String, Object>> goodsList = new ArrayList<HashMap<String, Object>>();
-		while(rs2.next()){
-			HashMap<String, Object> m2 = new HashMap<String, Object>();
-			m2.put("category", rs2.getString("category"));
-			m2.put("goodsNo", rs2.getInt("goodsNo"));
-			m2.put("goodsTitle", rs2.getString("goodsTitle"));
-			m2.put("filename", rs2.getString("filename"));
-			m2.put("goodsPrice", rs2.getInt("goodsPrice"));
-			m2.put("createDate", rs2.getString("createDate"));
-			
-			goodsList.add(m2);
-			
-		}
-	//디버깅
-	System.out.println(goodsList+"=goodsList");
+		ArrayList<HashMap<String,Object>> categoryCheck= 
+		CustomerGoodsDAO.selectCategory(category,startRow,rowPerPage);
+		//디버깅
+		System.out.println(categoryCheck+"=>>categoryCheck");
 	
 %>
 <%
 //전체 page를 위한sql
+Class.forName("org.mariadb.jdbc.Driver");
+	Connection conn = null;
+	PreparedStatement stmt = null;
+	ResultSet rs = null;
+	conn = DriverManager.getConnection(
+	"jdbc:mariadb://127.0.0.1:3306/shop", "root", "java1234");
+	
 	PreparedStatement stmt3 = null;
 	ResultSet rs3 = null;
 	String sql3 = "SELECT category, goods_no goodsNo, goods_title goodsTitle, filename, goods_price goodsPrice, create_date createDate FROM goods ORDER BY goods_no desc LIMIT ?,?;";
@@ -157,10 +125,17 @@ System.out.println(totalRow2 + "==>totalRow2");
 .header {
 		height: 70px;
 		background-color: #FF3636;
+		position: relative;		
 		}
 .header img{
 	height : 70px;
 	width: 150px;
+}
+.header a{
+	font-size: 25px;
+	color : ivory;
+	position: absolute;
+    right: 30px;
 }
 .goodsList{
 	text-align : center;
@@ -212,9 +187,9 @@ System.out.println(totalRow2 + "==>totalRow2");
 <body>
 <div class="header">
 	<img src="./img/marioUnder.png">
-		<a href="/shop/customer/customerLogout.jsp">
-			로그아웃
-		</a>
+	<a href="/shop/customer/customerLoginForm.jsp">
+		로그아웃
+	</a>
 </div><!-- header의마지막 -->
 <div class="main">
 	<div class="goodsList"><!-- list목록 나열 -->

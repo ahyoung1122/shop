@@ -4,6 +4,7 @@
 <%@ page import="java.net.*"%>
 <%@ page import="java.io.*" %>
 <%@ page import="java.nio.file.*" %>
+<%@ page import="shop.dao.*" %>
 <!-- Controller Layer -->
 <%
 	request.setCharacterEncoding("UTF-8");
@@ -28,6 +29,7 @@
 	int goodsAmount = Integer.parseInt(request.getParameter("goodsAmount"));
 	String goodsContent = request.getParameter("goodsContent");
 	
+	//addGoodsForm.jsp에서 goodsImg파일 등록한걸 가져왔음
 	Part part = request.getPart("goodsImg");
 	String originalName = part.getSubmittedFileName();
 	//원본이름에서 확장자만 분리
@@ -50,48 +52,33 @@
 	System.out.println("goodsPrice="+goodsPrice);
 	System.out.println("goodsAmount="+goodsAmount);
 	System.out.println("goodsContent="+goodsContent);
-		
-	Class.forName("org.mariadb.jdbc.Driver");
-	Connection conn = null;
-	PreparedStatement stmt = null;
-	ResultSet rs = null;
-	
-	conn = DriverManager.getConnection("jdbc:mariadb://127.0.0.1:3306/shop", "root", "java1234");
 
-	/*INSERT INTO 
-	goods(goodsTitle, goodsPrice, goodsAmount, goodsContent) 
-	VALUES (?,?,?,?)*/
+	//GoodsDAO에서 row값을 가지고 오는거라서 연결값도 int row로 잡아준다. 
+	int row = GoodsDAO.uploadFile(category,goodsTitle, filename, goodsContent, goodsPrice,  goodsAmount);
 	
-	String sql = "insert into goods(category, emp_id, goods_title, filename, goods_content, goods_price, goods_amount, update_date, create_date) values(?,'admin',?,?,?,?,?, now(), now())";
-	stmt = conn.prepareStatement(sql);
-	
-		stmt.setString(1, category);	
-/* 		stmt.setString(2, empId);	 */
-		stmt.setString(2, goodsTitle);
-		stmt.setString(3, filename);
-		stmt.setString(4, goodsContent);
-	   	stmt.setInt(5, goodsPrice);
-	   	stmt.setInt(6, goodsAmount);
-	   	//디버깅 확인
-	   	System.out.println(stmt+"=stmt");
-	   	
-	    int row = stmt.executeUpdate();
-	    
-	    if(row == 1) { // insert 성공하면 파일업로드
-	    	// part -> 1)is -> 2)os -> 3)빈파일
-			// 1)
-	    	InputStream is = part.getInputStream();
-	    	// 3)+ 2)
-			String filePath = request.getServletContext().getRealPath("upload");
-			File f = new File(filePath, filename); // 빈파일
-			
-			OutputStream os = Files.newOutputStream(f.toPath()); // os + file
-			is.transferTo(os);
-			
-			os.close();
-			is.close();
-	    }
-	   	
+	System.out.println(row + "row 값을 확인하세요");
+
+    if(row == 1) { // insert 성공하면 파일업로드
+    	// part -> 1)is -> 2)os -> 3)빈파일
+		// 1)
+    	InputStream is = part.getInputStream();
+    	// 3)+ 2)
+		String filePath = request.getServletContext().getRealPath("upload");
+		File f = new File(filePath, filename); // 빈파일
+		
+		OutputStream os = Files.newOutputStream(f.toPath()); // os + file
+		is.transferTo(os);
+		
+		System.out.println("입력성공");
+		
+		os.close();
+		is.close();
+       
+    }
+    
+    response.sendRedirect("/shop/emp/goodsList.jsp");
+   
+
 	/*    	if(row == 0){ //insert실패 -> 파일업로드 진행X
 	   		return;
 	   	} */
@@ -108,15 +95,6 @@
 // 성공했을때는 response.sendRedirect("/shop/emp/goodsList.jsp"); 
 // 실패했을때는 response.sendRedirect("/shop/emp/goodsList.jsp");
 //클라이언트 기준으로
-
-
-    if(row == 1) {
-        System.out.println("입력성공");
-        response.sendRedirect("/shop/emp/goodsList.jsp");
-    } else {
-        System.out.println("입력실패");
-        response.sendRedirect("/shop/emp/goodsList.jsp");
-    }
-
-%>
    
+%>
+	    

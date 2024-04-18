@@ -2,6 +2,7 @@
 <%@ page import = "java.sql.*" %>
 <%@ page import="java.net.URLEncoder"%>
 <%@ page import="java.util.*" %>
+<%@ page import = "shop.dao.*" %>
 <%
 	// 인증분기	 : 세션변수 이름 - loginEmp
 	/* String loginEmp = (String)(session.getAttribute("loginEmp")); */
@@ -21,25 +22,9 @@
 	int rowPerPage =10;
 	int startRow = (currentPage-1) * rowPerPage;
 	
-	//직원들 페이징 모듈
-	Class.forName("org.mariadb.jdbc.Driver");
-	PreparedStatement empStmt = null;
-	Connection conn = null;
-	conn = DriverManager.getConnection("jdbc:mariadb://127.0.0.1:3306/shop", "root", "java1234");
-	
-	String sqlEmp = "SELECT count(*) cnt From emp";
-	ResultSet empRs = null;
-	empStmt = conn.prepareStatement(sqlEmp);
-	empRs =empStmt.executeQuery();
-	
-	int totalRow = 0;
-	int pageList = totalRow;
-	//System.out.println(pageList+"=pageList");
-	
-	
-	if(empRs.next()) {
-		totalRow = empRs.getInt("cnt");
-	}
+	//직원 페이징 모듈
+	int totalRow = EmpDAO.empPage();
+
 	int lastPage = totalRow / rowPerPage;
 	if(totalRow % rowPerPage != 0) {
 		lastPage = lastPage + 1;
@@ -47,36 +32,8 @@
 %>
 <!-- Model Layer -->
 <%	
-	
-	Class.forName("org.mariadb.jdbc.Driver");
-	Connection conn2 = null;
-	PreparedStatement stmt = null;
-	ResultSet rs = null;
-	conn2 = DriverManager.getConnection("jdbc:mariadb://127.0.0.1:3306/shop", "root", "java1234");
-	
-	String sql = "SELECT  emp_id empId, emp_name empName, emp_job empJob, hire_date hireDate, active from emp order by hire_date desc limit ?, ?";
-	
-	stmt = conn2.prepareStatement(sql);
-	stmt.setInt(1, startRow);
-	stmt.setInt(2, rowPerPage);
-	rs = stmt.executeQuery();	// JDBC API 종속된 자료구조 모델 ResultSet ==>> 기본 API 자료구조(ArrayList)로 변경
-	ArrayList<HashMap<String, Object>> list		// 모든타입의 부모는 Object 
-			= new ArrayList<HashMap<String, Object>>();
-	// ResultSet ==>> ArrayList<HashMap<String, Object>>
-	while(rs.next()) {
-		HashMap<String, Object> m = new HashMap<String, Object>();
-		m.put("empId", rs.getString("empId"));
-		m.put("empName", rs.getString("empName"));
-		m.put("empJob", rs.getString("empJob"));
-		m.put("hireDate", rs.getString("hireDate"));
-		m.put("active", rs.getString("active"));
-		list.add(m);
-	}
-	// JDBC API 사용이 끝났다면 DB자원들을 반납해라
-	conn.close();
-	conn2.close();
-	stmt.close();
-	rs.close();
+	ArrayList<HashMap<String, Object>> list
+			 = EmpDAO.empListAll(startRow, rowPerPage);
 %>
 
 <!-- View Layer -->

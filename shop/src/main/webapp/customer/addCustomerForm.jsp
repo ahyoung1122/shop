@@ -1,14 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="java.sql.*" %>
-<%
-//id중복을 확인하는 쿼리 작성
+<%@ page import="shop.dao.*" %>
 
-		Class.forName("org.mariadb.jdbc.Driver");
-		Connection conn = null;
-		PreparedStatement stmt1 = null;
-		ResultSet rs1 = null;
-		conn = DriverManager.getConnection("jdbc:mariadb://127.0.0.1:3306/diary", "root", "java1234");
-		
+<%
+		Connection conn = DBHelper.getConnection();
+
 		String id = request.getParameter("id"); //mail값 가져오기
 		if(id == null){//갔다가 돌아오면 null값이 아니겠지? 
 			id = " ";

@@ -83,7 +83,7 @@ public class GoodsDAO {// 카테고리들 리스트
 		return goodsList;
 	}
 	
-	//호출 : addGoodsAction.jsp (상품등록)
+	//호출 : addGoodsAction.jsp (상품등록 액션)
 	//param : String category, String goodsTitle, String filename, String goodsContent, int goodsPrice, int goodsAmount
 	//return : int row
 	// uploadFile
@@ -113,18 +113,44 @@ public class GoodsDAO {// 카테고리들 리스트
 		  
 	  return row;
 	  }
+	  
+	  
+	  //상품 등록추가 (Form)
+	  //호출 : addGoodsForm.jsp
+	  
+	  public static ArrayList<String> categoryList1() throws Exception
+		  {
+		  	ArrayList<String> categoryList2 =
+					new ArrayList<String>();
+		  	
+		  	Connection conn = DBHelper.getConnection(); 
+		  	//쿼리 추가 = 카테고리 중에서 선택
+		  	String sql = "select category from category";
+		  	//연결
+		  	PreparedStatement stmt = conn.prepareStatement(sql);
+		  	ResultSet rs = stmt.executeQuery();
+		  	
+		  	while(rs.next()) {
+				categoryList2.add(rs.getString("category"));
+			}
+		  	
+		  	return categoryList2;
+		  }
+		  
+	  
 	  //상품 삭제
 	  //호출  : deleterCategoryAction.jsp
 	  //param = goodsNo
 	  //return = int row
 	  
-	  public static int deleteCategoryGoods(int goodsNo)
+	  	public static int deleteCategoryGoods(int goodsNo)
 			  throws Exception{
 		  int row = 0;
 		  
 		  Connection conn = DBHelper.getConnection(); 
 		  
 		  String sql = "DELETE FROM goods WHERE goods_no=?";
+			/* string sql = "DELETE FROM goods WHERE category=?"; */
 		  
 		  PreparedStatement stmt = conn.prepareStatement(sql);
 			stmt = conn.prepareStatement(sql);

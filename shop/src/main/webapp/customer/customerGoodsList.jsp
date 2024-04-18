@@ -10,101 +10,81 @@
 %>
 <%
 //페이징 하기 currentPage, rowPerPage, totalRow, startRow, lastPage
-
+//현재페이지
 int currentPage = 1;
-if(request.getParameter("currentPage") != null){
-	currentPage = Integer.parseInt(request.getParameter("currentPage"));}
+
+if(request.getParameter("currentPage") != null)
+	{
+		currentPage = Integer.parseInt(request.getParameter("currentPage"));
+	}
+
 int rowPerPage = 9; //한페이지당 9개씩
 
-int totalRow = 0;
-if(request.getParameter("totalRow") != null){
-	totalRow = Integer.parseInt(request.getParameter("totalRow"));
-}
-int startRow = (currentPage-1)*rowPerPage;
+int totalRow = 0; //전체Row
+
+if(request.getParameter("totalRow") != null)
+	{
+		totalRow = Integer.parseInt(request.getParameter("totalRow"));
+	}
+
+int startRow = (currentPage-1)*rowPerPage; //각 페이지의 첫번째 Row
 
 int lastPage = totalRow % rowPerPage;
-if(totalRow % rowPerPage == 0){
-	lastPage = lastPage + 1;
-}
+
+if(totalRow % rowPerPage == 0)//혹시 페이지가 안떨어지는 경우를 대비해서 추가하는 코드
+	{
+		lastPage = lastPage + 1;
+	}
+//디버깅
 System.out.println(totalRow + "==>totalRow");
 
 %>
 <%
 //카테고리 목록sql만들기
-	 ArrayList<HashMap<String, Object>>categoryList = 
-	 	CustomerGoodsDAO.allCategory();
-	//디버깅
-	System.out.println(categoryList+"<==categoryList");//확인완료
+
+	ArrayList<HashMap<String,Object>>categoryList =
+	 CustomerGoodsDAO.categoryList1();
 
 %>
 <%
 //category=? query만들기
 //선택 상품을 나열하는 것
-/* SELECT category, goods_no, goods_title, filename, 
-goods_price, create_date from goods 
-WHERE category=? ORDER BY create_date desc*/
-		ArrayList<HashMap<String,Object>> categoryCheck= 
-		CustomerGoodsDAO.selectCategory(category,startRow,rowPerPage);
-		//디버깅
-		System.out.println(categoryCheck+"=>>categoryCheck");
+	String category = request.getParameter("category");
+
+	ArrayList<HashMap<String,Object>>goodsList =
+			CustomerGoodsDAO.goodsList1(category,startRow,rowPerPage);
+
+
+//디버깅
+	System.out.println(goodsList+"=goodsList");
 	
 %>
 <%
 //전체 page를 위한sql
-Class.forName("org.mariadb.jdbc.Driver");
-	Connection conn = null;
-	PreparedStatement stmt = null;
-	ResultSet rs = null;
-	conn = DriverManager.getConnection(
-	"jdbc:mariadb://127.0.0.1:3306/shop", "root", "java1234");
-	
-	PreparedStatement stmt3 = null;
-	ResultSet rs3 = null;
-	String sql3 = "SELECT category, goods_no goodsNo, goods_title goodsTitle, filename, goods_price goodsPrice, create_date createDate FROM goods ORDER BY goods_no desc LIMIT ?,?;";
-	stmt3 = conn.prepareStatement(sql3);
-	stmt3.setInt(1, startRow);
-	stmt3.setInt(2, rowPerPage);
-	rs3 = stmt3.executeQuery();
-	
-	System.out.println("stmt3=>"+stmt3);
-	
-	ArrayList<HashMap<String,Object>> allGoodsList = new ArrayList<HashMap<String,Object>>();
-	while(rs3.next()){
-		HashMap<String,Object> m3 = new HashMap<String,Object>();
-		m3.put("category", rs3.getString("category"));
-		m3.put("goodsNo", rs3.getInt("goodsNo"));
-		m3.put("goodsTitle", rs3.getString("goodsTitle"));
-		m3.put("filename", rs3.getString("filename"));
-		m3.put("goodsPrice", rs3.getInt("goodsPrice"));
-		m3.put("createDate", rs3.getString("createDate"));
-		allGoodsList.add(m3);
-	}
+	ArrayList<HashMap<String,Object>> allGoodsList
+		= CustomerGoodsDAO.allGoodsList1(startRow, rowPerPage);
+
 	System.out.println("allGoodsList==>"+allGoodsList);
 %>
 <%
 //전체페이지의 totalRow랑last페이지를 구하기 위해 query추가
-int totalRow2 = 0;
-int rowPerPage2 = 9;
-int startRow2 = (currentPage-1)*rowPerPage2;
 
-PreparedStatement stmt4 = null;
-ResultSet rs4 = null;
+		int totalRow2 = 0;
+		int rowPerPage2 = 9;
+		int startRow2 = (currentPage-1)*rowPerPage2;
+		
+		//customerGoodsDAO.
+		totalRow2 = CustomerGoodsDAO.totalBtn1();
+		//totalRow랑 쿼리문이랑 일치
+		
+		int lastPage2 = totalRow2 % rowPerPage2;
+		System.out.println(lastPage2+"<=lastPage2");
 
-String sql4 = "select count(*)cnt from goods";
+		if(totalRow2 % rowPerPage2 == 0)
+			{
+				lastPage2 = lastPage2 + 1;
+			}
 
-stmt4 = conn.prepareStatement(sql4);
-rs4 = stmt4.executeQuery();
-
-if(rs4.next()){
-	totalRow2 = rs4.getInt("cnt");
-}
-int lastPage2 = totalRow2 % rowPerPage2;
-System.out.println(lastPage2+"<=lastPage2");
-
-if(totalRow2 % rowPerPage2 == 0){
-	lastPage2 = lastPage2 + 1;
-}
-System.out.println(totalRow2 + "==>totalRow2");
 %>
 <!DOCTYPE html>
 <html>
@@ -231,7 +211,7 @@ System.out.println(totalRow2 + "==>totalRow2");
 			</div>
 		<%
 			}
-				}else{
+				}else{ //카테고리 값이 null이 아닌 경우 
 					for(HashMap<String, Object> m2 : goodsList){
 		%>
 			<div class="goodsimage1" style ="border: 1px;">

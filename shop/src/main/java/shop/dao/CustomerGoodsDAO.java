@@ -39,7 +39,7 @@ public class CustomerGoodsDAO {
 	
 	//category = ? 카테고리 클릭하면 카테고리별로 나열
 	//customerGoodsList.jsp
-	//parameter : category, int, int
+	//parameter : category,startRow, rowPerpage
 	//return : HashMap
 	
 	public static ArrayList<HashMap<String,Object>>goodsList1(String category, int startRow, int rowPerPage) 
@@ -77,8 +77,8 @@ public class CustomerGoodsDAO {
 	
 	//전체page를 위한 쿼리
 	//호출 : customerGoodsList.jsp
-	//param : void
-	//return : HashMap
+	//param : startRow, rowPerpage
+	//return : Arrayist<HashMap>
 	
 	public static ArrayList<HashMap<String,Object>> allGoodsList1(
 			int startRow, int rowPerPage) throws Exception{
@@ -130,20 +130,30 @@ public class CustomerGoodsDAO {
 	}
 	//고객상품 상세보기 페이지 연결
 	//호출 : customerGoodsOne
-	//param : void
-	//return : int 
+	//param : goodsNo
+	//return : HashMap
 	
 		public static HashMap<String,Object>goodsOne(int goodsNo) 
 				throws Exception{
 			
-				HashMap<String,Object> one =
-						new HashMap<String,Object>();
+			HashMap<String,Object> one =
+					new HashMap<String,Object>();
+			
 			Connection conn = DBHelper.getConnection(); 
 			
 			String sql = "SELECT * from goods WHERE goods_no = ? ";
 			PreparedStatement stmt = conn.prepareStatement(sql);
 			stmt.setInt(1, goodsNo);
 			ResultSet rs = stmt.executeQuery();
+			
+			//customerGoodsOne으로 넘겨줄 값을 추가해야한다.
+			if(rs.next()) {
+			one.put("goodsNo", rs.getInt("goods_no"));
+			one.put("goodsTitle", rs.getString("goods_title"));
+			one.put("filename", rs.getString("filename"));
+			one.put("goodsPrice", rs.getInt("goods_price"));
+			one.put("goodsContent", rs.getString("goods_content"));
+			}
 			
 			if(rs.next()){
 				System.out.println("성공");

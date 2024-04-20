@@ -3,6 +3,7 @@
 <%@ page import = "java.sql.*" %>
 <%@ page import="java.util.*" %>
 <%@ page import = "java.net.*" %>
+<%@ page import="shop.dao.*" %>
 
 <%
 	//인증분기
@@ -13,33 +14,16 @@
 	}
 %>
 <%
-		String addCategory = request.getParameter("addCategory");
+		String category = request.getParameter("category");
 
-		Class.forName("org.mariadb.jdbc.Driver");
-		Connection conn = null;
-		PreparedStatement stmt = null;
-		ResultSet rs = null;
-		int row = 0;
-		conn = DriverManager.getConnection("jdbc:mariadb://127.0.0.1:3306/shop", "root", "java1234");
+		int list = EmpCategoryDAO.categoryList(category);
 		
-		//INSERT INTO category(category,create_date) VALUES('캘러웨이',NOW());
-		
-		String sql = "INSERT INTO category(category,create_date) VALUES(?, NOW())";
-		stmt = conn.prepareStatement(sql);
-			stmt.setString(1, addCategory);
-		System.out.println(stmt+"<<==stmt");
-	
-		
-		row = stmt.executeUpdate();
-			if(row==1 )
-				{
-					System.out.println("변경");
-					response.sendRedirect("/shop/emp/categoryList.jsp");
-				}  
-			else 
-				{
-					System.out.println("변경실패");
-					response.sendRedirect("/shop/emp/categoryList.jsp");
-				}
-			
+		if(list == 1)
+			{
+				response.sendRedirect("/shop/emp/categoryList.jsp");
+			}
+		else
+			{
+				response.sendRedirect("/shop/emp/categoryList.jsp");
+			}
 %>

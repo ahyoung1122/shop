@@ -17,42 +17,18 @@
 		//해쉬맵으로 받아서
 		//여기서 하나씩 뽑아주기
 		
-		// 필요한 모든 값을 가져오기
+		// 필요한 모든 값을 가져오기 + 디버깅까지 해서 값들어오는지 확인
 		String filename = (String)goodsList.get("filename");
 		System.out.println(filename+"<===filename");
 		
-		String goodsTitle = (String)goodsList.get("goods_title");
+		String goodsTitle = (String)goodsList.get("goodsTitle");
 		System.out.println(goodsTitle+"<===goods_title");
 		
-		int goodsPrice = (int)goodsList.get("goods_price");
+		int goodsPrice = (int)goodsList.get("goodsPrice");
 		System.out.println(goodsPrice+"<===goods_price");
 		
-		String goodsContent = (String)goodsList.get("goods_content");
+		String goodsContent = (String)goodsList.get("goodsContent");
 		System.out.println(goodsContent+"<===goodsContent");
-		
-		
-		//
-		/* System.out.println("goodsNo==>"+goodsNo);
-
-		Class.forName("org.mariadb.jdbc.Driver");
-		Connection conn = null;
-		PreparedStatement stmt = null;
-		ResultSet rs = null;
-		conn = DriverManager.getConnection(
-		"jdbc:mariadb://127.0.0.1:3306/shop", "root", "java1234");
-		
-		String sql = "SELECT * from goods WHERE goods_no = ? ";
-		stmt = conn.prepareStatement(sql);
-		stmt.setInt(1, goodsNo);
-		
-		rs = stmt.executeQuery();
-		
-		if(rs.next()){
-			System.out.println("성공");
-		}else{
-			System.out.println("실패");
-		}
-		 */
 %>
 <!DOCTYPE html>
 <html>

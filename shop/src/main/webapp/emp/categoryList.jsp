@@ -3,6 +3,7 @@
 <%@ page import = "java.sql.*" %>
 <%@ page import="java.util.*" %>
 <%@ page import = "java.net.*" %>
+<%@ page import="shop.dao.*" %>
     <!-- Controller Layer -->
 <%
 	// 인증분기	 : 세션변수 이름 - loginEmp
@@ -13,34 +14,11 @@
 %>
 <%
 	//카테고리 나열하는 쿼리
-	
-	//1.연결
-	Class.forName("org.mariadb.jdbc.Driver");
-	PreparedStatement stmt = null;
-	Connection conn = null;
-	conn = DriverManager.getConnection("jdbc:mariadb://127.0.0.1:3306/shop", "root", "java1234");
-	
 	String category = request.getParameter("category");
-	//쿼리 생성
-	String sql = "SELECT category FROM category";
+
+	ArrayList<HashMap<String,Object>>categoryList
+		= EmpCategoryDAO.categoryList1();
 	
-	ArrayList<HashMap<String,Object>> categoryList
-		= new ArrayList<HashMap<String,Object>>();
-	
-	stmt = conn.prepareStatement(sql);
-	ResultSet rs = stmt.executeQuery();
-	
-	while(rs.next())
-		{
-			HashMap<String,Object> m  = new HashMap<String,Object>();
-				 m.put("category", rs.getString("category"));
-				 categoryList.add(m);
-		}
-	
-	
-	//디버깅완료
-	System.out.println(category+"<==category");
-	System.out.println(rs+"rs");
 %>
 <!DOCTYPE html>
 <html>
@@ -110,10 +88,13 @@
 					%>
 				<form method="post" action="/shop/emp/addCategoryList.jsp">
 					<div>
-						<input type="text" name="addCategory"> <button type="submit">추가</button>
+						<input type="text" name="category"> 
+						<button type="submit">
+							추가
+						</button>
 					</div>
 				</form>	
-							</div><!-- col-8마지막 -->
+			</div><!-- col-8마지막 -->
 		<div class="col-2"></div>
 	</div><!-- row -->
 </div><!-- container --> 

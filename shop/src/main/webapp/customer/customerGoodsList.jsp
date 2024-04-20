@@ -161,6 +161,7 @@ System.out.println(totalRow + "==>totalRow");
 .page button{
 	margin: 10px;
 	padding : 5px;
+	
 }
 </style>
 </head>
@@ -201,12 +202,21 @@ System.out.println(totalRow + "==>totalRow");
 		%>
 			<div class="goodsimage1" style ="border: 1px;">
 				<div>
-					<img src="/shop/upload/<%=(String)m3.get("filename")%>">
+					<a href="./customerGoodsOne.jsp?goodsNo=<%=(Integer)(m3.get("goodsNo"))%>">
+						<img src="/shop/upload/<%=(String)m3.get("filename")%>">
+					</a>
 				</div>
 				<div> 카테고리 : <%=(String)(m3.get("category"))%></div>
-				<div>no : <%=(Integer)(m3.get("goodsNo")) %></div>
+					<a href="./customerGoodsOne.jsp?goodsNo=<%=(Integer)(m3.get("goodsNo"))%>">
+						<div>no : <%=(Integer)(m3.get("goodsNo")) %></div>
+					</a>
 				<hr>
-				<div>이름 : <%=(String)(m3.get("goodsTitle"))%></div>
+				
+				<div>
+					<a href="./customerGoodsOne.jsp?goodsNo=<%=(Integer)(m3.get("goodsNo"))%>">
+						이름 : <%=(String)(m3.get("goodsTitle"))%>
+					</a>
+				</div>
 				<div>가격 : <%=(Integer)(m3.get("goodsPrice"))%></div>
 			</div>
 		<%
@@ -216,12 +226,18 @@ System.out.println(totalRow + "==>totalRow");
 		%>
 			<div class="goodsimage1" style ="border: 1px;">
 				<div>
-					<img src="/shop/upload/<%=(String)m2.get("filename")%>">
+				<a href="./customerGoodsOne.jsp?goodsNo=<%=(Integer)(m2.get("goodsNo"))%>">
+						<img src="/shop/upload/<%=(String)m2.get("filename")%>">
+					</a>
 				</div>
 				<div> 카테고리 : <%=(String)(m2.get("category"))%></div>
-				<div>no : <%=(Integer)(m2.get("goodsNo")) %></div>
+				<a href="./customerGoodsOne.jsp?goodsNo=<%=(Integer)(m2.get("goodsNo"))%>">
+					<div>no : <%=(Integer)(m2.get("goodsNo")) %></div>
+				</a>
 				<hr>
-				<div>이름 : <%=(String)(m2.get("goodsTitle"))%></div>
+				<div><a href="./customerGoodsOne.jsp">
+						이름 : <%=(String)(m2.get("goodsTitle"))%>
+					</a></div>
 				<div>가격 : <%=(Integer)(m2.get("goodsPrice"))%></div>
 			
 			</div>

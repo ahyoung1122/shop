@@ -116,7 +116,7 @@ public class GoodsDAO {// 카테고리들 리스트
 	  
 	  
 	  //상품 등록추가 (Form)
-	  //호출 : addGoodsForm.jsp
+	  //호출 : addGoodsForm.jsps
 	  
 	  public static ArrayList<String> categoryList1() throws Exception
 		  {
@@ -125,7 +125,7 @@ public class GoodsDAO {// 카테고리들 리스트
 		  	
 		  	Connection conn = DBHelper.getConnection(); 
 		  	//쿼리 추가 = 카테고리 중에서 선택
-		  	String sql = "select category from category";
+		  	String sql = "SELECT category FROM category";
 		  	//연결
 		  	PreparedStatement stmt = conn.prepareStatement(sql);
 		  	ResultSet rs = stmt.executeQuery();

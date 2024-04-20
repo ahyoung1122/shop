@@ -128,5 +128,31 @@ public class CustomerGoodsDAO {
 		}
 		return row;
 	}
+	//고객상품 상세보기 페이지 연결
+	//호출 : customerGoodsOne
+	//param : void
+	//return : int 
+	
+		public static int goodsOne(int goodsNo) throws Exception{
+			int row = 0;
+			
+			Connection conn = DBHelper.getConnection(); 
+			
+			String sql = "SELECT * from goods WHERE goods_no = ? ";
+			PreparedStatement stmt = conn.prepareStatement(sql);
+			stmt.setInt(1, goodsNo);
+			ResultSet rs = stmt.executeQuery();
+			
+			if(rs.next()){
+				System.out.println("성공");
+				row = 1;
+			}else{
+				System.out.println("실패");
+				row = 0;
+			}
+			
+			return row;
+		}
+
 	
 }

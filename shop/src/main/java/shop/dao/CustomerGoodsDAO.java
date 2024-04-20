@@ -133,9 +133,11 @@ public class CustomerGoodsDAO {
 	//param : void
 	//return : int 
 	
-		public static int goodsOne(int goodsNo) throws Exception{
-			int row = 0;
+		public static HashMap<String,Object>goodsOne(int goodsNo) 
+				throws Exception{
 			
+				HashMap<String,Object> one =
+						new HashMap<String,Object>();
 			Connection conn = DBHelper.getConnection(); 
 			
 			String sql = "SELECT * from goods WHERE goods_no = ? ";
@@ -145,13 +147,12 @@ public class CustomerGoodsDAO {
 			
 			if(rs.next()){
 				System.out.println("성공");
-				row = 1;
+		
 			}else{
 				System.out.println("실패");
-				row = 0;
 			}
 			
-			return row;
+			return one;
 		}
 
 	

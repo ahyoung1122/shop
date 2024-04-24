@@ -164,6 +164,30 @@ public class CustomerGoodsDAO {
 			
 			return one;
 		}
+		
+		//상품 수량 변경하기
+		//호출  : customerGoodsAction.jsp
+		//param : amount, goodsNo
+		//return : int
+		public static int goodsAmount(
+				int goodsNo, int amount)throws Exception{
+			int row = 0;
+			
+			Connection conn = DBHelper.getConnection(); 
+			
+			String sql = "UPDATE goods SET goods_amount = goods_amount - ?,  "
+					+ "update_date = now() WHERE goods_no = ? AND goods_amount > ?";
+			PreparedStatement stmt = null;
+			stmt = conn.prepareStatement(sql);
+			stmt.setInt(1, amount);
+			stmt.setInt(2, goodsNo);
+			stmt.setInt(3, goodsNo - 1);
+			System.out.println(stmt);
+
+			row = stmt.executeUpdate();
+			
+			return row;
+		}
 
 	
 }

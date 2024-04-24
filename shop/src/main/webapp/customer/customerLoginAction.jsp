@@ -4,7 +4,7 @@
 <%@ page import="java.util.*" %>
 <%@ page import = "shop.dao.*" %>
 <%
-   if(session.getAttribute("loginCustomer") != null) {
+   if(session.getAttribute("CustomerLogin") != null) {
       response.sendRedirect("/shop/customer/goodsList.jsp");
       return;
    }
@@ -17,7 +17,7 @@
 	System.out.println("id = "+id);
 	System.out.println("pw = "+pw);
 
-	HashMap<String, Object>CustomerLogin = CustomerDAO.LoginCustomer(id, pw);
+	HashMap<String, Object> CustomerLogin = CustomerDAO.LoginCustomer(id, pw);
 	
 	if(CustomerLogin == null)
 		{  // 로그인 실패
@@ -26,7 +26,7 @@
 			response.sendRedirect("/shop/customer/customerLoginForm.jsp?errMsg="+errMsg); // 자동으로 로그인페이지로 넘어감
 					
 		}else 
-			{		// 로그인실패
+			{		
 				System.out.println("로그인성공");
 				session.setAttribute("CustomerLogin", CustomerLogin);	
 				response.sendRedirect("/shop/customer/customerGoodsList.jsp");

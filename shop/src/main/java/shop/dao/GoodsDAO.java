@@ -35,7 +35,7 @@ public class GoodsDAO {// 카테고리들 리스트
 		ArrayList<HashMap<String, Object>> selectGoodsList = new ArrayList<HashMap<String, Object>>();
 
 		Connection conn = DBHelper.getConnection();
-		String sql2 = "SELECT category,goods_no goodsNo, goods_title goodsTitle, filename, goods_price goodsPrice, create_date createDate "
+		String sql2 = "SELECT category,goods_no goodsNo, goods_title goodsTitle, filename, goods_price goodsPrice,goods_amount goodsAmount, create_date createDate "
 				+ "FROM goods WHERE category=? order by create_date desc LIMIT ?,?;";
 		PreparedStatement stmt2 = conn.prepareStatement(sql2);
 		stmt2.setString(1, category);
@@ -49,6 +49,7 @@ public class GoodsDAO {// 카테고리들 리스트
 			m2.put("goodsTitle", rs2.getString("goodsTitle"));
 			m2.put("filename", rs2.getString("filename"));
 			m2.put("goodsPrice", rs2.getInt("goodsPrice"));
+			m2.put("goodsAmount", rs2.getInt("goodsAmount"));
 			m2.put("createDate", rs2.getString("createDate"));
 			selectGoodsList.add(m2);
 		}
@@ -63,7 +64,7 @@ public class GoodsDAO {// 카테고리들 리스트
 
 		Connection conn = DBHelper.getConnection();
 
-		String sqlAll = "SELECT category, goods_no goodsNo, goods_title goodsTitle, filename, goods_price goodsPrice, create_date createDate "
+		String sqlAll = "SELECT category, goods_no goodsNo, goods_title goodsTitle, filename, goods_price goodsPrice,goods_amount goodsAmount, create_date createDate "
 				+ "FROM goods ORDER BY goods_no desc LIMIT ?,?;";
 		PreparedStatement stmt3 = conn.prepareStatement(sqlAll);
 		stmt3.setInt(1, startRow);
@@ -76,6 +77,7 @@ public class GoodsDAO {// 카테고리들 리스트
 			m3.put("goodsTitle", rs3.getString("goodsTitle"));
 			m3.put("filename", rs3.getString("filename"));
 			m3.put("goodsPrice", rs3.getInt("goodsPrice"));
+			m3.put("goodsAmount", rs3.getInt("goodsAmount"));
 			m3.put("createDate", rs3.getString("createDate"));
 			goodsList.add(m3);
 		}

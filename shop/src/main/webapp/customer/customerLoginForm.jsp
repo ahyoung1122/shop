@@ -3,9 +3,9 @@
 <%@ page import="java.net.URLEncoder"%>
 <%@ page import="java.util.*" %>
 <%@ page import = "java.net.*" %>
+<%@ page import = "shop.dao.*" %>
 <%
 //인증분기    : 세션변수 이름 - loginCustomer
-
 // 로그인성공시 세션에 loginCustomer라는 변수를 만들고 값으로 로그인아이디를 저장
 
 /*   String loginCustomer = (String)(session.getAttribute("loginCustomer"));
@@ -14,7 +14,7 @@
 System.out.println(loginCustomer + "<<==loginCustomer"); */
 
 //loginForm페이지는 로그아웃상태에서만 출력되는 페이지
-if(session.getAttribute("loginCustomer") != null) {
+if(session.getAttribute("CustomerLogin") != null) {
    response.sendRedirect("/shop/customer/customerLoginAction.jsp");
    return;
 }

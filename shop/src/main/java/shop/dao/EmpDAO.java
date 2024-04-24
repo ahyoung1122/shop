@@ -127,7 +127,61 @@ public class EmpDAO {
 				}
 		return list;
 	}
+	//customerList나열
+	//호출 : customerList.jsp
+	//param : customer
+	//return : HashMap<String,Object>
 	
+	public static ArrayList<HashMap<String, Object>> customerListAll(
+			int startRow, int rowPerPage)throws Exception{
+		ArrayList<HashMap<String, Object>> list = 
+				new ArrayList<HashMap<String, Object>>();
+		//연결
+		Class.forName("org.mariadb.jdbc.Driver");
+		Connection conn = DriverManager.getConnection("jdbc:mariadb://127.0.0.1:3306/shop", "root", "java1234");
+		//쿼리
+		String sql ="SELECT id, mail, name, birth, gender, create_date createDate FROM customer order by create_date desc limit ?, ?";
+		
+		PreparedStatement stmt = conn.prepareStatement(sql);
+			stmt.setInt(1, startRow);
+			stmt.setInt(2, rowPerPage);
+		ResultSet rs = stmt.executeQuery();
+			while(rs.next()) 
+				{
+					HashMap<String, Object> m = new HashMap<String, Object>();
+					m.put("id", rs.getString("id"));
+					m.put("mail", rs.getString("mail"));
+					m.put("name", rs.getString("name"));
+					m.put("birth", rs.getString("birth"));
+					m.put("gender", rs.getString("gender"));
+					m.put("createDate", rs.getString("createDate"));
+					list.add(m);
+				}
+		return list;
+	}
+	//cusomer페이징 하기
+	//호출 : customerList.jsp
+	//param : customer
+	//return : int
+	
+	public static int customerPage() throws Exception
+	{
+		int row = 0;
+		
+		Class.forName("org.mariadb.jdbc.Driver");
+		Connection conn = DriverManager.getConnection("jdbc:mariadb://127.0.0.1:3306/shop", "root", "java1234");
+		
+		String sql = "SELECT count(*) cnt From customer";
+		
+		PreparedStatement stmt = conn.prepareStatement(sql);
+		ResultSet rs =stmt.executeQuery();
+		
+		if(rs.next()) 
+			{
+				row = rs.getInt("cnt");
+			}
+		return row;
+	}
 
 
 }

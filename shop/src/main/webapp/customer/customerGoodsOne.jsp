@@ -4,31 +4,33 @@
 <%@ page import="java.util.*" %>
 <%@ page import="shop.dao.*" %>
 <%
-    //인증분기
-    
-    	if(session.getAttribute("loginCustomer") != null) {
-    	   response.sendRedirect("/shop/customer/customerLoginAction.jsp");
+    //인증분기 
+    	//여기서 이해가 안가면 customerLoginAction쪽으로 가서 확인해봐라
+    	if(session.getAttribute("CustomerLogin") == null) {
+    	   response.sendRedirect("/shop/customer/customerLoginForm.jsp");
     	   return;
     	}
 %>
-<%	
+<%
 		int goodsNo = Integer.parseInt(request.getParameter("goodsNo"));
+		///goodsList에서 goodsNo를 가져옴
+			
 		HashMap<String,Object>goodsList = CustomerGoodsDAO.goodsOne(goodsNo);
 		//해쉬맵으로 받아서
 		//여기서 하나씩 뽑아주기
 		
 		// 필요한 모든 값을 가져오기 + 디버깅까지 해서 값들어오는지 확인
 		String filename = (String)goodsList.get("filename");
-		System.out.println(filename+"<===filename");
+			System.out.println(filename+"<===filename");
 		
 		String goodsTitle = (String)goodsList.get("goodsTitle");
-		System.out.println(goodsTitle+"<===goods_title");
+			System.out.println(goodsTitle+"<===goods_title");
 		
 		int goodsPrice = (int)goodsList.get("goodsPrice");
-		System.out.println(goodsPrice+"<===goods_price");
+			System.out.println(goodsPrice+"<===goods_price");
 		
 		String goodsContent = (String)goodsList.get("goodsContent");
-		System.out.println(goodsContent+"<===goodsContent");
+			System.out.println(goodsContent+"<===goodsContent");
 %>
 <!DOCTYPE html>
 <html>
@@ -58,7 +60,7 @@
 .header a{
 	font-size: 25px;
 	color : ivory;
-	position: absolute;
+	position: relative;
     right: 30px;
 }
 .main{
@@ -88,11 +90,12 @@ button{
 </style>
 </head>
 <body>
-	<div class="header">
+<div class="header">
 	<img src="./img/marioUnder.png">
 	<a href="/shop/customer/customerLoginForm.jsp">
-		로그아웃
+		LogOut
 	</a>
+	<jsp:include page="/customer/inc/customerMenu.jsp"></jsp:include> 
 </div><!-- header의마지막 -->
 <div class="main">
 	<div class ="container">
@@ -122,10 +125,18 @@ button{
 				<%=goodsContent %>
 			</div>
 		<br>
-			<a href="./orderListByCustomer.jsp">
-				<button type="submit">장바구니</button>
-			</a>
-			
+		<div>
+			<!-- 넘길 데이터 : amount, goodsNo, filename, goodsTitle, goodsPrice -->
+			<form method="post" action="/shop/customer/customerGoodsAction.jsp?goodsNo=<%=goodsNo%>">
+				<input type="number" name = "amount" style="width: 50px"> <br>
+				<input type="hidden" name ="goodsNo" value="<%=goodsNo%>">
+				<input type="hidden" name ="filename" value="<%=filename%>">
+				<input type="hidden" name ="goodsTitle" value="<%=goodsTitle %>">
+				<input type="hidden" name ="goodsPrice" value="<%=goodsPrice %>">
+				<button type="submit" name="orderList">주문하기</button>
+			</form>
+		
+		</div>
 	</div><!-- container의 마지막 -->
 </div><!-- main끝 -->
 </body>

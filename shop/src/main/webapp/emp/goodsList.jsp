@@ -211,7 +211,8 @@
 						<img src="/shop/upload/<%=(String)m3.get("filename")%>">
 					</div>
 						<div>카테고리 : <%=(String)(m3.get("category")) %></div>
-						<div>no : <%=(Integer)(m3.get("goodsNo")) %></div><hr>
+						<div>no : <%=(Integer)(m3.get("goodsNo")) %></div>
+						<div>남은수량 : <%=(Integer)(m3.get("goodsAmount"))%></div><hr>
 						<div>이름 : <%=(String)(m3.get("goodsTitle"))%></div>
 						<div>가격 : <%=(Integer)(m3.get("goodsPrice")) %></div>
 						<div><!-- 삭제버튼 만들기 -->	
@@ -230,7 +231,8 @@
 						<img src="/shop/upload/<%=(String)m2.get("filename")%>">
 					</div>
 					<div>카테고리 : <%=(String)(m2.get("category")) %></div>
-					<div>no : <%=(Integer)(m2.get("goodsNo")) %></div><hr>
+					<div>no : <%=(Integer)(m2.get("goodsNo")) %></div>
+					<div>남은수량 : <%=(Integer)(m2.get("goodsAmount"))%></div><hr>
 					<div>이름 : <%=(String)(m2.get("goodsTitle"))%></div>
 					<div>가격 : <%=(Integer)(m2.get("goodsPrice")) %></div>
 					<div><!-- 삭제버튼 만들기 -->	

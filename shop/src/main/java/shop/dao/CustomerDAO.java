@@ -8,6 +8,7 @@ import java.nio.file.*;
 
 //고객관리별 static 메소드 모음.
 public class CustomerDAO {
+	//Customer 로그인
 	public static HashMap<String, Object> LoginCustomer(String id, String pw) 
 			throws Exception{HashMap<String, Object>resultMap = null;
 		

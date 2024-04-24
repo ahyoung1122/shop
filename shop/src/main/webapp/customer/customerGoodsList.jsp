@@ -1,10 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import = "java.sql.*" %>
+<%@ page import="java.net.URLEncoder"%>
 <%@ page import="java.util.*" %>
-<%@ page import="shop.dao.*" %>
+<%@ page import = "shop.dao.*" %>
 <%	//로그인 인증 분기
-    if(session.getAttribute("loginCustomer") != null) {
-    	   response.sendRedirect("/shop/customer/customerLoginAction.jsp");
+	System.out.println(session.getAttribute("CustomerLogin")+"<==CustomerLogin");
+    if(session.getAttribute("CustomerLogin") == null) {
+    	   response.sendRedirect("/shop/customer/customerLoginForm.jsp");
     	   return;
     	}
 %>
@@ -44,6 +46,8 @@ System.out.println(totalRow + "==>totalRow");
 
 	ArrayList<HashMap<String,Object>>categoryList =
 	 CustomerGoodsDAO.categoryList1();
+	
+	System.out.println("categoryList===>"+categoryList);
 
 %>
 <%
@@ -56,7 +60,7 @@ System.out.println(totalRow + "==>totalRow");
 
 
 //디버깅
-	System.out.println(goodsList+"=goodsList");
+	System.out.println("goodsList===>" + goodsList);
 	
 %>
 <%
@@ -114,7 +118,7 @@ System.out.println(totalRow + "==>totalRow");
 .header a{
 	font-size: 25px;
 	color : ivory;
-	position: absolute;
+	position: relative;s
     right: 30px;
 }
 .goodsList{
@@ -169,8 +173,10 @@ System.out.println(totalRow + "==>totalRow");
 <div class="header">
 	<img src="./img/marioUnder.png">
 	<a href="/shop/customer/customerLoginForm.jsp">
-		로그아웃
+		LogOut
 	</a>
+	<jsp:include page="/customer/inc/customerMenu.jsp"></jsp:include> 
+	
 </div><!-- header의마지막 -->
 <div class="main">
 	<div class="goodsList"><!-- list목록 나열 -->
@@ -226,20 +232,23 @@ System.out.println(totalRow + "==>totalRow");
 		%>
 			<div class="goodsimage1" style ="border: 1px;">
 				<div>
-				<a href="./customerGoodsOne.jsp?goodsNo=<%=(Integer)(m2.get("goodsNo"))%>">
+					<a href="./customerGoodsOne.jsp?goodsNo=<%=(Integer)(m2.get("goodsNo"))%>">
 						<img src="/shop/upload/<%=(String)m2.get("filename")%>">
 					</a>
 				</div>
+				
 				<div> 카테고리 : <%=(String)(m2.get("category"))%></div>
 				<a href="./customerGoodsOne.jsp?goodsNo=<%=(Integer)(m2.get("goodsNo"))%>">
+				
 					<div>no : <%=(Integer)(m2.get("goodsNo")) %></div>
 				</a>
 				<hr>
-				<div><a href="./customerGoodsOne.jsp">
+				<div>
+					<a href="./customerGoodsOne.jsp">
 						이름 : <%=(String)(m2.get("goodsTitle"))%>
-					</a></div>
+					</a>
+				</div>
 				<div>가격 : <%=(Integer)(m2.get("goodsPrice"))%></div>
-			
 			</div>
 		<%			
 				}

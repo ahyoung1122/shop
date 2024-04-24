@@ -118,8 +118,17 @@ System.out.println(totalRow + "==>totalRow");
 .header a{
 	font-size: 25px;
 	color : ivory;
-	position: relative;s
-    right: 30px;
+	position: relative;
+   	right: 0; /* 기존에 있던 30px를 0으로 수정 */
+    margin-right: 30px;
+     -webkit-text-stroke-width: 2px; /* 테두리 두께 */
+ 	-webkit-text-stroke-color: black;
+}
+.header .head{
+	font-family:"Super Mario 256";
+	-webkit-text-stroke-width: 2px; /* 테두리 두께 */
+ 	-webkit-text-stroke-color: black; /* 테두리 색상 */
+	
 }
 .goodsList{
 	text-align : center;
@@ -172,7 +181,7 @@ System.out.println(totalRow + "==>totalRow");
 <body>
 <div class="header">
 	<img src="./img/marioUnder.png">
-	<a href="/shop/customer/customerLoginForm.jsp">
+	<a href="/shop/customer/customerLoginForm.jsp" class="head" style="color : green;">
 		LogOut
 	</a>
 	<jsp:include page="/customer/inc/customerMenu.jsp"></jsp:include> 

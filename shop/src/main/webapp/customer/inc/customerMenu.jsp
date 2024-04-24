@@ -6,8 +6,16 @@
       = (HashMap<String,Object>)(session.getAttribute("CustomerLogin"));
 	System.out.println(customerLogin);	
 %>
-
-      <a href="/customer/customerPage.jsp?id=<%=(String)(customerLogin.get("id"))%>">
+	<span>	
+      <a href="/customer/customerPage.jsp?id=<%=(String)(customerLogin.get("id"))%>" style="color : #001EC9">
       	<%=(String)(customerLogin.get("id"))%>님
       </a>
-      <a href="./orderListByCustomer.jsp">CART</a>
+	</span>
+	<span>
+		<a href="./customerGoodsList.jsp">
+			GOODS
+		</a>
+	</span>
+	<span>	
+      <a href="./orderListByCustomer.jsp" class="head" style="color : #FFE400">CART</a>
+	</span>

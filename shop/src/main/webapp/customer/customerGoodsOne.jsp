@@ -61,7 +61,16 @@
 	font-size: 25px;
 	color : ivory;
 	position: relative;
-    right: 30px;
+   	right: 0; /* 기존에 있던 30px를 0으로 수정해서 img랑 겹치지 않도록 수정 */
+    margin-right: 30px;
+    -webkit-text-stroke-width: 2px; /* 테두리 두께 */
+ 	-webkit-text-stroke-color: black;
+}
+.header .head{
+	font-family:"Super Mario 256";
+	-webkit-text-stroke-width: 2px; /* 테두리 두께 */
+ 	-webkit-text-stroke-color: black; /* 테두리 색상 */
+	
 }
 .main{
  text-align: center;
@@ -92,11 +101,15 @@ button{
 <body>
 <div class="header">
 	<img src="./img/marioUnder.png">
-	<a href="/shop/customer/customerLoginForm.jsp">
+	<a href="/shop/customer/customerLoginForm.jsp" class="head" style="color : green;">
+	
 		LogOut
 	</a>
 	<jsp:include page="/customer/inc/customerMenu.jsp"></jsp:include> 
 </div><!-- header의마지막 -->
+<div><!-- 뒤로가기만들기 -->
+	<a href="./customerGoodsList.jsp" style="font-size: 25px">⬅️뒤로가기</a>
+</div>
 <div class="main">
 	<div class ="container">
 		<div style="height: 60px;"></div><!-- 상품이랑 header부분이랑 좀 띄워야할거같아서 만들었음 -->
@@ -128,7 +141,7 @@ button{
 		<div>
 			<!-- 넘길 데이터 : amount, goodsNo, filename, goodsTitle, goodsPrice -->
 			<form method="post" action="/shop/customer/customerGoodsAction.jsp?goodsNo=<%=goodsNo%>">
-				<input type="number" name = "amount" style="width: 50px"> <br>
+				수량 : <input type="number" name = "amount" style="width: 50px">
 				<input type="hidden" name ="goodsNo" value="<%=goodsNo%>">
 				<input type="hidden" name ="filename" value="<%=filename%>">
 				<input type="hidden" name ="goodsTitle" value="<%=goodsTitle %>">

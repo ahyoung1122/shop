@@ -14,7 +14,7 @@ if(session.getAttribute("CustomerLogin") == null)
 	
 %>
 <%
-	//orders 테이블에 추가하려면 기본 id값도 가지고 있어야 할듯
+	//cart테이블에 추가하기 위한 id가 필요
 	//session에서 id만 가져오기로
 	HashMap<String, Object> login = (HashMap<String, Object>)(session.getAttribute("CustomerLogin")); 
 		String id = (String)(login.get("id"));
@@ -29,7 +29,7 @@ if(session.getAttribute("CustomerLogin") == null)
 	String filename = request.getParameter("filename");
 	String goodsTitle = request.getParameter("goodsTitle");
 	int goodsPrice = Integer.parseInt(request.getParameter("goodsPrice"));
-	//세션에서 id만 가져오기
+	
 	//디버깅
 	System.out.println("customerGoodsACtion.amount=>"+amount);
 	System.out.println("customerGoodsACtion.goodsNo=>" + goodsNo);
@@ -43,10 +43,14 @@ if(session.getAttribute("CustomerLogin") == null)
 	
 	if(row == 1){
 		System.out.println("추가완료");
+			response.sendRedirect("./orderListByCustomer.jsp?goodsNo="+goodsNo);
 	}else{
 		System.out.println("추가실패");
+		response.sendRedirect("./customerGoodsOne.jsp?goodsNo="+goodsNo);
 	}
 	//order테이블에 데이터 들어온거까지 확인완료
-	response.sendRedirect("./orderListByCustomer.jsp?goodsNo="+goodsNo);
+	
+	
+	
 %>
 <!-- orderListByCustomer.jsp -->

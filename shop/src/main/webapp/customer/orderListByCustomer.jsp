@@ -21,9 +21,6 @@
 	//DAO페이지랑 sql연결 시켜주기
 	ArrayList<HashMap<String,Object>>cartList = 
 		OrderGoodsDAO.cartList1(id);
-
-	
-	
 	System.out.println(cartList + "<==orderListByCustomer.orderList");
 	//값들어오는거 확인완료!!
 	

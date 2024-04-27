@@ -131,14 +131,14 @@ button{
 		<br>
 		<div>
 			<!-- 넘길 데이터 : amount, goodsNo, filename, goodsTitle, goodsPrice -->
-			<form method="post" action="/shop/customer/customerGoodsAction.jsp?goodsNo=<%=goodsNo%>">
+			<form method="post">
 				수량 : <input type="number" name = "amount" value="1" style="width: 50px" min="1">
 				<input type="hidden" name ="goodsNo" value="<%=goodsNo%>">
 				<input type="hidden" name ="filename" value="<%=filename%>">
 				<input type="hidden" name ="goodsTitle" value="<%=goodsTitle %>">
 				<input type="hidden" name ="goodsPrice" value="<%=goodsPrice %>">
-				<button type="submit" name="orderList" value="cart">🛒</button>
-				<button type="submit" name="orderList" value="buy">구매하기</button>
+				<button type="submit" name="orderList" formaction="/shop/customer/customerGoodsAction.jsp?goodsNo=<%=goodsNo%>">🛒</button>
+				<button type="submit" name="orderList" formaction="/shop/customer/customerGoodsBuyAction.jsp?goodsNo=<%=goodsNo%>">구매하기</button>
 			</form>
 		</div>
 		<br>
@@ -147,10 +147,7 @@ button{
 			</div>
 			<br>
 			<div>		
-				
 					<%=goodsContent %>
-				
-				
 			</div>
 	</div><!-- container의 마지막 -->
 

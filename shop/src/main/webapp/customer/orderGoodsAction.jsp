@@ -14,25 +14,25 @@ if(session.getAttribute("CustomerLogin") == null)
 	System.out.println(session.getAttribute("CustomerLogin") + "<==orderGoodsAction에서 확인");
 %>
 <%
-	//주문 처리하면서 해야할것 정리
-	//// 장바구니에 담긴 상품 정보 가져오기
-	//장바구니에 담긴 정보를 =>ordersTable에 추가하기
-	
-	
-	// 주문자 정보 가져오기
-	String id = request.getParameter("id");
-		System.out.println(id + "<===orderGoodsAction.id");
-	String name = request.getParameter("name");
-		System.out.println(name + "<===orderGoodsAction.name");
-	String mail = request.getParameter("mail");
-		System.out.println(mail + "<===orderGoodsAction.mail");
+HashMap<String, Object> login = (HashMap<String, Object>)(session.getAttribute("CustomerLogin")); 
+String id = (String)(login.get("id"));
+	// 추가된 주문자 정보 customer테이블에 넣기 //주소는 api값이 넘어오질 않으니까일단 보류
 	String phone = request.getParameter("phone");
 		System.out.println(phone + "<===orderGoodsAction.phone");
-	String address = request.getParameter("address");
-		System.out.println(address + "<===orderGoodsAction.address");
 	
-	int goodsNo = Integer.parseInt(request.getParameter("goodsNo"));
-		System.out.println(goodsNo + "<==orderGoodsAction.goodsNo");
+	//update문으로 customer정보 추가
+	int row = CustomerDAO.addInfo(phone, id);
+		System.out.println(row + "<==orderGoodsAction.row");
+		//들어오는거 확인
 	
-		//...이거 왜 값이 하나만 들어오지? sql로 값을 한번 받아봐야겠음.. ;..
+		if(row == 1)//성공
+			{
+				System.out.println("추가성공");
+				response.sendRedirect("./customerPage.jsp");
+			}else
+				{
+				System.out.println("추가실패");
+				response.sendRedirect("./orderGoods.jsp");
+				}
+
 %>

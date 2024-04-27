@@ -134,15 +134,16 @@ public class OrderGoodsDAO {
 	//return : int
 
 	public static int addOrders(
-			String id, String goodsTitle, int goodsNo, int goodsPrice, String filename, int amount) throws Exception{
+			String id, String goodsTitle, int goodsNo, int goodsPrice,
+				String filename, int amount, int totalPrice) throws Exception{
 				int row = 0;
 				
 				//연결
 				Connection conn = DBHelper.getConnection(); 
 				//insert쿼리만들기
 				String sql ="INSERT INTO orders(id, goods_title, goods_no,"
-						+ " goods_price, filename,amount,create_date) "
-						+ "VALUES(?,?,?,?,?,?,NOW()) ";
+						+ " goods_price, filename,amount, total_price, create_date) "
+						+ "VALUES(?,?,?,?,?,?,?,NOW()) ";
 				
 				PreparedStatement stmt = conn.prepareStatement(sql);
 					stmt.setString(1, id);
@@ -151,6 +152,7 @@ public class OrderGoodsDAO {
 					stmt.setInt(4, goodsPrice);
 					stmt.setString(5, filename);
 					stmt.setInt(6, amount);
+					stmt.setInt(7, totalPrice);
 				row = stmt.executeUpdate();
 				
 				conn.close();
@@ -158,13 +160,15 @@ public class OrderGoodsDAO {
 	}
 	
 	//주문하려는 상품 orders테이블에서 가져오기(+totalPrice구하는김에)
-	//호출 : customerGoodsBuyAction.jsp
+	//호출1.customerGoodsBuyAction.jsp
+	//호출2.customerPage.jsp//주문확인기능때문
 	//param : id
 	//return : ArrayList.HashMap
 	
-	public static HashMap<String,Object> ordersList1(
+	public static ArrayList<HashMap<String,Object>>ordersList1(
 			String id)throws Exception{
-		HashMap<String, Object> list = new HashMap<String,Object>();
+		ArrayList<HashMap<String, Object>> list
+			= new ArrayList<HashMap<String,Object>>();
 		
 			//연결
 			Connection conn = DBHelper.getConnection(); 
@@ -172,7 +176,7 @@ public class OrderGoodsDAO {
 			
 			String sql ="SELECT orders_no ordersNo, id, goods_title goodsTitle, "
 							+ "goods_no goodsNo, goods_price goodsPrice, "
-							+ "filename, amount, state, create_date createDate "
+							+ "filename, amount, state, total_price totalPrice, create_date createDate "
 						+ "FROM orders "
 						+ "WHERE id=?";
 			PreparedStatement stmt = conn.prepareStatement(sql);
@@ -182,19 +186,24 @@ public class OrderGoodsDAO {
 			
 			 while(rs.next()) 
 			 	{
-					 	list.put("ordersNo", rs.getInt("ordersNo"));
-				        list.put("id", rs.getString("id"));
-				        list.put("goodsTitle", rs.getString("goodsTitle"));
-				        list.put("goodsNo", rs.getInt("goodsNo"));
-				        list.put("goodsPrice", rs.getInt("goodsPrice"));
-				        list.put("filename", rs.getString("filename"));
-				        list.put("amount", rs.getInt("amount"));
-				        list.put("state", rs.getString("state"));
-				        list.put("createDate", rs.getString("createDate"));
+				 	HashMap<String,Object> m = 
+				 			new HashMap<String,Object>();
+					 	m.put("ordersNo", rs.getInt("ordersNo"));
+				        m.put("id", rs.getString("id"));
+				        m.put("goodsTitle", rs.getString("goodsTitle"));
+				        m.put("goodsNo", rs.getInt("goodsNo"));
+				        m.put("goodsPrice", rs.getInt("goodsPrice"));
+				        m.put("filename", rs.getString("filename"));
+				        m.put("amount", rs.getInt("amount"));
+				        m.put("state", rs.getString("state"));
+				        m.put("totalPrice", rs.getInt("totalPrice"));
+				        m.put("createDate", rs.getString("createDate"));
+				        
+				        list.add(m);
 			 	}
 				
-			
-		return list;
+			 conn.close();
+			 return list;
 	}
 	
 	

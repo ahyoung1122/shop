@@ -31,6 +31,8 @@
 		
 		String goodsContent = (String)goodsList.get("goodsContent");
 			System.out.println(goodsContent+"<===goodsContent");
+			
+	 
 %>
 <!DOCTYPE html>
 <html>
@@ -137,7 +139,7 @@ button{
 				<input type="hidden" name ="filename" value="<%=filename%>">
 				<input type="hidden" name ="goodsTitle" value="<%=goodsTitle %>">
 				<input type="hidden" name ="goodsPrice" value="<%=goodsPrice %>">
-				<button type="submit" name="orderList" formaction="/shop/customer/customerGoodsAction.jsp?goodsNo=<%=goodsNo%>">🛒</button>
+				<button type="submit" name="orderList" formaction="/shop/customer/customerGoodsCart.jsp?goodsNo=<%=goodsNo%>">🛒</button>
 				<button type="submit" name="orderList" formaction="/shop/customer/customerGoodsBuyAction.jsp?goodsNo=<%=goodsNo%>">구매하기</button>
 			</form>
 		</div>

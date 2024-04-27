@@ -28,6 +28,7 @@ if(session.getAttribute("CustomerLogin") == null)
 	String goodsTitle = request.getParameter("goodsTitle");
 	int goodsPrice = Integer.parseInt(request.getParameter("goodsPrice"));
 	
+	int totalPrice = amount * goodsPrice;
 	//디버깅
 	System.out.println("customerGoodsBuyAction.amount=>"+amount);
 	System.out.println("customerGoodsBuyAction.goodsNo=>" + goodsNo);
@@ -38,26 +39,11 @@ if(session.getAttribute("CustomerLogin") == null)
 	
 		//orderGoodsDAO에서 orders테이블에 추가하는 쿼리 작성
 		//연결하기
-		int row = OrderGoodsDAO.addOrders(id, goodsTitle, goodsNo, goodsPrice, filename, amount);
+		int row = OrderGoodsDAO.addOrders(
+				id, goodsTitle, goodsNo, goodsPrice, filename, amount, totalPrice);
 			//디버깅
 			System.out.println(row + "<==customerGoodsBuyAction.order");
-			//1들어오는거 확인완료!
-		
-		//ordert테이블 나열하기	
-		HashMap<String, Object>orderList
-			= OrderGoodsDAO.ordersList1(id);
-			//디버깅-->확인완료!
-			System.out.println(orderList + "<==customerGoodsBuyAction.orderList");
-			
-		
-		//총 가격 구하기 =>goodsPrice * amount
-		
-			int price = (int) orderList.get("goodsPrice");
-			int perAmount = (int) orderList.get("amount");
-			
-			int totalPrice = price * perAmount;
-					System.out.println("customerGoodsBuyAction.totalPrice ==>" + totalPrice); 
-		
+			//1들어오는거 확인완료!	
 		if(row == 1)
 			{
 				System.out.println("상품추가완료");

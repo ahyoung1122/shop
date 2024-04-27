@@ -88,6 +88,13 @@
 					<!-- totalPrice를 넘겨줘야해서 hidden으로 추가  -->
 					<input type="hidden" name="totalPrice" value="<%= totalPrice %>">
 				<button type="submit"> 구매 </button>
+				
+				<%
+					for (HashMap<String, Object> order : cartList) {
+					    int cartNo = (int) order.get("cartNo");
+					    // ordersNo를 사용하여 원하는 작업 수행
+					    System.out.println("주문 번호: " + cartNo);}
+				%>
 	</form>
 </body>
 </html>

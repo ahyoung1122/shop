@@ -163,4 +163,25 @@ public class CustomerDAO {
 		
 		return row;
 	}
+	//주문할때 추가된 고객정보 넣기
+	//호출 : orderGoodsAction.jsp
+	//param : id
+	//return : int 
+	
+	public static int addInfo(String phone, String id) throws Exception{
+		int add = 0;
+		
+		Connection conn = DBHelper.getConnection();
+		//쿼리로 추가
+			String sql ="UPDATE customer "
+						+ "SET phone=? "
+						+ "WHERE id=?";
+			
+		PreparedStatement stmt = conn.prepareStatement(sql);
+			stmt.setString(1, phone);
+			stmt.setString(2, id);
+		add = stmt.executeUpdate();
+		
+		return add;
+	}
 }

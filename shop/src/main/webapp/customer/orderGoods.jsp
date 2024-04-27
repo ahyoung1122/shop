@@ -10,7 +10,11 @@
     return;
  }
 %>
-<%	
+<%
+	//goodsNo가져오기 
+	int goodsNo = Integer.parseInt(request.getParameter("goodsNo"));
+		System.out.println(goodsNo + "<===goodsNo");
+
 	//총 가격 request하기
 	String totalPrice = request.getParameter("totalPrice");
 		System.out.println(totalPrice + "<==여기까지는 나옴");
@@ -32,11 +36,11 @@
 	//잘 넘어오는지 확인해보자=>완료
 		System.out.println(customerInformation + "<==customerInformation");
 	
-	//orders테이블에서 어떤상품 구매했는지 보여주기
-	ArrayList<HashMap<String,Object>>orderGoodsList
-		= OrderGoodsDAO.orderGoods(id);
+	//cart테이블에서 어떤상품 구매했는지 보여주기
+	ArrayList<HashMap<String,Object>>cartGoodsList
+		= OrderGoodsDAO.cartGoods(id);
 		//값 들어온지 확인=>완료
-		System.out.println(orderGoodsList + "<==orderGoods.orderGoodsList");
+		System.out.println(cartGoodsList + "<==orderGoods.orderGoodsList");
 	
 	
 %>
@@ -70,21 +74,36 @@ img
 				</label>
 					<input type="text" id="mail" name="mail" value="<%=customerInformation.get("mail")%>"><br>
 				<lable for="phone">연락처 : </lable>
-					<input type="text" maxLength={13} placeholder="010-XXXX-XXXX"><br>
+					<input type="text" name="phone" maxLength={13} placeholder="010-XXXX-XXXX"><br>
 				<label for="address">주소 : </label>
 					<input type="text" id="address" name="address"><br>
-				<label for="goods">
-					상품 : 
-				</label><br>
-					<%
-						for(HashMap<String,Object>order : orderGoodsList){
-					%>	
-						<td><img src="/shop/upload/<%= order.get("filename")%>"></td>
-						<td><%=order.get("goodsTitle")%></td>
-						<td><%=order.get("goodsPrice") %>원</td><br>
-					<%
-						}
-					%>
+				<br>
+					<table border="1">주문상품
+						<%
+							for(HashMap<String,Object>order : cartGoodsList){
+								//상품의 갯수가 여러개인 경우를 대비해서 상품의 가격 곱하기 수량을 미리 정해둔다
+								int goodsPrice = (int)order.get("goodsPrice");
+								int amount = (int)order.get("amount");
+								int result = goodsPrice * amount;
+						%>	
+							<tr>
+								<td>
+									<img src="/shop/upload/<%= order.get("filename")%>">
+								</td>
+								<td>
+									<%=order.get("goodsTitle")%>
+								</td>
+								<td>
+									<%=order.get("amount")%>개
+								</td>
+								<td>
+									<%=result %>원</td><br>
+								<input type="hidden" name="goodsNo" value="<%=goodsNo%>">
+							</tr>
+						<%
+							}
+						%>
+					</table>
 				
 				<label>총 가격 : <%=allPrice %>원</label>
 				<br><button type="submit">결제하기</button>

@@ -2,5 +2,5 @@
     pageEncoding="UTF-8"%>
 <%   
    session.invalidate();   
-   response.sendRedirect("/shop/emp/customerLoginForm.jsp");
+   response.sendRedirect("/shop/customer/customerLoginForm.jsp");
 %>

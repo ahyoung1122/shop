@@ -14,7 +14,8 @@ public class CustomerDAO {
 		
 			Connection conn = DBHelper.getConnection(); 
 		
-			String loginSql = "SELECT id, pw FROM customer";
+			String loginSql = "SELECT id, pw FROM customer "
+					+ "WHERE id=? AND pw=?";
 			PreparedStatement stmt = conn.prepareStatement(loginSql);
 		    stmt.setString(1, id);
 		    stmt.setString(2, pw);
@@ -84,5 +85,82 @@ public class CustomerDAO {
 			
 			return result;
 	}
+	//customer 정보 가지고 오기
+	//호출 : customerPage.jsp
+	//param : string, string, string, string
+	//return : HashMap
 	
+	public static HashMap<String,Object> customerPage(String id)throws Exception{
+		HashMap<String, Object>list
+			= new HashMap<String, Object>();
+		
+		 Connection conn = DBHelper.getConnection();
+		 
+		 String sql = "SELECT id, pw, mail, name, birth, gender "
+		 				+ "FROM customer "
+		 				+ "WHERE id=?";
+		 PreparedStatement stmt = conn.prepareStatement(sql);
+		 stmt.setString(1, id);
+		 ResultSet rs = stmt.executeQuery();
+		 
+		 while(rs.next()) {
+			 list.put("id", rs.getString("id"));
+			 list.put("pw", rs.getString("pw"));
+			 list.put("mail", rs.getString("mail"));
+			 list.put("name", rs.getString("name"));
+			 list.put("birth", rs.getString("birth"));
+			 list.put("gender", rs.getString("gender"));
+		 }
+			 
+		return list;
+	}
+	
+	//historypw테이블에 newPw를 추가해주기
+	//호출 : pwHistory.jsp
+	//parameter : pw
+	//return : HashMap
+	
+	
+	//쿼리 INSERT INTO pwhistory(id, pw, create_date) VALUES(?,? NOW());
+	public static int historyPw(
+			String id, String newPw) throws Exception{
+		int row = 0;
+		
+		//연결먼저
+		 Connection conn = DBHelper.getConnection();
+		//쿼리작성
+		 String sql ="INSERT INTO pwhistory(id, pw, create_date) "
+		 				+ "VALUES(?, ?, NOW())";
+		 PreparedStatement stmt = conn.prepareStatement(sql);
+		 stmt.setString(1, id);
+		 stmt.setString(2, newPw);
+		 
+		 row = stmt.executeUpdate();
+		
+		return row;
+		
+	}
+	
+	//historypw테이블의 pw를 customer테이블의 pw랑 바꿔주기
+	//호출 : pwHistoryAction.jsp
+	
+	public static int changePw(String id) throws Exception{
+		int row = 0;
+		
+		 Connection conn = DBHelper.getConnection();
+		 //update쿼리=>새로운 pw를 위해서 서브쿼리 사용 생성일을 최신순으로
+		 String sql ="UPDATE customer "
+		 		+ "SET pw = "
+		 		+ "(SELECT pw "
+		 		+ "FROM pwhistory "
+		 		+ "WHERE id=? "
+		 		+ "ORDER BY create_date DESC LIMIT 1) "
+		 		+ "WHERE id=?";
+		 PreparedStatement stmt = conn.prepareStatement(sql);
+		 stmt.setString(1, id);
+		 stmt.setString(2, id);
+		 row = stmt.executeUpdate();
+		
+		return row;
+	}
 }

@@ -5,7 +5,7 @@
 <%@ page import = "shop.dao.*" %>
 <%
    if(session.getAttribute("CustomerLogin") != null) {
-      response.sendRedirect("/shop/customer/goodsList.jsp");
+      response.sendRedirect("/shop/customer/customerGoodsList.jsp");
       return;
    }
 %>
@@ -16,7 +16,8 @@
 	
 	System.out.println("id = "+id);
 	System.out.println("pw = "+pw);
-
+	
+	//id랑 pw값 가져오기
 	HashMap<String, Object> CustomerLogin = CustomerDAO.LoginCustomer(id, pw);
 	
 	if(CustomerLogin == null)

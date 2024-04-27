@@ -19,15 +19,17 @@
 	
 	
 	//DAO페이지랑 sql연결 시켜주기
-	ArrayList<HashMap<String,Object>>orderList = 
-		OrderGoodsDAO.orderList1(id);
+	ArrayList<HashMap<String,Object>>cartList = 
+		OrderGoodsDAO.cartList1(id);
+
 	
-	System.out.println(orderList + "<==orderListByCustomer.orderList");
+	
+	System.out.println(cartList + "<==orderListByCustomer.orderList");
 	//값들어오는거 확인완료!!
 	
 	//상품들의 총 가격을 구하려면
 	int totalPrice = 0;
-    for (HashMap<String, Object> order : orderList) {
+    for (HashMap<String, Object> order : cartList) {
         // 각 행의 수량을 가져와서 총 가격에 더함
         int amount = (int) order.get("amount");
         int price = (int) order.get("goodsPrice");
@@ -53,10 +55,10 @@
 </style>
 </head>
 <body>
+<div>
+	<a href="./customerGoodsList.jsp">상품추가하러가기</a>
+</div>
 	<form method="post" action="./orderGoods.jsp">
-		<div>
-			<a href="./customerGoodsList.jsp">상품추가하러가기</a>
-		</div>
 			<h1>CART</h1>
 				<table border="1">
 					<tr>
@@ -66,18 +68,22 @@
 						<td>수량</td>
 					</tr>
 						<%
-							for(HashMap<String,Object>order : orderList ){
+							for(HashMap<String,Object>order : cartList ){
 						%>
 						<tr>
 							<td><img src="/shop/upload/<%= order.get("filename")%>"></td>
-							<td><%=order.get("goodsTitle")%></td>
+							<td>
+								<%=order.get("goodsTitle")%>
+								<!-- hidden으로 goods_no보내주자(총수량 변경때문에 필요함) --><%=(int)order.get("goodsNo")%>
+								<input type="hidden" name="goodsNo" value="<%=(int)order.get("goodsNo")%>">
+							</td>
 							<td><%=order.get("goodsPrice") %></td>
 							<td><%=order.get("amount") %></td>
 						</tr>
 						
 						<%
 							}
-						%>
+						%>	
 						<tr>
 							<td colspan="4"> 총 가격 : <%= totalPrice %>원</td>
 						</tr>

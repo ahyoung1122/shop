@@ -7,15 +7,22 @@ import java.sql.*;
 import java.util.*;
 
 public class OrderGoodsDAO {
-		//orders 테이블에 상품데이터 추가하기
-	public static int addOrder(String id, String goodsTitle, int goodsNo, int goodsPrice, 
+		// orderGoodsAction처리하면서 상품 재고량을 주문상품갯수만큼 빼주기
+		//우선 goodsNo만 출력해서가져와보자
+		//호출 : orderGoodsAction.jsp
+	
+		
+	
+	
+		//cart테이블에 상품데이터 추가하기
+	public static int addCart(String id, String goodsTitle, int goodsNo, int goodsPrice, 
 			String filename, int amount) throws Exception{
 		int row = 0;
 		
 		Connection conn = DBHelper.getConnection(); 
 		
-		String sql = "INSERT INTO orders(id,goods_title, goods_no, goods_price,filename,amount,create_date)"
-				+ "values(?,?,?,?,?,?,NOW())";
+		String sql = "INSERT INTO cart(id,goods_title, goods_no, goods_price,filename,amount)"
+				+ "values(?,?,?,?,?,?)";
 		PreparedStatement stmt = conn.prepareStatement(sql);
 		stmt.setString(1, id);
 		stmt.setString(2, goodsTitle);
@@ -23,13 +30,6 @@ public class OrderGoodsDAO {
 		stmt.setInt(4, goodsPrice);
 		stmt.setString(5, filename);
 		stmt.setInt(6, amount);
-		
-		System.out.println(id + "<===OrderGoodsDAO.id");
-		System.out.println(goodsTitle + "<===orderGoodsDAO.goodsTitle");
-		System.out.println(goodsNo + "<===OrderGoodsDAO.goodsNo");
-		System.out.println(goodsPrice + "<===OrderGoodsDAO.goodsPrice");
-		System.out.println(filename + "<===OrderGoodsDAO.filename");
-		System.out.println(amount + "<===OrderGoodsDAO.amount");
 		
 		row = stmt.executeUpdate();
 		
@@ -41,21 +41,21 @@ public class OrderGoodsDAO {
 		//param : String, int
 		//return : list<ArrayList<HashMap<...
 	
-	public static ArrayList<HashMap<String,Object>>orderList1(String id) throws Exception{
+	public static ArrayList<HashMap<String,Object>>cartList1(String id) throws Exception{
 		ArrayList<HashMap<String,Object>>list
 			= new ArrayList<HashMap<String,Object>>();
 		
 		Connection conn = DBHelper.getConnection(); 
 		
-		String sql ="SELECT orders_no ordersNo, id, goods_title goodsTitle, goods_no goodsNo, goods_price goodsPrice,"
-				+ "filename,amount FROM orders WHERE id=?"; //주문에서는 id가 무엇이냐 기준으로
+		String sql ="SELECT cart_no cartNo, id, goods_title goodsTitle, goods_no goodsNo, goods_price goodsPrice,"
+				+ "filename,amount FROM cart WHERE id=?"; //주문에서는 id가 무엇이냐 기준으로
 		PreparedStatement stmt = conn.prepareStatement(sql);
 			stmt.setString(1, id);
 		ResultSet rs = stmt.executeQuery();
 		 while(rs.next()) {
 			HashMap<String,Object> m =
 					 new HashMap<String,Object>();
-			 	m.put("ordersNo", rs.getInt("ordersNo"));
+			 	m.put("cartNo", rs.getInt("cartNo"));
 		        m.put("id", rs.getString("id"));
 		        m.put("goodsTitle", rs.getString("goodsTitle"));
 		        m.put("goodsNo", rs.getInt("goodsNo"));
@@ -99,7 +99,7 @@ public class OrderGoodsDAO {
 	//param : id
 	//return : ArrayList<HashMap<...
 	
-	public static ArrayList<HashMap<String,Object>> orderGoods(
+	public static ArrayList<HashMap<String,Object>> cartGoods(
 				String id) throws Exception{
 		
 			ArrayList<HashMap<String, Object>> list
@@ -108,8 +108,8 @@ public class OrderGoodsDAO {
 			Connection conn = DBHelper.getConnection(); 
 			
 			//쿼리 추가
-			String sql="SELECT id,goods_title goodsTitle, goods_price goodsPrice, filename "
-					+ "FROM orders "
+			String sql="SELECT id,goods_title goodsTitle, goods_price goodsPrice, filename, amount "
+					+ "FROM cart "
 					+ "WHERE id=?";
 			
 			PreparedStatement stmt = conn.prepareStatement(sql);
@@ -124,10 +124,14 @@ public class OrderGoodsDAO {
 				m.put("goodsTitle", rs.getString("goodsTitle"));
 				m.put("goodsPrice", rs.getInt("goodsPrice"));
 				m.put("filename", rs.getString("filename"));
+				m.put("amount", rs.getInt("amount"));
 				list.add(m);
 			}
 			
 			conn.close();
 			return list;
 	}
+	
+	//호출 : orderGoodsAction.jsp
+	//param : 
 }

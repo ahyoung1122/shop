@@ -181,7 +181,7 @@ System.out.println(totalRow + "==>totalRow");
 <body>
 <div class="header">
 	<img src="./img/marioUnder.png">
-	<a href="/shop/customer/customerLoginForm.jsp" class="head" style="color : green;">
+	<a href="/shop/customer/customerLogout.jsp" class="head" style="color : green;">
 		LogOut
 	</a>
 	<jsp:include page="/customer/inc/customerMenu.jsp"></jsp:include> 

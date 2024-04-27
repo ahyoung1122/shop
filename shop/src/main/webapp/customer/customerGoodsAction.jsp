@@ -21,6 +21,7 @@ if(session.getAttribute("CustomerLogin") == null)
 		//넘어온건지 확인 =>아이디 넘어오는거 확인완료!!ㅎㅎ
 		System.out.println("여기는 Action쪽에서 id확인하는 " + id);
 	
+	
 		
 	//넘겨받을 데이터: amount, goodsNo,goodsTitle filename, goodsTitle, goodsPrice 
 	int amount = Integer.parseInt(request.getParameter("amount"));
@@ -37,7 +38,7 @@ if(session.getAttribute("CustomerLogin") == null)
 	System.out.println("customerGoodsACtion.goodsPrice=>" + goodsPrice);
 	//디버깅 다 들어온거 확인 완료!!^_^!!
 	
-	int row = OrderGoodsDAO.addOrder(id,goodsTitle, goodsNo, goodsPrice, filename, amount);
+	int row = OrderGoodsDAO.addCart(id, goodsTitle, goodsNo, goodsPrice, filename, amount);
 	System.out.println(row+"<===row값임");//1 들어오는거 확인
 	
 	if(row == 1){

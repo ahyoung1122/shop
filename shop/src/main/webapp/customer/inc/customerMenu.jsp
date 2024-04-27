@@ -7,7 +7,7 @@
 	System.out.println(customerLogin);	
 %>
 	<span>	
-      <a href="/customer/customerPage.jsp?id=<%=(String)(customerLogin.get("id"))%>" style="color : #001EC9">
+      <a href="./customerPage.jsp?id=<%=(String)(customerLogin.get("id"))%>">
       	<%=(String)(customerLogin.get("id"))%>님
       </a>
 	</span>
@@ -17,5 +17,5 @@
 		</a>
 	</span>
 	<span>	
-      <a href="./orderListByCustomer.jsp" class="head" style="color : #FFE400">CART</a>
+      <a href="./orderListByCustomer.jsp" class="head">CART</a>
 	</span>

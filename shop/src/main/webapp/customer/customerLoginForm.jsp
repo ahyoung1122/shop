@@ -97,22 +97,24 @@ if(session.getAttribute("CustomerLogin") != null) {
 					<span style="color : red;">W</span><span style="color :#4ABFD3;">E</span><span style="color : #EDD200;">L</span><span style="color :#4ABFD3;">C</span><span style="color : green;">O</span><span style="color : #EDD200;">M</span><span>E</span>
 				</h2>
 					<form method="post" action="./customerLoginAction.jsp">
-						<div class="box">
-							<table>
-								<tr>
-									<th>ID</th>
-									<td><input type="text" name="id"></td>
-								</tr>
-								<tr>
-									<th>PW</th>
-									<td><input type="password" name="pw"></td>
-								</tr>
-							</table>
-						</div><!-- box 클래스 마지막 -->
-					<button type="submit">LOGIN</button>
-					<a href ="./addCustomerForm.jsp">JOIN</a>
-				
+							<div class="box">
+								<table>
+									<tr>
+										<th>ID</th>
+										<td><input type="text" name="id"></td>
+									</tr>
+									<tr>
+										<th>PW</th>
+										<td><input type="password" name="pw"></td>
+									</tr>
+								</table>
+							</div><!-- box 클래스 마지막 -->
+						<button type="submit">LOGIN</button>
 					</form>
+					
+					<a href ="./addCustomerForm.jsp">JOIN</a>
+					<br><a href="../emp/empLoginForm.jsp" style="color : #8C8C8C">직원로그인</a>
+				
 			</div><!-- col-8마지막 -->
 		<div class="col-2"></div>
 	</div>

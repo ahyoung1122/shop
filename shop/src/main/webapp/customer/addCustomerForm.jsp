@@ -111,7 +111,7 @@
 												<%=msg %>
 							</td>
 								</tr>
-						</form>
+					
 								<tr>
 									<td><label for="password">pw</label></td>
 									<td><input type="password" name="pw" id="password"></td>

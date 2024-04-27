@@ -92,9 +92,8 @@ span{
  margin: 25px;
 }
 button{
-	background-color: green;
-	color : ivory;
-	padding : 4px;
+	border-style: none;
+	padding: 10px;
 }
 </style>
 </head>
@@ -130,27 +129,31 @@ button{
 			</table>
 		</div>
 		<br>
+		<div>
+			<!-- 넘길 데이터 : amount, goodsNo, filename, goodsTitle, goodsPrice -->
+			<form method="post" action="/shop/customer/customerGoodsAction.jsp?goodsNo=<%=goodsNo%>">
+				수량 : <input type="number" name = "amount" value="1" style="width: 50px" min="1">
+				<input type="hidden" name ="goodsNo" value="<%=goodsNo%>">
+				<input type="hidden" name ="filename" value="<%=filename%>">
+				<input type="hidden" name ="goodsTitle" value="<%=goodsTitle %>">
+				<input type="hidden" name ="goodsPrice" value="<%=goodsPrice %>">
+				<button type="submit" name="orderList" value="cart">🛒</button>
+				<button type="submit" name="orderList" value="buy">구매하기</button>
+			</form>
+		</div>
+		<br>
 			<div>
 				<span>상품소개</span>
 			</div>
 			<br>
 			<div>		
-				<%=goodsContent %>
+				
+					<%=goodsContent %>
+				
+				
 			</div>
-		<br>
-		<div>
-			<!-- 넘길 데이터 : amount, goodsNo, filename, goodsTitle, goodsPrice -->
-			<form method="post" action="/shop/customer/customerGoodsAction.jsp?goodsNo=<%=goodsNo%>">
-				수량 : <input type="number" name = "amount" style="width: 50px">
-				<input type="hidden" name ="goodsNo" value="<%=goodsNo%>">
-				<input type="hidden" name ="filename" value="<%=filename%>">
-				<input type="hidden" name ="goodsTitle" value="<%=goodsTitle %>">
-				<input type="hidden" name ="goodsPrice" value="<%=goodsPrice %>">
-				<button type="submit" name="orderList">주문하기</button>
-			</form>
-		
-		</div>
 	</div><!-- container의 마지막 -->
+
 </div><!-- main끝 -->
 </body>
 </html>

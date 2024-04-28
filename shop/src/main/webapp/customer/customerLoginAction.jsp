@@ -30,7 +30,7 @@
 			{		
 				System.out.println("로그인성공");
 				session.setAttribute("CustomerLogin", CustomerLogin);	
-				response.sendRedirect("/shop/customer/customerGoodsList.jsp");
+				response.sendRedirect("/shop/customer/customerMainPage.jsp");
 			}
 	/* 
 	//if(rs.next()){  //로그인 성공 하면

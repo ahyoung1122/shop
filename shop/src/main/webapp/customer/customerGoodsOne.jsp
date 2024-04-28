@@ -42,75 +42,64 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 <style>
-	*{
-		font-family: "CookieRun";
-		margin: 0px; padding :0px;
+	.header{
+		text-align : center;
+		background-color: #FF2424;
+	}
+	.header a{
+		font-size: 26px;
+		font-family:"Super Mario 256";
+		-webkit-text-stroke-width: 2px; /* 테두리 두께 */
+ 		-webkit-text-stroke-color: black; /* 테두리 색상 */
 	}
 	a{
 		text-decoration: none;
+		margin-right: 15px;
+		color : gray;
+	}
+	a:hover{
 		color : black;
 	}
-.header {
-		height: 70px;
-		background-color: #FF3636;
-		position: relative;		
-		}
-.header img{
-	height : 70px;
-	width: 150px;
-}
-.header a{
-	font-size: 25px;
-	color : ivory;
-	position: relative;
-   	right: 0; /* 기존에 있던 30px를 0으로 수정해서 img랑 겹치지 않도록 수정 */
-    margin-right: 30px;
-    -webkit-text-stroke-width: 2px; /* 테두리 두께 */
- 	-webkit-text-stroke-color: black;
-}
-.header .head{
-	font-family:"Super Mario 256";
-	-webkit-text-stroke-width: 2px; /* 테두리 두께 */
- 	-webkit-text-stroke-color: black; /* 테두리 색상 */
-	
-}
-.main{
- text-align: center;
-}
-.goodsImg img
-{
-	width : 300px;
-	height : 300px;
-	/* border: 3px solid red; */ /* 테두리 색상을 할건지 말건지는 조금 고민해보고 결정해야겠음. */
-}
-.goods{
-	display: flex;
- 	text-align: center;
- 	justify-content: center;
-}
-span{
- font-size: 22px;
- font-weight: 50px;
- margin: 25px;
-}
-button{
-	border-style: none;
-	padding: 10px;
-}
+	.include{
+		font-family:"CookieRun";
+		float: right;
+		margin-right: 30px;
+	}
+	img{
+	height: 300px;
+	width: 200px;
+	margin-left: 30px;
+	margin-top: 30px;
+	}
+	.main{
+	 text-align: center;
+	 font-family: "CookieRun"
+	}
+	.goodsImg img
+	{
+		width : 300px;
+		height : 300px;
+		/* border: 3px solid red; */ /* 테두리 색상을 할건지 말건지는 조금 고민해보고 결정해야겠음. */
+	}
+	table{
+	margin: auto;
+	border-collapse: separate; /* 셀 간격을 지정하기 위해 border-collapse 속성을 separate로 설정 */
+    border-spacing: 15px;
+	}
+
 </style>
 </head>
 <body>
 <div class="header">
-	<img src="./img/marioUnder.png">
-	<a href="/shop/customer/customerLoginForm.jsp" class="head" style="color : green;">
-	
-		LogOut
-	</a>
-	<jsp:include page="/customer/inc/customerMenu.jsp"></jsp:include> 
-</div><!-- header의마지막 -->
-<div><!-- 뒤로가기만들기 -->
-	<a href="./customerGoodsList.jsp" style="font-size: 25px">⬅️뒤로가기</a>
+		<a href="/shop/customer/customerMainPage.jsp">
+			<span style="color :#E52521;">S</span><span style="color:#049CD8">U</span><span style="color:#FBD000">P</span><span style="color:#049CD8">E</span><span style="color : #43B047">R</span>
+			<br>
+			<span style="color:#049CD8">M</span><span style="color : #43B047">A</span><span style="color:#FBD000">R</span><span style="color :#E52521;">I</span><span style="color : #43B047">O</span>
+		</a>
 </div>
+<div class="include">
+<jsp:include page="/customer/inc/customerMenu.jsp"></jsp:include> 
+</div>s
 <div class="main">
 	<div class ="container">
 		<div style="height: 60px;"></div><!-- 상품이랑 header부분이랑 좀 띄워야할거같아서 만들었음 -->
@@ -154,5 +143,8 @@ button{
 	</div><!-- container의 마지막 -->
 
 </div><!-- main끝 -->
+<div class="bottom" style="height: 50px; color : gray">
+
+</div>
 </body>
 </html>

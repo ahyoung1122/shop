@@ -62,6 +62,10 @@
 			    text-align: center; 
 			    margin: auto;
 			}
+			a{
+			text-decoration: none;
+			color : white
+			}
 		</style>
 </head>
 <body style="background-color: #FF3636;">
@@ -84,10 +88,14 @@
 										</tr>
 									</table>	
 								</div>
-							<input type="submit" value="로그인" style="background-color: red; color: white; border: none; ">
+								<button class="btn btn-secondary btn-sm" type="submit">
+									로그인
+								</button>
+								<button class="btn btn-secondary btn-sm">
+									<a href="../customer/customerLoginForm.jsp">고객 로그인</a>
+								</button>
 						</form>
-					<a href="../customer/addCustomerForm.jsp" style="text-decoration: none; color : white;
-					background-color: #2F9D27;">회원가입</a>
+	
 			</div><!-- col-8마지막 -->
 		<div class="col-2"></div>
 	</div>

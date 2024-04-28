@@ -54,7 +54,7 @@ public class CustomerDAO {
 			stmt.setString(6, gender);
 			
 			row = stmt.executeUpdate();
-			
+			conn.close();
 			return row;
 			 
 		 }
@@ -136,7 +136,7 @@ public class CustomerDAO {
 		 stmt.setString(2, newPw);
 		 
 		 row = stmt.executeUpdate();
-		
+		 conn.close();
 		return row;
 		
 	}
@@ -160,7 +160,7 @@ public class CustomerDAO {
 		 stmt.setString(1, id);
 		 stmt.setString(2, id);
 		 row = stmt.executeUpdate();
-		
+		 conn.close();
 		return row;
 	}
 	//주문할때 추가된 고객정보 넣기
@@ -181,7 +181,49 @@ public class CustomerDAO {
 			stmt.setString(1, phone);
 			stmt.setString(2, id);
 		add = stmt.executeUpdate();
-		
+		conn.close();
 		return add;
+	}
+	//고객 주문 목록 불러오기
+	//호출 : ordersList.jsp
+	//return : ArrayList<HashMap<
+	
+	public static ArrayList<HashMap<String,Object>> orderList1(
+			)throws Exception{
+		ArrayList<HashMap<String,Object>> list 
+			= new ArrayList<HashMap<String,Object>>();
+		//연결
+		Connection conn = DBHelper.getConnection();
+		//쿼리작성
+		String sql ="SELECT o.orders_no ordersNo, o.id id, c.name name, c.phone phone,"
+					+ " o.goods_title goodsTitle,o.total_price totalPrice, "
+					+ "o.create_date createDate, o.state state "
+					+ 	"FROM orders o INNER JOIN customer c "
+				+ 	"ON o.id = c.id "
+				+ 	"ORDER BY o.create_date DESC";
+		
+		PreparedStatement stmt = conn.prepareStatement(sql);
+		
+		ResultSet rs = stmt.executeQuery();
+		
+		while(rs.next()) {
+			HashMap<String,Object> m
+				=	new HashMap<String,Object>();
+			
+			m.put("ordersNo", rs.getInt("ordersNo"));
+			m.put("id", rs.getString("id"));
+			m.put("name", rs.getString("name"));
+			m.put("phone", rs.getString("phone"));
+			m.put("goodsTitle", rs.getString("goodsTitle"));
+			m.put("totalPrice", rs.getInt("totalPrice"));
+			m.put("createDate", rs.getString("createDate"));
+			m.put("state", rs.getString("state"));
+			
+			list.add(m);
+			
+		}
+		
+		conn.close();
+		return list;
 	}
 }

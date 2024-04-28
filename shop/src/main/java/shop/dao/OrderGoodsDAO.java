@@ -159,6 +159,25 @@ public class OrderGoodsDAO {
 				return row;
 	}
 	
+	//state상태 변경
+			//호출 : ordersList.jsp
+			//param : String,int
+			//return : int
+	public static int updateState(String state, int ordersNo) throws Exception {
+		Connection con = DBHelper.getConnection();
+		
+		String sql = "UPDATE orders SET state = ? WHERE orders_no =?";
+		
+		PreparedStatement stmt = con.prepareStatement(sql);
+		stmt.setString(1,state);
+		stmt.setInt(2,ordersNo);
+		
+		int row = stmt.executeUpdate();
+		
+		con.close();
+		return row;
+	}
+	
 	//주문하려는 상품 orders테이블에서 가져오기(+totalPrice구하는김에)
 	//호출1.customerGoodsBuyAction.jsp
 	//호출2.customerPage.jsp//주문확인기능때문
@@ -205,7 +224,4 @@ public class OrderGoodsDAO {
 			 conn.close();
 			 return list;
 	}
-	
-	
-
 }

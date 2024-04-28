@@ -98,55 +98,50 @@ System.out.println(totalRow + "==>totalRow");
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 <style>
-	*{
-		font-family: "CookieRun";
-		margin: 0px; padding :0px;
+	
+	.header{
+		text-align : center;
+		background-color: #FF2424;
+	}
+	.main{
+		font-family:"CookieRun";
+		margin-top: 30px;
+		text-align: center;
+	}
+	.header a{
+		font-size: 26px;
+		font-family:"Super Mario 256";
+		-webkit-text-stroke-width: 2px; /* 테두리 두께 */
+ 		-webkit-text-stroke-color: black; /* 테두리 색상 */
 	}
 	a{
 		text-decoration: none;
+		margin-right: 15px;
+		color : gray;
+	}
+	a:hover{
 		color : black;
 	}
-.header {
-		height: 70px;
-		background-color: #FF3636;
-		position: relative;		
-		}
-.header img{
-	height : 70px;
-	width: 150px;
-}
-.header a{
-	font-size: 25px;
-	color : ivory;
-	position: relative;
-   	right: 0; /* 기존에 있던 30px를 0으로 수정 */
-    margin-right: 30px;
-     -webkit-text-stroke-width: 2px; /* 테두리 두께 */
- 	-webkit-text-stroke-color: black;
-}
-.header .head{
+	.include{
+		font-family:"CookieRun";
+		float: right;
+		margin-right: 30px;
+	}
+.title{
 	font-family:"Super Mario 256";
-	-webkit-text-stroke-width: 2px; /* 테두리 두께 */
- 	-webkit-text-stroke-color: black; /* 테두리 색상 */
-	
-}
-.goodsList{
 	text-align : center;
-}
-.goodsList2 span{
-	font-family:"Super Mario 256";
 	font-size: 35px;
-	-webkit-text-stroke-width: 2px; /* 테두리 두께 */
-    -webkit-text-stroke-color: black; /* 테두리 색상 */
+	-webkit-text-stroke-width: 1px; /* 테두리 두께 */
+    -webkit-text-stroke-color: white; /* 테두리 색상 */
 }
-.goodsList a{
-	border: 2px solid #008000;
-	background-color : #119208;
-	color : white;
-	text-align : center;
-	padding: 2px;
-	margin-right: 10px;
-}
+	.goodsList a{
+		color : gray;
+		text-align : center;
+		margin-right: 10px;
+	}
+	.goodsList a:hover{
+		color : black;
+	}
 .box {
 	width: 1350px;
 	margin : 0 auto;
@@ -180,18 +175,21 @@ System.out.println(totalRow + "==>totalRow");
 </head>
 <body>
 <div class="header">
-	<img src="./img/marioUnder.png">
-	<a href="/shop/customer/customerLogout.jsp" class="head" style="color : green;">
-		LogOut
-	</a>
+		<a href="">
+			<span style="color :#E52521;">S</span><span style="color:#049CD8">U</span><span style="color:#FBD000">P</span><span style="color:#049CD8">E</span><span style="color : #43B047">R</span>
+			<br>
+			<span style="color:#049CD8">M</span><span style="color : #43B047">A</span><span style="color:#FBD000">R</span><span style="color :#E52521;">I</span><span style="color : #43B047">O</span>
+		</a>
+</div>
+<div class="include">
 	<jsp:include page="/customer/inc/customerMenu.jsp"></jsp:include> 
-	
-</div><!-- header의마지막 -->
+</div><br>
+<!-- 여기까지헤드 -->
 <div class="main">
-	<div class="goodsList"><!-- list목록 나열 -->
-		<div class="goodsList2">
-			<span style="color : #4ABFD3;">GOODS </span><span style="color :#EDD200;">LIST</span>
+		<div class="title">
+			GOODS LIST
 		</div>
+		<div class="goodsList"><!-- list목록 나열 -->
 			<!-- 전체데이터를 나열해줄 수 있는 sql하나 더 만들기 -->
 			<a href="/shop/customer/customerGoodsList.jsp?totalRow=<%=totalRow%>">전체</a>
 			<%

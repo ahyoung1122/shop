@@ -44,45 +44,76 @@ if(session.getAttribute("CustomerLogin") == null) {
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 <style>
+	.header{
+		text-align : center;
+		background-color: #FF2424;
+	}
+	.header a{
+		font-size: 26px;
+		font-family:"Super Mario 256";
+		-webkit-text-stroke-width: 2px; /* 테두리 두께 */
+ 		-webkit-text-stroke-color: black; /* 테두리 색상 */
+	}
+	a{
+		text-decoration: none;
+		margin-right: 15px;
+		color : gray;
+	}
+	a:hover{
+	color : black;
+	}
+	.include{
+		font-family:"CookieRun";
+		float: right;
+		margin-right: 30px;
+	}
 	img{
 	width: 50px;
 	height: 50px;
 	}
+	.container{
+	margin-top : 15px;
+	text-align: center;
+	font-family:"CookieRun";
+	}
+	.my table{
+	margin: auto;
+	border-collapse: separate; /* 셀 간격을 지정하기 위해 border-collapse 속성을 separate로 설정 */
+    border-spacing: 15px;
+	}
+
 </style>
 </head>
 <body>
-	<div class="container">
-		<h1>MY PAGE</h1>
-			<div class="my">
-				<table border="1">
-					<tr>
-						<th>성함</th>
-						<th>mail</th>
-						<th>성별</th>
-						<th>생일</th>
-					</tr>
-					<tr>
-						<td><%=customerInfo.get("name") %></td>
-						<td><%=customerInfo.get("mail") %></td>
-						<td><%=customerInfo.get("gender") %></td>
-						<td><%=customerInfo.get("birth") %></td>
-					</tr>
-				</table>
-				<form method = "post" action="./pwHistory.jsp">
-					<label>아이디 : </label>
-						<input 
+<div class="header">
+		<a href="./customerMainPage.jsp">
+			<span style="color :#E52521;">S</span><span style="color:#049CD8">U</span><span style="color:#FBD000">P</span><span style="color:#049CD8">E</span><span style="color : #43B047">R</span>
+			<br>
+			<span style="color:#049CD8">M</span><span style="color : #43B047">A</span><span style="color:#FBD000">R</span><span style="color :#E52521;">I</span><span style="color : #43B047">O</span>
+		</a>
+</div>
+<div class="include">
+	<jsp:include page="/customer/inc/customerMenu.jsp"></jsp:include> 
+</div><br>
+<div class="container">
+		<h1>MY PAGE</h1><br>
+			<form method = "post" action="./pwHistory.jsp">
+					
+					아이디 : <input 
 							type = "text"
 							name = "id"
-							value = "<%=id%>"><br>
-					<lable>비밀번호</lable>
-						<input
+							value = "<%=id%>"><br><br>
+					
+					비밀번호 : <input
 							 type="password" 
 							 name="pw"
 							 value="<%=pw%>">
-					<button>비밀번호 변경</button>
+					<button class="btn btn-secondary btn-sm">비밀번호 변경</button>
 						<!-- 비밀번호 변경 완료했을때 뜨는 알림 -->
-						<div style="font-size: 11px; color : gray;">
+						<div style="font-size: 14px; color : balck;">
 							<%
 								if(msg == null){
 							%>
@@ -94,53 +125,63 @@ if(session.getAttribute("CustomerLogin") == null) {
 								}
 							%>
 						</div>
-						
-					</form>
+				</form><br>
+			<div class="my">
+				<table border="1">
+					<tr style="font-size: 20px;">
+						<td><strong>NAME</strong></td>
+						<td><strong>mail</strong></td>
+						<td><strong>GENDER</strong></td>
+						<td><strong>BIRTH</strong></td>
+					</tr>
+					<tr>
+						<td><%=customerInfo.get("name") %></td>
+						<td><%=customerInfo.get("mail") %></td>
+						<td><%=customerInfo.get("gender") %></td>
+						<td><%=customerInfo.get("birth") %></td>
+					</tr>
+				</table>
 			</div>
 			<!-- 여기서부터는 고객 주문정보 -->
-			<div>
-			
-				<p>주문배송조회</p>
+			<div class="my">	<hr>		
+				<h4>주문배송조회</h4>
 					<%
 						for(HashMap<String,Object>m : orderList ){
 					%>
+					
+									주문번호 : <%=m.get("ordersNo") %>
+									주문일자 : <%=m.get("createDate") %>
+								
 						<table border="1">
-						<tr>
-							<td colspan="5">
-								주문번호 : <%=m.get("ordersNo") %>
-								주문일자 : <%=m.get("createDate") %>
-							</td>
-						</tr>
-						<tr>
-							<td colspan="4">
-								상품정보
-							</td>
-							<td>
-								진행상태
-							</td>
-						</tr>	
-						<tr>
-							<th>
-								<img src="/shop/upload/<%=m.get("filename")%>">
-							</th>
-							<th>
-								<%=m.get("goodsTitle")%>
-							</th>
-							<th>
-								<%=m.get("goodsPrice")%>원
-								<%=m.get("amount")%>개
-							</th>
-							<th>총 <%=m.get("totalPrice")%>원</th>
-							<th><%=m.get("state")%></th>
-						</tr>
-					</table>
+								<th colspan="4">
+									상품정보
+								</th>
+								<th>
+									진행상태
+								</th>
+							</tr>	
+							<tr>
+								<td>
+									<img src="/shop/upload/<%=m.get("filename")%>">
+								</td>
+								<td>
+									<%=m.get("goodsTitle")%>
+								</td>
+								<td>
+									<%=m.get("goodsPrice")%>원
+									<%=m.get("amount")%>개
+								</td>
+								<td>총 <%=m.get("totalPrice")%>원</th>
+								<td style="color:orange;"><%=m.get("state")%></th>
+							</tr>
+						</table>
 					<%
 						}
 					%>
-					
 			</div>
-			
-		
 	</div>
+<div class="bottom" style="height: 50px; color : gray">
+
+</div>
 </body>
 </html>

@@ -40,8 +40,7 @@
    	}
    	a{
    	text-decoration: none;
-   	color : white;
-   	background-color : green;
+   
    	}
 	body{
 	text-align: center;
@@ -58,10 +57,7 @@
 	-webkit-text-stroke-width: 4px; /* 테두리 두께 */
     -webkit-text-stroke-color: black; /* 테두리 색상 */
 	}
-	button{
-	border: ; /* 테두리 없음 */
-    background-color: transparent; /* 배경색 없음 */
-	}
+	
 	.img{
     display: flex;
     align-items: center; /* 수직 중앙 정렬 */
@@ -78,16 +74,16 @@
 	<div class="row">
 		<div class="col-2"></div>
 			<div class="mt-5 col-8 bg-black border shadow p-3 mb-5 bg-body-tertiary rounded">
-				<div style="text-align: left;"><a href="./customerLoginForm.jsp">login Page돌아가기</a></div>
+				<div style="text-align: left;"><a href="./customerLoginForm.jsp">LOGIN HOME</a></div>
 					<div class="img"></div>
 					<h3 class="join">JOIN</h3><hr>
 	
 					<!-- id확인 form -->
 					<form method="post" action="./checkIdAction.jsp">
 						<div>
-							ID확인
+							 ID확인
 							<input type="text" name="id" value=<%=id%>>
-						<button type="submit">중복확인</button>
+						<button type="submit"  class="btn btn-secondary">중복확인</button>
 						</div>
 					</form><hr>
 					<!-- 확인form종료 -->
@@ -95,7 +91,7 @@
 					<div class="box">
 						<table>
 								<tr>
-									<td><label for="id">ID</label></td>
+									<td><label for="id">🗸ID</label></td>
 									<td>
 									<%
 										if(idCheck.equals("T")){
@@ -113,23 +109,31 @@
 								</tr>
 					
 								<tr>
-									<td><label for="password">pw</label></td>
-									<td><input type="password" name="pw" id="password"></td>
+									<td><label for="password">🗸pw</label></td>
+									<td>
+										<input type="password" name="pw" id="password">
+									</td>
 								</tr>
 								<tr>
-									<td><label for="mail">mail</label></td>
-									<td><input type="text" name="mail" id="mail"></td>
+									<td><label for="mail">🗸mail</label></td>
+									<td>
+										<input type="text" name="mail" id="mail" placeholder="@google.com">
+									</td>
 								</tr>
 								<tr>
-									<td><label for="name">이름</label></td>
-									<td><input type="text" name="name" id="name"></td>
+									<td><label for="name">🗸이름</label></td>
+									<td>
+										<input type="text" name="name" id="name">
+									</td>
 								</tr>
 								<tr>
 									<td><label for="birth">생년월일</label></td>
-									<td><input type="date" name="birth" id="birth"></td>
+									<td>
+										<input type="date" name="birth" id="birth">
+									</td>
 								</tr>
 								<tr>
-									<td><label for="gender">성별</label></td>
+									<td><label for="gender">🗸성별</label></td>
 									<td>
 										<select id = "gender" name="gender">
 											<option value="F">여성</option>
@@ -139,7 +143,7 @@
 								</tr>
 						</table>
 					</div><!-- box끝 --><br>
-					<button type="submit">제출</button>
+					<button type="submit"  class="btn btn-secondary">제출</button>
 				</form>
 			</div><!-- col-8마지막 -->
 		<div class="col-2"></div>

@@ -67,20 +67,17 @@ if(session.getAttribute("CustomerLogin") != null) {
 			    margin: auto;
 			}
 			button{
-			border: none; /* 테두리 없음 */
-            background-color: transparent; /* 배경색 없음 */
-            padding: 10px 20px; /* 원하는 패딩값으로 조정 */
-            /* 원하는 추가 스타일을 여기에 추가할 수 있습니다. */
             font-family: "Super Mario 256";
-            font-size: 25px; color : #2F9D27;
-            -webkit-text-stroke-width: 2px; /* 테두리 두께 */
-   			 -webkit-text-stroke-color: black; /* 테두리 색상 */
+			font-size : 15px;
+			color:white;
+			-webkit-text-stroke-width: 1px; /* 테두리 두께 */
+   			-webkit-text-stroke-color: black; /* 테두리 색상 */
 			}
 			a{
 			text-decoration: none;
 			font-family: "Super Mario 256";
 			font-size : 15px;
-			color:red;
+			color:white;
 			-webkit-text-stroke-width: 1px; /* 테두리 두께 */
    			-webkit-text-stroke-color: black; /* 테두리 색상 */
 			}
@@ -109,11 +106,11 @@ if(session.getAttribute("CustomerLogin") != null) {
 									</tr>
 								</table>
 							</div><!-- box 클래스 마지막 -->
-						<button type="submit">LOGIN</button>
+							<br>
+						<button type="submit" class="btn btn-danger">LOGIN</button>
+						<a href ="./addCustomerForm.jsp" class="btn btn-success">JOIN</a>
 					</form>
-					
-					<a href ="./addCustomerForm.jsp">JOIN</a>
-					<br><a href="../emp/empLoginForm.jsp" style="color : #8C8C8C">직원로그인</a>
+					<br><a href="../emp/empLoginForm.jsp" style="color : #8C8C8C; font-size: 10px">직원로그인</a>
 				
 			</div><!-- col-8마지막 -->
 		<div class="col-2"></div>

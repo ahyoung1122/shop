@@ -14,8 +14,6 @@
 %>
 <%
 
-	//id가져오기
-	
 	// request 분석
 	int currentPage = 1;
 	if(request.getParameter("currentPage") != null) {
@@ -25,7 +23,7 @@
 	int rowPerPage =10;
 	int startRow = (currentPage-1) * rowPerPage;
 	
-	//직원 페이징 모듈
+	//페이징 모듈
 	int totalRow = EmpDAO.customerPage();
 
 	int lastPage = totalRow / rowPerPage;
@@ -35,10 +33,12 @@
 %>
 <!-- Model Layer -->
 <%	
-	//customer테이블에서의 고객정보 불러오기
-	ArrayList<HashMap<String, Object>> customerList
-		 = EmpDAO.customerListAll(startRow, rowPerPage);
-
+	//ordersTable에서 고객주문목록 불러오기
+	ArrayList<HashMap<String,Object>>orders
+			= CustomerDAO.orderList1();
+	//디버깅
+	System.out.println(orders + "ordersList.orders");
+	//디버깅 확인 완료!
 %>
 
 <!-- View Layer -->
@@ -88,7 +88,10 @@
 			}
 			a{
 			text-decoration: none;
-			color : black;
+			color : orange;
+			}
+			button a{
+			color :black;
 			}
 		</style>
 </head>
@@ -104,31 +107,47 @@
 		<div class="row">
 			<div class="col-2"></div>
 			<div class="mt-5 col-8 bg-black border shadow p-3 mb-5 bg-body-tertiary rounded" >
-				<h1>고객정보 관리</h1>
-					<form method="post" action="/shop/emp/modifyEmpActive.jsp">	
+				<h1>고객주문 관리</h1>
+					
 						<div class="box">
 							<table border ="1">
 								<tr>
-									<th>id</th>
-									<th>mail</th>
+									<th>주문번호</th>
+									<th>고객ID</th>
 									<th>성함</th>
-									<th>생년월일</th>
-									<th>성함</th>
-									<th>가입일</th>
+									<th>연락처</th>
+									<th>상품</th>
+									<th>총가격</th>
+									<th>구매일</th>
+									<th>배송관리</th>
 								</tr>
 								<%
-									for(HashMap<String, Object> m : customerList) {
+									for(HashMap<String,Object> m : orders){
 								%>
-								<tr>
-									<td><%=(String)m.get("id")%></td>
-									<td><%=(String)m.get("mail")%></td>
-									<td><%=(String)m.get("name")%></td>
-									<td><%=(String)m.get("birth")%></td>
-									<td><%=(String)m.get("gender")%></td>
-									<td><%=(String)m.get("createDate")%></td>
-								</tr>
-								<%		
-										}
+										<tr>
+											<td><%=m.get("ordersNo")%></td>
+											<td><%=m.get("id")%></td>
+											<td><%=m.get("name")%></td>
+											<td><%=m.get("phone")%></td>
+											<td><%=m.get("goodsTitle")%></td>
+											<td><%=m.get("totalPrice")%></td>
+											<td><%=m.get("createDate")%></td>
+											<td>
+												<form method="post" action="./ordersListState.jsp?ordersNo=<%=(Integer)(m.get("ordersNo"))%>">
+													<select name="state">
+														<option value="<%=(String)(m.get("state"))%>"><%=(String)(m.get("state"))%></option>
+														<option value="결제완료">결제완료</option>
+														<option value="배송중">배송중</option>
+														<option value="배송완료">배송완료</option>
+													</select>
+													<button type="submit">변경</button>
+												</form>
+											</td>
+											
+										</tr>
+									
+								<%
+									}
 								%>
 							</table>
 						</div>
@@ -153,7 +172,6 @@
 									}
 								%>
 							</div>
-				</form>
 			</div><!-- col-8마지막 -->
 		<div class="col-2"></div>
 	</div><!-- row -->

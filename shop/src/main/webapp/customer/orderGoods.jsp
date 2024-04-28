@@ -40,13 +40,51 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 <style>
+	.header{
+		text-align : center;
+		background-color: #FF2424;
+	}
+	.header a{
+		font-size: 26px;
+		font-family:"Super Mario 256";
+		-webkit-text-stroke-width: 2px; /* 테두리 두께 */
+ 		-webkit-text-stroke-color: black; /* 테두리 색상 */
+	}
+	a{
+		text-decoration: none;
+		margin-right: 15px;
+		color : gray;
+	}
+	a:hover{
+		color : black;
+	}
+	.include{
+		font-family:"CookieRun";
+		float: right;
+		margin-right: 30px;
+	}
+	.container{
+	margin-top : 15px;
+	text-align: center;
+	font-family:"CookieRun";
+	}
     img {
-        width: 50px;
-        height: 50px;
+       width: 50px;
+       height: 50px;
     }
+    label{
+    margin-bottom: 14px;
+    }
+    table{
+	margin: auto;
+	border-collapse: separate; /* 셀 간격을 지정하기 위해 border-collapse 속성을 separate로 설정 */
+    border-spacing: 15px;
+	}
 </style>
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script>
     function validateForm() {
         var phone = document.getElementById("phone").value;
@@ -62,8 +100,19 @@
 </script>
 </head>
 <body>
+<div class="header">
+		<a href="./customerMainPage.jsp">
+			<span style="color :#E52521;">S</span><span style="color:#049CD8">U</span><span style="color:#FBD000">P</span><span style="color:#049CD8">E</span><span style="color : #43B047">R</span>
+			<br>
+			<span style="color:#049CD8">M</span><span style="color : #43B047">A</span><span style="color:#FBD000">R</span><span style="color :#E52521;">I</span><span style="color : #43B047">O</span>
+		</a>
+</div>
+<div class="include">
+	<jsp:include page="/customer/inc/customerMenu.jsp"></jsp:include> 
+</div>
+<br>
 <div class="container">
-    <h1>주문내역 작성</h1>
+    <h1>주문내역 작성</h1><br>
     <form method="post" action="orderGoodsAction.jsp" onsubmit="return validateForm()">
         <label for="id">
             id :
@@ -82,8 +131,8 @@
         <!-- 주소 API -->
         <label>✔️주소 : </label>
         <input type="text" id="sample6_postcode" name="sample6_postcode" placeholder="우편번호">
-        <input type="button" onclick="sample6_execDaumPostcode()" value="우편번호 찾기"><br>
-        <input type="text" id="sample6_address" placeholder="주소"><br>
+        <input type="button" class="btn btn-secondary btn-sm" onclick="sample6_execDaumPostcode()" value="우편번호 찾기"><br>
+        <input type="text" id="sample6_address" placeholder="주소" style="margin-bottom: 7px;"><br>
         <input type="text" id="sample6_detailAddress" placeholder="상세주소">
         <input type="text" id="sample6_extraAddress" placeholder="참고항목">
         
@@ -128,7 +177,7 @@
         </script>
         <br>
         <!-- filename, goodsTitle, amount, totalPrice,goodsNo(hidden), 총가격 : totalPrice -->
-        <table border="1">
+        <table>
             <tr>
                 <td></td>
                 <td>상품명</td>
@@ -146,7 +195,7 @@
             </tr>
             <% } %>
         </table>
-        <br><button type="submit">결제하기</button>
+        <br><button type="submit" class="btn btn-danger btn-sm">결제하기</button>
     </form>
 </div>
 </body>

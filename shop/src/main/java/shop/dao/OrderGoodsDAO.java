@@ -224,4 +224,28 @@ public class OrderGoodsDAO {
 			 conn.close();
 			 return list;
 	}
+	
+	
+	//goods 테이블의 goods_amount이랑 orders테이블의 amount를 빼기
+	//호출 : customerGoodsBuyAction.jsp
+	//amount값을 메서드에 넣어주고, 첫번째 물음표 자리에 입력시킨다.
+	//param : amount, goodsNo
+	//return : int
+	
+	public static int updateAmount(int amount, int goodsNo) throws Exception{
+		int row = 0;
+		
+		Connection conn = DBHelper.getConnection(); 
+		
+		String sql ="UPDATE goods "
+					+ "SET goods_amount = goods_amount - ? "
+					+ "WHERE goods_no = ?";
+		
+		PreparedStatement stmt = conn.prepareStatement(sql);
+			stmt.setInt(1, amount);
+			stmt.setInt(2, goodsNo);
+		row = stmt.executeUpdate();
+		
+		return row;
+	}
 }

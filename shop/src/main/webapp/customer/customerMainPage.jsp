@@ -141,8 +141,6 @@ System.out.println(totalRow + "==>totalRow");
 		height : 200px;
 	}
 
-
-	
 </style>
 </head>
 <body>
@@ -190,8 +188,6 @@ System.out.println(totalRow + "==>totalRow");
 				}
 			%>
 		</div>
-		<div style="text-align: center;">
-			
 <div class="bottom" style="height: 50px; color : gray">
 	made by 임아영 
 </div>

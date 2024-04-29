@@ -20,7 +20,7 @@ if(request.getParameter("currentPage") != null)
 		currentPage = Integer.parseInt(request.getParameter("currentPage"));
 	}
 
-int rowPerPage = 9; //한페이지당 9개씩
+int rowPerPage = 8; //한페이지당 9개씩
 
 int totalRow = 0; //전체Row
 
@@ -74,7 +74,7 @@ System.out.println(totalRow + "==>totalRow");
 //전체페이지의 totalRow랑last페이지를 구하기 위해 query추가
 
 		int totalRow2 = 0;
-		int rowPerPage2 = 9;
+		int rowPerPage2 = 8;
 		int startRow2 = (currentPage-1)*rowPerPage2;
 		
 		//customerGoodsDAO.
@@ -95,6 +95,7 @@ System.out.println(totalRow + "==>totalRow");
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<link rel="stylesheet" href="styles.css">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 <style>
@@ -127,13 +128,13 @@ System.out.println(totalRow + "==>totalRow");
 		float: right;
 		margin-right: 30px;
 	}
-.title{
+	.title{
 	font-family:"Super Mario 256";
 	text-align : center;
 	font-size: 35px;
 	-webkit-text-stroke-width: 1px; /* 테두리 두께 */
     -webkit-text-stroke-color: white; /* 테두리 색상 */
-}
+	}
 	.goodsList a{
 		color : gray;
 		text-align : center;
@@ -142,40 +143,43 @@ System.out.println(totalRow + "==>totalRow");
 	.goodsList a:hover{
 		color : black;
 	}
-.box {
-	width: 1350px;
-	margin : 0 auto;
-	overflow : hidden;
-	padding-top: 10px;
-	background-color: white;
-}
-.box .goodsimage1 {
-	float : left;
-	margin-left : 100px;
-	margin-bottom : 30px;
-	padding-bottom : 20px;
-	margin-right: ; /* 적절한 오른쪽 여백 추가 */
-	width: 300px; /* 적절한 너비 설정 */
-	text-align : center;
-	background-color: white;
-}
-.box .goodsimage1 img{
-	width : 200px;
-	height : 200px;
-}
-.page{
-	text-align: center;
-}
-.page button{
-	margin: 10px;
-	padding : 5px;
+	.box {
+    width: 1350px;
+    margin: 0 auto;
+    overflow: hidden;
+    padding-top: 10px;
+    background-color: white;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around; /* 필요에 따라 조정 */
+	}
 	
-}
+	.box .goodsimage1 {
+	    /* float:left를 제거합니다. */
+	    margin-bottom: 30px;
+	    padding-bottom: 20px;
+	    margin-right: ; /* 필요에 따라 margin-right를 조정하세요 */
+	    width: 300px;
+	    text-align: center;
+	    background-color: white;
+	}
+	.box .goodsimage1 img{
+		width : 200px;
+		height : 200px;
+	}
+	.page{
+		text-align: center;
+	}
+	.page button{
+		margin: 10px;
+		padding : 5px;
+		
+	}
 </style>
 </head>
 <body>
 <div class="header">
-		<a href="">
+		<a href="./customerMainPage.jsp">
 			<span style="color :#E52521;">S</span><span style="color:#049CD8">U</span><span style="color:#FBD000">P</span><span style="color:#049CD8">E</span><span style="color : #43B047">R</span>
 			<br>
 			<span style="color:#049CD8">M</span><span style="color : #43B047">A</span><span style="color:#FBD000">R</span><span style="color :#E52521;">I</span><span style="color : #43B047">O</span>
@@ -219,9 +223,13 @@ System.out.println(totalRow + "==>totalRow");
 						<img src="/shop/upload/<%=(String)m3.get("filename")%>">
 					</a>
 				</div>
-				<div> 카테고리 : <%=(String)(m3.get("category"))%></div>
+				<div> 
+					카테고리 : <%=(String)(m3.get("category"))%>
+				</div>
 					<a href="./customerGoodsOne.jsp?goodsNo=<%=(Integer)(m3.get("goodsNo"))%>">
-						<div>no : <%=(Integer)(m3.get("goodsNo")) %></div>
+						<div>
+							no : <%=(Integer)(m3.get("goodsNo")) %>
+						</div>
 					</a>
 				<hr>
 				
@@ -230,7 +238,19 @@ System.out.println(totalRow + "==>totalRow");
 						이름 : <%=(String)(m3.get("goodsTitle"))%>
 					</a>
 				</div>
-				<div>가격 : <%=(Integer)(m3.get("goodsPrice"))%></div>
+				<div>
+					가격 : <%=(Integer)(m3.get("goodsPrice"))%>
+				</div>
+				<!-- 품절인경우 -->
+					<%
+						if((Integer)m3.get("goodsAmount") == 0) {
+					%>
+						<div>
+							⚠️품절입니다⚠️
+						</div>
+					<%
+						}
+					%>
 			</div>
 		<%
 			}
@@ -255,7 +275,19 @@ System.out.println(totalRow + "==>totalRow");
 						이름 : <%=(String)(m2.get("goodsTitle"))%>
 					</a>
 				</div>
-				<div>가격 : <%=(Integer)(m2.get("goodsPrice"))%></div>
+				<div>
+					가격 : <%=(Integer)(m2.get("goodsPrice"))%>
+				</div>
+				<!-- 품절인경우 -->
+					<%
+						if((Integer)m2.get("goodsAmount") == 0) {
+					%>
+						<div>
+							⚠️품절입니다⚠️
+						</div>
+					<%
+						}
+					%>
 			</div>
 		<%			
 				}

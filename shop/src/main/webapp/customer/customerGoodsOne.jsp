@@ -32,6 +32,9 @@
 		String goodsContent = (String)goodsList.get("goodsContent");
 			System.out.println(goodsContent+"<===goodsContent");
 			
+		int goodsAmount = (int)goodsList.get("goodsAmount");
+			System.out.println(goodsAmount + "<==goodsAmount");
+			
 	 
 %>
 <!DOCTYPE html>
@@ -39,6 +42,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<link rel="stylesheet" href="styles.css">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 <style>
@@ -99,7 +103,7 @@
 </div>
 <div class="include">
 <jsp:include page="/customer/inc/customerMenu.jsp"></jsp:include> 
-</div>s
+</div>
 <div class="main">
 	<div class ="container">
 		<div style="height: 60px;"></div><!-- 상품이랑 header부분이랑 좀 띄워야할거같아서 만들었음 -->
@@ -107,41 +111,64 @@
 			<img src="/shop/upload/<%= filename%>">
 		</div>
 		<br>
-		<div class="goods">	
-			<table>
-				<tr>
-					<td><span> 제목</span></td>
-					<td><%=goodsTitle %></td>
-				</tr>
-				<tr>
-					<td><span>가격</span></td>
-					<td><%=goodsPrice %></td>
-				</tr>
-			</table>
-		</div>
-		<br>
-		<div>
-			<!-- 넘길 데이터 : amount, goodsNo, filename, goodsTitle, goodsPrice -->
-			<form method="post">
-				수량 : <input type="number" name = "amount" value="1" style="width: 50px" min="1">
-				<input type="hidden" name ="goodsNo" value="<%=goodsNo%>">
-				<input type="hidden" name ="filename" value="<%=filename%>">
-				<input type="hidden" name ="goodsTitle" value="<%=goodsTitle %>">
-				<input type="hidden" name ="goodsPrice" value="<%=goodsPrice %>">
-				<button type="submit" name="orderList" formaction="/shop/customer/customerGoodsCart.jsp?goodsNo=<%=goodsNo%>">🛒</button>
-				<button type="submit" name="orderList" formaction="/shop/customer/customerGoodsBuyAction.jsp?goodsNo=<%=goodsNo%>">구매하기</button>
-			</form>
-		</div>
-		<br>
-			<div>
-				<span>상품소개</span>
-			</div>
-			<br>
-			<div>		
-					<%=goodsContent %>
-			</div>
-	</div><!-- container의 마지막 -->
-
+			<%
+				if(goodsAmount == 0){
+			%>
+				<div class="goods">	
+					<div>
+						<span><strong>⚠️품절입니다⚠️</strong></span>
+					</div>
+					<table>
+						<tr>
+							<td><span> 제목</span></td>
+							<td><%=goodsTitle %></td>
+						</tr>
+						<tr>
+							<td><span>가격</span></td>
+							<td><%=goodsPrice %></td>
+						</tr>
+					</table>
+				</div>
+			<%
+				}else{
+			%>
+				<div class="goods">	
+					<table>
+						<tr>
+							<td><span> 제목</span></td>
+							<td><%=goodsTitle %></td>
+						</tr>
+						<tr>
+							<td><span>가격</span></td>
+							<td><%=goodsPrice %></td>
+						</tr>
+					</table>
+				</div>
+				<br>
+				<div>
+					<!-- 넘길 데이터 : amount, goodsNo, filename, goodsTitle, goodsPrice -->
+					<form method="post">
+						수량 : <input type="number" name = "amount" value="1" style="width: 50px" min="1">
+						<input type="hidden" name ="goodsNo" value="<%=goodsNo%>">
+						<input type="hidden" name ="filename" value="<%=filename%>">
+						<input type="hidden" name ="goodsTitle" value="<%=goodsTitle %>">
+						<input type="hidden" name ="goodsPrice" value="<%=goodsPrice %>">
+						<button type="submit" name="orderList" formaction="/shop/customer/customerGoodsCart.jsp?goodsNo=<%=goodsNo%>">🛒</button>
+						<button type="submit" name="orderList" formaction="/shop/customer/customerGoodsBuyAction.jsp?goodsNo=<%=goodsNo%>">구매하기</button>
+					</form>
+				</div>
+			<%
+				}
+			%>
+				<br>
+					<div class="goodsContent" style="color : orange">
+						<span><strong>상품소개</strong></span>
+					</div>
+					<br>
+					<div>		
+							<%=goodsContent %>
+					</div>
+</div><!-- container의 마지막 -->
 </div><!-- main끝 -->
 <div class="bottom" style="height: 50px; color : gray">
 

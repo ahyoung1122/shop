@@ -48,7 +48,8 @@ public class CustomerGoodsDAO {
 				new ArrayList<HashMap<String,Object>>();
 		
 		Connection conn = DBHelper.getConnection(); 
-		String sql = "SELECT category,goods_no goodsNo, goods_title goodsTitle, filename, goods_price goodsPrice, create_date createDate "
+		String sql = "SELECT category,goods_no goodsNo, goods_title goodsTitle, filename, goods_price goodsPrice,"
+				+ " goods_amount goodsAmount, create_date createDate "
 				+ "FROM goods "
 				+ "WHERE category = ? "
 				+ "order by create_date desc LIMIT ?,?; ";
@@ -67,6 +68,7 @@ public class CustomerGoodsDAO {
 			m2.put("filename", rs.getString("filename"));
 			m2.put("goodsPrice", rs.getString("goodsPrice"));
 			m2.put("goodsPrice", rs.getInt("goodsPrice"));
+			m2.put("goodsAmount", rs.getInt("goodsAmount"));
 			m2.put("createDate", rs.getString("createDate"));
 			
 			goodsList2.add(m2);
@@ -86,7 +88,8 @@ public class CustomerGoodsDAO {
 			= new ArrayList<HashMap<String,Object>>();
 		
 		Connection conn = DBHelper.getConnection(); 
-		String sql3 = "SELECT category, goods_no goodsNo, goods_title goodsTitle, filename, goods_price goodsPrice, create_date createDate "
+		String sql3 = "SELECT category, goods_no goodsNo, goods_title goodsTitle, filename, goods_price goodsPrice, "
+				+ "goods_amount goodsAmount, create_date createDate "
 				+ "FROM goods "
 				+ "ORDER BY goods_no desc LIMIT ?,?;";
 		PreparedStatement stmt = conn.prepareStatement(sql3);
@@ -101,6 +104,7 @@ public class CustomerGoodsDAO {
 			m3.put("goodsTitle", rs.getString("goodsTitle"));
 			m3.put("filename", rs.getString("filename"));
 			m3.put("goodsPrice", rs.getInt("goodsPrice"));
+			m3.put("goodsAmount", rs.getInt("goodsAmount"));
 			m3.put("createDate", rs.getString("createDate"));
 			allGoodsList2.add(m3);
 		}
@@ -152,6 +156,7 @@ public class CustomerGoodsDAO {
 			one.put("goodsTitle", rs.getString("goods_title"));
 			one.put("filename", rs.getString("filename"));
 			one.put("goodsPrice", rs.getInt("goods_price"));
+			one.put("goodsAmount", rs.getInt("goods_amount"));
 			one.put("goodsContent", rs.getString("goods_content"));
 			}
 			

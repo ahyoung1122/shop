@@ -19,7 +19,18 @@ String id = (String)(login.get("id"));
 	// 추가된 주문자 정보 customer테이블에 넣기 //주소는 api값이 넘어오질 않으니까일단 보류
 	String phone = request.getParameter("phone");
 		System.out.println(phone + "<===orderGoodsAction.phone");
-	
+	//주소가져오기
+	String postcode = request.getParameter("sample6_postcode");
+		System.out.println(postcode + "<===orderGoodsAction.postcode");
+	String address = request.getParameter("sample6_address");
+		System.out.println(address + "<===orderGoodsAction.address");
+	String detailAddress = request.getParameter("sample6_detailAddress");
+		System.out.println(detailAddress + "<===sample6_detailAddress");
+	String sample6_extraAddress = request.getParameter("sample6_extraAddress");
+		System.out.println(sample6_extraAddress + "sample6_extraAddress");
+	//주소 테이블을 만들어서 insert 해주어야할듯!	
+		
+		
 	//update문으로 customer정보 추가
 	int row = CustomerDAO.addInfo(phone, id);
 		System.out.println(row + "<==orderGoodsAction.row");

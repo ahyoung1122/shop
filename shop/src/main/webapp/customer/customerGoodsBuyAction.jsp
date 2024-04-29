@@ -36,7 +36,14 @@ if(session.getAttribute("CustomerLogin") == null)
 	System.out.println("customerGoodsBuyAction.goodsTitle=>" + goodsTitle);
 	System.out.println("customerGoodsBuyAction.goodsPrice=>" + goodsPrice);
 	//값 들어오는거 확인완료
+		
 	
+	
+		//orders table에 들어가는 수량만큼 goods amount에서 빼주기
+		
+		
+		
+		
 		//orderGoodsDAO에서 orders테이블에 추가하는 쿼리 작성
 		//연결하기
 		int row = OrderGoodsDAO.addOrders(
@@ -47,6 +54,11 @@ if(session.getAttribute("CustomerLogin") == null)
 		if(row == 1)
 			{
 				System.out.println("상품추가완료");
+				//상품이 추가되면 goods테이블의 토탈갯수에서 주문상품갯수만큼 빠져야 한다. 업데이트문을 쓰자
+				int totalGoods = OrderGoodsDAO.updateAmount(amount, goodsNo);
+				//이 값이 잘 들어갔는지 보자..
+				System.out.println(totalGoods + "<===customerGoodsBuyAction.totalGoods");
+				
 				response.sendRedirect("./orderGoods.jsp?goodsNo="+goodsNo);
 					
 		    

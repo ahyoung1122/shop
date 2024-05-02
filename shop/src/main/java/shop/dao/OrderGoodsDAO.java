@@ -246,6 +246,34 @@ public class OrderGoodsDAO {
 			stmt.setInt(2, goodsNo);
 		row = stmt.executeUpdate();
 		
+		conn.close();
 		return row;
+	}
+	//상품후기 작성
+	//호출 : myCommentOne.jsp
+	
+	public static HashMap<String,Object>comment(String id) throws Exception{
+		HashMap<String,Object> comment
+			= new HashMap<String,Object>();
+		
+		Connection conn = DBHelper.getConnection(); 
+		
+		String sql = "SELECT orders_no ordersNo , id, goods_title goodsTitle, state "
+					+ "FROM orders "
+					+ "WHERE id = ?";
+		
+		PreparedStatement stmt = conn.prepareStatement(sql);
+		stmt.setString(1, id);
+		
+		ResultSet rs = stmt.executeQuery();
+		if (rs.next()) {
+	        comment.put("ordersNo", rs.getString("ordersNo"));
+	        comment.put("id", rs.getString("id"));
+	        comment.put("goodsTitle", rs.getString("goodsTitle"));
+	        comment.put("state", rs.getString("state"));
+	    }
+	    
+		conn.close();
+		return comment;
 	}
 }

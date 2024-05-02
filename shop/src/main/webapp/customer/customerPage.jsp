@@ -84,6 +84,17 @@ if(session.getAttribute("CustomerLogin") == null) {
 	border-collapse: separate; /* 셀 간격을 지정하기 위해 border-collapse 속성을 separate로 설정 */
     border-spacing: 15px;
 	}
+	.allTd{
+	 font-size: 25px; 
+	 color : #EDA900;
+	 -webkit-text-stroke-width: 1px; /* 테두리 두께 */
+ 	 -webkit-text-stroke-color: black; /* 테두리 색상 */
+	}
+	.myPage{
+	 color : ivory;
+	 -webkit-text-stroke-width: 2px; /* 테두리 두께 */
+ 	 -webkit-text-stroke-color: black;
+	}
 
 </style>
 </head>
@@ -99,7 +110,7 @@ if(session.getAttribute("CustomerLogin") == null) {
 	<jsp:include page="/customer/inc/customerMenu.jsp"></jsp:include> 
 </div><br>
 <div class="container">
-		<h1>MY PAGE</h1><br>
+		<h1 class ="myPage">MY PAGE</h1><br>
 			<form method = "post" action="./pwHistory.jsp">
 					
 					아이디 : <input 
@@ -128,17 +139,23 @@ if(session.getAttribute("CustomerLogin") == null) {
 				</form><br>
 			<div class="my">
 				<table border="1">
-					<tr style="font-size: 20px;">
+					<tr class="allTd">
 						<td><strong>NAME</strong></td>
 						<td><strong>mail</strong></td>
 						<td><strong>GENDER</strong></td>
 						<td><strong>BIRTH</strong></td>
+						<td><strong>MyOrder</strong></td>
 					</tr>
 					<tr>
 						<td><%=customerInfo.get("name") %></td>
 						<td><%=customerInfo.get("mail") %></td>
 						<td><%=customerInfo.get("gender") %></td>
 						<td><%=customerInfo.get("birth") %></td>
+						<td>
+							<a class="btn btn-warning" href="./myComment.jsp" role="button">
+								내 후기
+							</a>
+						</td>
 					</tr>
 				</table>
 			</div>

@@ -7,18 +7,18 @@
 	System.out.println(customerLogin);	
 %>
 	
-      <a href="./customerPage.jsp?id=<%=(String)(customerLogin.get("id"))%>">
-      		<%=(String)(customerLogin.get("id"))%>님
-      </a>
-
-		<a href="./customerGoodsList.jsp">
-			GOODS
-		</a>
-
-      <a href="./orderListByCustomer.jsp">
-      	CART
-      </a>
-      <a href="/shop/customer/customerLogout.jsp">
-			LogOut
-		</a>
+	<a href="./customerPage.jsp?id=<%=(String)(customerLogin.get("id"))%>">
+		<%=(String)(customerLogin.get("id"))%>님
+	</a>
+	<a href="./customerMainPage.jsp">
+		HOME
+	</a>
+	
+	<a href="./customerGoodsList.jsp">
+		GOODS
+	</a>
+	
+	<a href="/shop/customer/customerLogout.jsp">
+		LogOut
+	</a>
 

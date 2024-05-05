@@ -129,13 +129,10 @@ if(session.getAttribute("CustomerLogin") == null) {
 </div><br>
 <div class="container">
 	<h1>내 후기</h1>
-		<a class="btn btn-warning" href="./myCommentOne.jsp" role="button">
-			후기작성하기
-		</a>
-			<div class="box">
 				<%
 					for(HashMap<String,Object> m : commentList){
 				%>	
+				<div class="box">
 					<table border="1">
 						<tr>
 							<td rowspan="3"><img src="/shop/upload/<%= m.get("filename")%>"></td>
@@ -155,10 +152,11 @@ if(session.getAttribute("CustomerLogin") == null) {
 							<td> 후기 : <%=m.get("content")%></td>
 						</tr>
 					</table>
+				</div>
 				<%
 					}
 				%>
-				</div>
+		
 </div><!-- container마지막 -->
 </body>
 </html>

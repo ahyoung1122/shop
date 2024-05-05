@@ -18,14 +18,18 @@ if(session.getAttribute("CustomerLogin") == null) {
 	//id확인 
 		System.out.println("여기는 commentOne.jsp.id" + id);
 	
-	//orders테이블에서 상품정보 가져오기 
+/* 	//orders테이블에서 상품정보 가져오기 
 	HashMap<String,Object> customerComment = OrderGoodsDAO.comment(id);
-		String goodsTitle = (String) customerComment.get("goodsTitle");
 		String ordersNo1 = (String) customerComment.get("ordersNo");
 			int ordersNo = Integer.parseInt(ordersNo1);
 				//디버깅
-				System.out.println(goodsTitle + "customerComment.goodsTitle");
-				System.out.println(ordersNo + "customerComment.ordersNo");
+				System.out.println(ordersNo + "customerComment.ordersNo"); */
+				
+	String goodsTitle = request.getParameter("goodsTitle");
+			System.out.println(goodsTitle + "<==후기상품이름");
+	
+	int ordersNo = Integer.parseInt(request.getParameter("ordersNo"));
+		System.out.println(ordersNo + "<==후기상품번호");
 		
 %>
 <!DOCTYPE html>
@@ -114,7 +118,7 @@ if(session.getAttribute("CustomerLogin") == null) {
 <div class="container">
 	<h1 class="comment">후기작성하기</h1>
 		<div style="margin-top: 20px; margin-bottom: 20px;">
-			<span style="color : orange;">주문 상품</span> : <%=goodsTitle%>
+			<span style="color : orange;">주문 상품</span> : <%=goodsTitle %>
 		</div>
 			<form method="post" action="./myCommentOneAction.jsp">
 				<div>

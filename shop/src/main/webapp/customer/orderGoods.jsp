@@ -183,16 +183,21 @@
                 <td>가격</td>
                 <td>수량</td>
             </tr>
-            <% for(HashMap<String,Object>order : ordersList){ %>
-            <tr>
-                <th><img src="/shop/upload/<%= order.get("filename")%>"></th>
-                <th><%= order.get("goodsTitle")%></th>
-                <th><%= order.get("goodsPrice")%>원</th>
-                <th>
-                    <%= order.get("amount")%>개
-                </th>
-            </tr>
-            <% } %>
+            <% for(HashMap<String,Object>order : ordersList){
+            		if(order.get("state").equals("결제완료")){
+            %>		
+	            <tr>
+	                <th><img src="/shop/upload/<%= order.get("filename")%>"></th>
+	                <th><%= order.get("goodsTitle")%></th>
+	                <th><%= order.get("goodsPrice")%>원</th>
+	                <th>
+	                    <%= order.get("amount")%>개
+	                </th>
+	            </tr>
+            <% 
+            		}
+           		 }
+            %>
         </table>
         <br><button type="submit" class="btn btn-danger btn-sm">결제하기</button>
     </form>

@@ -72,4 +72,44 @@ public class CommentDAO {
 		
 		return list;
 	}
+	
+	//전체고객후기 가져오기
+	//호출 : allCommentList.jsp
+	/*
+	 * 쿼리:SELECT o.id,o.goods_title,c.star_point,c.content, c.create_date FROM
+	 * comment c INNER JOIN orders o ON c.orders_no = o.orders_no ORDER BY
+	 * c.create_date DESC;
+	 */
+	
+	public static ArrayList<HashMap<String,Object>> comment() throws Exception{
+		ArrayList<HashMap<String,Object>> list
+			= new ArrayList<HashMap<String,Object>>();
+		
+		Connection conn = DBHelper.getConnection(); 
+		
+		String sql = "SELECT o.id id, o.goods_title goodsTitle,"
+				+ " c.star_point starPoint, c.content content, c.create_date createDate "
+				+ "FROM orders o "
+				+ "INNER JOIN comment c "
+				+ "ON c.orders_no = o.orders_no "
+				+ "ORDER BY c.create_date DESC";
+		
+		PreparedStatement stmt = conn.prepareStatement(sql);
+		ResultSet rs = stmt.executeQuery();
+		
+		while(rs.next()) {
+			HashMap<String,Object> m 
+				=	new HashMap<String,Object>();
+			m.put("id", rs.getString("id"));
+			m.put("goodsTitle", rs.getString("goodsTitle"));
+			m.put("starPoint", rs.getDouble("starPoint"));
+			m.put("content", rs.getString("content"));
+			m.put("createDate", rs.getString("createDate"));
+			
+			list.add(m);
+			
+		}
+		
+		return list;
+	}
 }	

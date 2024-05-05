@@ -108,7 +108,9 @@
 			<div class="col-2"></div>
 			<div class="mt-5 col-8 bg-black border shadow p-3 mb-5 bg-body-tertiary rounded" >
 				<h1>고객주문 관리</h1>
-					
+					<a class="btn btn-warning" href="./allCommentList.jsp" role="button">
+						전체후기보기
+					</a>
 						<div class="box">
 							<table border ="1">
 								<tr>

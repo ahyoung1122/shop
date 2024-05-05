@@ -162,6 +162,7 @@ if(session.getAttribute("CustomerLogin") == null) {
 			<!-- 여기서부터는 고객 주문정보 -->
 			<div class="my">	<hr>		
 				<h4>주문배송조회</h4>
+					
 					<%
 						for(HashMap<String,Object>m : orderList ){
 					%>
@@ -173,9 +174,10 @@ if(session.getAttribute("CustomerLogin") == null) {
 								<th colspan="4">
 									상품정보
 								</th>
-								<th>
+								<th colspan="2">
 									진행상태
 								</th>
+								<th></th>
 							</tr>	
 							<tr>
 								<td>
@@ -188,8 +190,25 @@ if(session.getAttribute("CustomerLogin") == null) {
 									<%=m.get("goodsPrice")%>원
 									<%=m.get("amount")%>개
 								</td>
-								<td>총 <%=m.get("totalPrice")%>원</th>
-								<td style="color:orange;"><%=m.get("state")%></th>
+								<td>
+									총 <%=m.get("totalPrice")%>원
+								</td>
+								<td style="color:orange;">
+									<%=m.get("state")%>
+								</td>
+								<td>
+									<%
+										if(m.get("state").equals("배송완료")){
+											
+									%>
+										<a class="btn btn-warning" href="./myCommentOne.jsp?goodsTitle=<%=m.get("goodsTitle")%>&ordersNo=<%=m.get("ordersNo") %>" 
+										role="button">
+											후기작성하기
+										</a>
+									<%
+										}
+									%>
+								</td>
 							</tr>
 						</table>
 					<%
